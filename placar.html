@@ -9,1105 +9,1111 @@
         href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,800;1,900&display=swap"
         rel="stylesheet">
     <style>
-    html,
-    body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
-        background: transparent;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        font-family: 'Montserrat', Arial, sans-serif;
-        color: white;
-        user-select: none;
-    }
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            background: transparent;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', Arial, sans-serif;
+            color: white;
+            user-select: none;
+        }
 
-    /* NOTIFICAÇÃO COMPACTA DE OUTROS JOGOS / TECLA 'O' */
-    #container-alerta-externo {
-        min-height: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 8px;
-        z-index: 200;
-        pointer-events: none;
-    }
+        /* NOTIFICAÇÃO COMPACTA DE OUTROS JOGOS / TECLA 'O' */
+        #container-alerta-externo {
+            min-height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 8px;
+            z-index: 200;
+            pointer-events: none;
+        }
 
-    .notificacao-gol-externo {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        background: linear-gradient(135deg, rgba(7, 10, 24, 0.98), rgba(18, 38, 92, 0.98));
-        border: 1.5px solid #3b82f6;
-        border-radius: 30px;
-        padding: 4px 12px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85), 0 0 15px rgba(59, 130, 246, 0.4);
-        animation: surgirGolTop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        max-width: 500px;
-        width: max-content;
-    }
+        .notificacao-gol-externo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(7, 10, 24, 0.98), rgba(18, 38, 92, 0.98));
+            border: 1.5px solid #3b82f6;
+            border-radius: 30px;
+            padding: 4px 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85), 0 0 15px rgba(59, 130, 246, 0.4);
+            animation: surgirGolTop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 500px;
+            width: max-content;
+        }
 
-    /* TEMA BASQUETEBOL PARA A NOTIFICAÇÃO */
-    .notificacao-gol-externo.basquete {
-        background: linear-gradient(135deg, rgba(18, 11, 7, 0.98), rgba(46, 22, 9, 0.98));
-        border: 1.5px solid #f97316;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85), 0 0 15px rgba(249, 115, 22, 0.4);
-    }
+        /* TEMA BASQUETEBOL PARA A NOTIFICAÇÃO */
+        .notificacao-gol-externo.basquete {
+            background: linear-gradient(135deg, rgba(18, 11, 7, 0.98), rgba(46, 22, 9, 0.98));
+            border: 1.5px solid #f97316;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85), 0 0 15px rgba(249, 115, 22, 0.4);
+        }
 
-    .notificacao-gol-externo.basquete .badge-gol-pulsar {
-        background: #ea580c;
-    }
+        .notificacao-gol-externo.basquete .badge-gol-pulsar {
+            background: #ea580c;
+        }
 
-    .notificacao-gol-externo.basquete .time-gol-destaque {
-        color: #fb923c;
-    }
+        .notificacao-gol-externo.basquete .time-gol-destaque {
+            color: #fb923c;
+        }
 
-    .badge-gol-pulsar {
-        background: #ef4444;
-        color: white;
-        font-size: 0.62rem;
-        font-weight: 900;
-        letter-spacing: 0.5px;
-        padding: 2px 7px;
-        border-radius: 20px;
-        display: flex;
-        align-items: center;
-        gap: 3px;
-        flex-shrink: 0;
-        animation: piscarLive 0.8s infinite alternate;
-    }
+        .badge-gol-pulsar {
+            background: #ef4444;
+            color: white;
+            font-size: 0.62rem;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            padding: 2px 7px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            flex-shrink: 0;
+            animation: piscarLive 0.8s infinite alternate;
+        }
 
-    .logo-alerta-gol {
-        width: 20px;
-        height: 20px;
-        object-fit: contain;
-        border-radius: 50%;
-        background: white;
-        padding: 2px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
-        flex-shrink: 0;
-    }
+        .logo-alerta-gol {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            border-radius: 50%;
+            background: white;
+            padding: 2px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+            flex-shrink: 0;
+        }
 
-    .time-gol-destaque {
-        font-weight: 800;
-        font-size: 0.78rem;
-        color: #60a5fa;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 105px;
-        display: inline-block;
-    }
+        .time-gol-destaque {
+            font-weight: 800;
+            font-size: 0.78rem;
+            color: #60a5fa;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 105px;
+            display: inline-block;
+        }
 
-    .placar-alerta-caixa {
-        background: rgba(0, 0, 0, 0.65);
-        padding: 2px 8px;
-        border-radius: 5px;
-        font-weight: 900;
-        font-family: monospace;
-        font-size: 0.82rem;
-        color: #ffffff;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        white-space: nowrap;
-        flex-shrink: 0;
-    }
+        .placar-alerta-caixa {
+            background: rgba(0, 0, 0, 0.65);
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-weight: 900;
+            font-family: monospace;
+            font-size: 0.82rem;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
 
-    .nome-time-min {
-        max-width: 85px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: inline-block;
-    }
+        .nome-time-min {
+            max-width: 85px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+        }
 
-    .tempo-alerta {
-        font-size: 0.68rem;
-        color: #94a3b8;
-        font-weight: 700;
-        white-space: nowrap;
-        flex-shrink: 0;
-    }
+        .tempo-alerta {
+            font-size: 0.68rem;
+            color: #94a3b8;
+            font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
 
-    @keyframes surgirGolTop {
-        0% {
-            transform: translateY(-25px) scale(0.9);
+        @keyframes surgirGolTop {
+            0% {
+                transform: translateY(-25px) scale(0.9);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes piscarLive {
+            0% {
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .container {
+            box-sizing: border-box;
+            background: linear-gradient(155deg, rgba(7, 9, 20, 0.98), rgba(13, 19, 45, 0.95));
+            padding: 12px 16px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* TEMAS */
+        .container.futebol {
+            width: 640px;
+            border-bottom: 4px solid #2563eb;
+            border-top: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 10px 30px rgba(4, 7, 18, 0.9), 0 0 15px rgba(37, 99, 235, 0.2);
+        }
+
+        .container.futebol .numeros {
+            background-color: rgba(3, 7, 18, 0.7);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            color: white;
+        }
+
+        .container.futebol .status-jogo,
+        .container.futebol .titulo-escalacao,
+        .container.futebol .txt-torneio,
+        .container.futebol .jogador-numero {
+            color: #60a5fa;
+        }
+
+        .container.basquete {
+            width: 620px;
+            border-bottom: 4px solid #f97316;
+            border-top: 1px solid rgba(249, 115, 22, 0.2);
+            box-shadow: 0 10px 30px rgba(4, 7, 18, 0.9), 0 0 15px rgba(249, 115, 22, 0.2);
+        }
+
+        .container.basquete .numeros {
+            background-color: rgba(3, 7, 18, 0.8);
+            border: 1px solid rgba(249, 115, 22, 0.4);
+            color: #fdba74;
+        }
+
+        .container.basquete .status-jogo,
+        .container.basquete .titulo-escalacao,
+        .container.basquete .txt-torneio {
+            color: #fb923c;
+        }
+
+        .container.nfl {
+            width: 660px;
+            background: linear-gradient(155deg, rgba(8, 12, 28, 0.98), rgba(14, 20, 44, 0.96));
+            border-bottom: 4px solid #dc2626;
+            border-top: 1px solid rgba(220, 38, 38, 0.3);
+            box-shadow: 0 10px 30px rgba(4, 7, 18, 0.9), 0 0 15px rgba(220, 38, 38, 0.2);
+        }
+
+        .container.nfl .numeros {
+            background-color: rgba(3, 7, 18, 0.8);
+            border: 1px solid rgba(37, 99, 235, 0.4);
+            color: white;
+        }
+
+        .container.nfl .status-jogo,
+        .container.nfl .txt-torneio {
+            color: #60a5fa;
+        }
+
+        /* ESTRUTURA GERAL */
+        .branding-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 8px;
+            margin-bottom: 2px;
+        }
+
+        .brand-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .canal-logo {
+            height: 34px;
+            max-width: 90px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+        }
+
+        .info-jogo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .txt-torneio {
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .txt-estadio {
+            font-size: 0.65rem;
+            color: #94a3b8;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-live-stream {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #ffffff;
+            color: #070913;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.68rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .dot-live-stream {
+            width: 7px;
+            height: 7px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            display: inline-block;
+            animation: piscarLive 1s infinite alternate;
+        }
+
+        .placar-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2px;
+        }
+
+        .time-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .time-box.casa {
+            justify-content: flex-end;
+        }
+
+        .time-box.fora {
+            justify-content: flex-start;
+        }
+
+        .textos-time {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .textos-time.casa {
+            align-items: flex-end;
+        }
+
+        .textos-time.fora {
+            align-items: flex-start;
+        }
+
+        .time-nome {
+            font-size: 1.3rem;
+            font-weight: 900;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            letter-spacing: -0.5px;
+        }
+
+        .time-formacao {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            font-weight: 700;
+            margin-top: 1px;
+        }
+
+        .time-logo {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            background-color: white;
+            border-radius: 50%;
+            padding: 4px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+
+        .centro-placar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin: 0 15px;
+            flex-shrink: 0;
+            min-width: 160px;
+            max-width: 260px;
+        }
+
+        .numeros {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 6px 18px;
+            border-radius: 8px;
+            font-size: 2.1rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        .status-jogo {
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        /* PAINÉIS INFERIORES E BOTOES DE RESERVA */
+        .painel-escalacoes {
+            max-height: 0;
             opacity: 0;
+            overflow: hidden;
+            transition: all 0.5s ease-in-out;
+            margin-top: 0px;
         }
 
-        100% {
-            transform: translateY(0) scale(1);
+        .painel-escalacoes.aberto {
+            max-height: 700px;
             opacity: 1;
-        }
-    }
-
-    @keyframes piscarLive {
-        0% {
-            opacity: 0.3;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        100% {
+        .abas-painel {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .aba-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 5px 16px;
+            border-radius: 20px;
+            font-family: inherit;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .aba-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .aba-btn.ativa {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+            box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4);
+        }
+
+        .container-views {
+            display: grid;
+        }
+
+        .view-titulares,
+        .view-reservas {
+            grid-area: 1 / 1;
+            transition: opacity 0.4s ease-in-out, visibility 0.4s;
+        }
+
+        .view-reservas {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #painel-escalacoes.modo-reservas .view-titulares {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #painel-escalacoes.modo-reservas .view-reservas {
             opacity: 1;
-        }
-    }
-
-    .container {
-        box-sizing: border-box;
-        background: linear-gradient(155deg, rgba(7, 9, 20, 0.98), rgba(13, 19, 45, 0.95));
-        padding: 12px 16px;
-        border-radius: 12px;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        position: relative;
-        overflow: hidden;
-        cursor: pointer;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    /* TEMAS */
-    .container.futebol {
-        width: 640px;
-        border-bottom: 4px solid #2563eb;
-        border-top: 1px solid rgba(59, 130, 246, 0.2);
-        box-shadow: 0 10px 30px rgba(4, 7, 18, 0.9), 0 0 15px rgba(37, 99, 235, 0.2);
-    }
-
-    .container.futebol .numeros {
-        background-color: rgba(3, 7, 18, 0.7);
-        border: 1px solid rgba(59, 130, 246, 0.25);
-        color: white;
-    }
-
-    .container.futebol .status-jogo,
-    .container.futebol .titulo-escalacao,
-    .container.futebol .txt-torneio,
-    .container.futebol .jogador-numero {
-        color: #60a5fa;
-    }
-
-    .container.basquete {
-        width: 620px;
-        border-bottom: 4px solid #f97316;
-        border-top: 1px solid rgba(249, 115, 22, 0.2);
-        box-shadow: 0 10px 30px rgba(4, 7, 18, 0.9), 0 0 15px rgba(249, 115, 22, 0.2);
-    }
-
-    .container.basquete .numeros {
-        background-color: rgba(3, 7, 18, 0.8);
-        border: 1px solid rgba(249, 115, 22, 0.4);
-        color: #fdba74;
-    }
-
-    .container.basquete .status-jogo,
-    .container.basquete .titulo-escalacao,
-    .container.basquete .txt-torneio {
-        color: #fb923c;
-    }
-
-    .container.nfl {
-        width: 660px;
-        background: linear-gradient(155deg, rgba(8, 12, 28, 0.98), rgba(14, 20, 44, 0.96));
-        border-bottom: 4px solid #dc2626;
-        border-top: 1px solid rgba(220, 38, 38, 0.3);
-        box-shadow: 0 10px 30px rgba(4, 7, 18, 0.9), 0 0 15px rgba(220, 38, 38, 0.2);
-    }
-
-    .container.nfl .numeros {
-        background-color: rgba(3, 7, 18, 0.8);
-        border: 1px solid rgba(37, 99, 235, 0.4);
-        color: white;
-    }
-
-    .container.nfl .status-jogo,
-    .container.nfl .txt-torneio {
-        color: #60a5fa;
-    }
-
-    /* ESTRUTURA GERAL */
-    .branding-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        padding-bottom: 8px;
-        margin-bottom: 2px;
-    }
-
-    .brand-left {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .canal-logo {
-        height: 34px;
-        max-width: 90px;
-        object-fit: contain;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
-    }
-
-    .info-jogo {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .txt-torneio {
-        font-size: 0.72rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .txt-estadio {
-        font-size: 0.65rem;
-        color: #94a3b8;
-        font-weight: 600;
-        text-transform: uppercase;
-    }
-
-    .badge-live-stream {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        background: #ffffff;
-        color: #070913;
-        padding: 2px 8px;
-        border-radius: 20px;
-        font-size: 0.68rem;
-        font-weight: 900;
-        letter-spacing: 1px;
-    }
-
-    .dot-live-stream {
-        width: 7px;
-        height: 7px;
-        background-color: #ef4444;
-        border-radius: 50%;
-        display: inline-block;
-        animation: piscarLive 1s infinite alternate;
-    }
-
-    .placar-wrapper {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 2px;
-    }
-
-    .time-box {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex: 1;
-        min-width: 0;
-    }
-
-    .time-box.casa {
-        justify-content: flex-end;
-    }
-
-    .time-box.fora {
-        justify-content: flex-start;
-    }
-
-    .textos-time {
-        display: flex;
-        flex-direction: column;
-        min-width: 0;
-        width: 100%;
-    }
-
-    .textos-time.casa {
-        align-items: flex-end;
-    }
-
-    .textos-time.fora {
-        align-items: flex-start;
-    }
-
-    .time-nome {
-        font-size: 1.3rem;
-        font-weight: 900;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 100%;
-        letter-spacing: -0.5px;
-    }
-
-    .time-formacao {
-        font-size: 0.72rem;
-        color: #94a3b8;
-        font-weight: 700;
-        margin-top: 1px;
-    }
-
-    .time-logo {
-        width: 44px;
-        height: 44px;
-        object-fit: contain;
-        background-color: white;
-        border-radius: 50%;
-        padding: 4px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        flex-shrink: 0;
-    }
-
-    .centro-placar {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        margin: 0 15px;
-        flex-shrink: 0;
-        min-width: 160px;
-        max-width: 260px;
-    }
-
-    .numeros {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        padding: 6px 18px;
-        border-radius: 8px;
-        font-size: 2.1rem;
-        font-weight: 900;
-        letter-spacing: -1px;
-    }
-
-    .status-jogo {
-        text-align: center;
-        font-size: 0.85rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        font-variant-numeric: tabular-nums;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        width: 100%;
-    }
-
-    /* PAINÉIS INFERIORES E BOTOES DE RESERVA */
-    .painel-escalacoes {
-        max-height: 0;
-        opacity: 0;
-        overflow: hidden;
-        transition: all 0.5s ease-in-out;
-        margin-top: 0px;
-    }
-
-    .painel-escalacoes.aberto {
-        max-height: 700px;
-        opacity: 1;
-        margin-top: 10px;
-        padding-top: 10px;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .abas-painel {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-bottom: 12px;
-    }
-
-    .aba-btn {
-        background: rgba(255, 255, 255, 0.05);
-        color: #94a3b8;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 5px 16px;
-        border-radius: 20px;
-        font-family: inherit;
-        font-size: 0.72rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .aba-btn:hover {
-        background: rgba(255, 255, 255, 0.1);
-    }
-
-    .aba-btn.ativa {
-        background: #3b82f6;
-        color: white;
-        border-color: #3b82f6;
-        box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4);
-    }
-
-    .container-views {
-        display: grid;
-    }
-
-    .view-titulares,
-    .view-reservas {
-        grid-area: 1 / 1;
-        transition: opacity 0.4s ease-in-out, visibility 0.4s;
-    }
-
-    .view-reservas {
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-    }
-
-    #painel-escalacoes.modo-reservas .view-titulares {
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-    }
-
-    #painel-escalacoes.modo-reservas .view-reservas {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-    }
-
-    .escalacao-grid {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-    }
-
-    .coluna-escalacao {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        min-width: 0;
-    }
-
-    .coluna-escalacao.casa {
-        border-right: 1px solid rgba(255, 255, 255, 0.08);
-        padding-right: 8px;
-    }
-
-    .titulo-escalacao {
-        font-size: 0.72rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 6px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .titulos-stats {
-        display: flex;
-        gap: 6px;
-        color: #94a3b8;
-        font-size: 0.65rem;
-        align-items: center;
-    }
-
-    .jogador-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.03);
-        padding: 4px 8px;
-        border-radius: 6px;
-        gap: 6px;
-    }
-
-    .jogador-item.saiu-normal {
-        background: rgba(0, 0, 0, 0.45);
-        opacity: 0.65;
-        border: 1px solid rgba(255, 255, 255, 0.02);
-    }
-
-    .jogador-item.saiu-lesao {
-        background: rgba(127, 29, 29, 0.35);
-        opacity: 0.8;
-        border: 1px solid rgba(239, 68, 68, 0.2);
-    }
-
-    /* FORMATO RESERVA MAIS COMPACTO */
-    .jogador-item.reserva-item {
-        padding: 2px 6px;
-        background: rgba(255, 255, 255, 0.015);
-        border-color: rgba(255, 255, 255, 0.01);
-    }
-
-    .jogador-item.reserva-item .jogador-foto {
-        width: 18px;
-        height: 18px;
-        margin-right: 4px;
-    }
-
-    .jogador-item.reserva-item .jogador-nome {
-        font-size: 0.72rem;
-        font-weight: 600;
-        color: #cbd5e1;
-    }
-
-    .jogador-item.reserva-item .jogador-numero {
-        font-size: 0.72rem;
-        min-width: 16px;
-        color: #94a3b8;
-    }
-
-    .jogador-item.reserva-item .jogador-rating {
-        font-size: 0.65rem;
-        padding: 1px 4px;
-        min-width: 22px;
-    }
-
-    .info-sub {
-        font-size: 0.65rem;
-        display: block;
-        margin-top: -2px;
-    }
-
-    .info-sub.out {
-        color: #f87171;
-    }
-
-    .info-sub.in {
-        color: #4ade80;
-    }
-
-    .nome-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        min-width: 0;
-        flex: 1;
-    }
-
-    .jogador-info {
-        display: flex;
-        align-items: center;
-        overflow: hidden;
-        flex: 1;
-    }
-
-    .bandeira-jogador {
-        width: 16px;
-        height: 11px;
-        object-fit: cover;
-        border-radius: 2px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        margin-right: 6px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-        display: inline-block;
-        vertical-align: middle;
-        flex-shrink: 0;
-    }
-
-    .jogador-foto {
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        object-fit: cover;
-        background: #1e293b;
-        flex-shrink: 0;
-        margin-right: 6px;
-    }
-
-    .jogador-numero {
-        font-size: 0.8rem;
-        font-weight: 800;
-        min-width: 20px;
-        margin-right: 8px;
-        display: inline-block;
-        text-align: right;
-        flex-shrink: 0;
-    }
-
-    .jogador-nome {
-        font-size: 0.8rem;
-        font-weight: 700;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 130px;
-    }
-
-    .stats-wrapper {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        flex-shrink: 0;
-    }
-
-    .estatisticas-jogador {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-family: monospace;
-        font-size: 0.8rem;
-        font-weight: bold;
-        color: #e2e8f0;
-    }
-
-    .stat-box {
-        width: 24px;
-        text-align: right;
-        display: inline-block;
-    }
-
-    .stat-box.pts {
-        color: #f97316;
-        font-size: 0.85rem;
-    }
-
-    .rating-slot {
-        width: 34px;
-        margin-left: 2px;
-        display: flex;
-        justify-content: flex-end;
-        flex-shrink: 0;
-    }
-
-    .jogador-rating {
-        font-size: 0.7rem;
-        font-weight: 800;
-        padding: 2px 5px;
-        border-radius: 4px;
-        color: #fff;
-        min-width: 24px;
-        text-align: center;
-    }
-
-    .rating-alta {
-        background-color: #10b981;
-    }
-
-    .rating-media {
-        background-color: #f59e0b;
-    }
-
-    .rating-baixa {
-        background-color: #ef4444;
-    }
-
-    .rating-10 {
-        background-color: #3b82f6;
-    }
-
-    .rating-neutra {
-        background-color: #475569;
-    }
-
-    .eventos-badge {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        margin-left: 4px;
-        flex-shrink: 0;
-    }
-
-    .badge-capitao {
-        background: #ffd700;
-        color: #000;
-        font-size: 0.65rem;
-        font-weight: 900;
-        padding: 1px 4px;
-        border-radius: 3px;
-        flex-shrink: 0;
-    }
-
-    .badge-evento {
-        font-size: 0.75rem;
-        line-height: 1;
-        flex-shrink: 0;
-    }
-
-    .badge-gc {
-        background: rgba(220, 38, 38, 0.3);
-        color: #ff6b6b;
-        font-size: 0.62rem;
-        font-weight: 900;
-        padding: 1px 4px;
-        border-radius: 3px;
-        border: 1px solid rgba(220, 38, 38, 0.5);
-        display: flex;
-        align-items: center;
-        gap: 2px;
-        flex-shrink: 0;
-    }
-
-    .badge-sub {
-        background: rgba(255, 255, 255, 0.1);
-        color: #fff;
-        font-size: 0.65rem;
-        font-weight: bold;
-        padding: 1px 3px;
-        border-radius: 3px;
-    }
-
-    .badge-sub.lesao {
-        background: rgba(240, 68, 56, 0.3);
-        color: #f87171;
-    }
-
-    .badge-cartao {
-        width: 8px;
-        height: 12px;
-        border-radius: 1.5px;
-        display: inline-block;
-        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-        flex-shrink: 0;
-        border: 1px solid rgba(0, 0, 0, 0.4);
-    }
-
-    .badge-cartao.amarelo {
-        background-color: #facc15;
-    }
-
-    .badge-cartao.vermelho {
-        background-color: #ef4444;
-    }
-
-    /* NFL LÍDERES */
-    .nfl-lideres-container {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        width: 100%;
-        padding-top: 2px;
-    }
-
-    .nfl-lideres-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-bottom: 4px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .nfl-lideres-titulo {
-        font-size: 0.75rem;
-        font-weight: 800;
-        letter-spacing: 1.2px;
-        color: #f87171;
-        text-transform: uppercase;
-    }
-
-    .nfl-teams-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 2px 6px 6px 6px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .nfl-team-badge {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.85rem;
-        font-weight: 900;
-        letter-spacing: 0.5px;
-    }
-
-    .nfl-team-badge.away {
-        color: #60a5fa;
-    }
-
-    .nfl-team-badge.home {
-        color: #f87171;
-    }
-
-    .nfl-team-badge img {
-        width: 22px;
-        height: 22px;
-        object-fit: contain;
-    }
-
-    .nfl-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.04);
-        border-radius: 8px;
-        padding: 6px 10px;
-        gap: 8px;
-    }
-
-    .nfl-player {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        flex: 1;
-        min-width: 0;
-    }
-
-    .nfl-player.away {
-        justify-content: flex-start;
-    }
-
-    .nfl-player.home {
-        justify-content: flex-end;
-        text-align: right;
-    }
-
-    .nfl-player-photo {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        object-fit: cover;
-        background: #1e293b;
-        border: 1.5px solid rgba(255, 255, 255, 0.15);
-        flex-shrink: 0;
-    }
-
-    .nfl-player-photo.empty {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1.5px dashed rgba(255, 255, 255, 0.1);
-    }
-
-    .nfl-player-info {
-        display: flex;
-        flex-direction: column;
-        min-width: 0;
-        overflow: hidden;
-    }
-
-    .nfl-player-name-line {
-        font-size: 0.8rem;
-        font-weight: 800;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-    }
-
-    .nfl-player.home .nfl-player-name-line {
-        justify-content: flex-end;
-    }
-
-    .nfl-player-pos {
-        font-size: 0.65rem;
-        font-weight: 700;
-        color: #94a3b8;
-        background: rgba(255, 255, 255, 0.08);
-        padding: 1px 4px;
-        border-radius: 3px;
-    }
-
-    .nfl-player-stat-detail {
-        font-size: 0.65rem;
-        color: #94a3b8;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        margin-top: 1px;
-    }
-
-    .nfl-stat-center {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        flex-shrink: 0;
-        min-width: 160px;
-    }
-
-    .nfl-stat-val {
-        font-size: 1.15rem;
-        font-weight: 900;
-        font-family: monospace;
-        min-width: 38px;
-    }
-
-    .nfl-stat-val.away {
-        text-align: right;
-        color: #60a5fa;
-    }
-
-    .nfl-stat-val.home {
-        text-align: left;
-        color: #f87171;
-    }
-
-    .nfl-stat-label {
-        font-size: 0.68rem;
-        font-weight: 800;
-        color: #cbd5e1;
-        text-transform: uppercase;
-        text-align: center;
-        min-width: 76px;
-        line-height: 1.1;
-    }
-
-    /* CAMADA DE ANIMAÇÕES */
-    .tela-anim {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 15px;
-        font-size: 2rem;
-        font-weight: 900;
-        font-style: italic;
-        text-transform: uppercase;
-        transform: translateY(-100%);
-        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        z-index: 50;
-        color: white;
-        padding: 0 15px;
-        box-sizing: border-box;
-    }
-
-    .tela-anim.mostrar {
-        transform: translateY(0);
-        animation: piscarAnim 0.6s infinite alternate;
-    }
-
-    .tela-anim img {
-        width: 50px;
-        height: 50px;
-        background: white;
-        border-radius: 50%;
-        padding: 4px;
-        object-fit: contain;
-        flex-shrink: 0;
-    }
-
-    .tela-anim span {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .tema-gol {
-        background: linear-gradient(90deg, #1d4ed8, #0284c7);
-    }
-
-    .tema-quarto-basq {
-        background: linear-gradient(90deg, #ea580c, #c2410c);
-        font-size: 2.2rem;
-    }
-
-    .tema-quarto-nfl {
-        background: linear-gradient(90deg, #1e3a8a, #991b1b);
-        font-size: 2.2rem;
-    }
-
-    .tema-td {
-        background: linear-gradient(90deg, #1d4ed8, #dc2626);
-        font-size: 2.3rem;
-    }
-
-    .tema-fg {
-        background: linear-gradient(90deg, #eab308, #ca8a04);
-        font-size: 2.3rem;
-    }
-
-    .tema-2min {
-        background: linear-gradient(90deg, #b45309, #d97706, #dc2626);
-        font-size: 2rem;
-    }
-
-    /* PAINEL DE MÍDIA */
-    #media-showcase {
-        position: absolute;
-        display: none;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        z-index: 99999;
-    }
-
-    #media-showcase.show {
-        display: flex;
-    }
-
-    #media-showcase img {
-        max-width: 580px;
-        max-height: 70vh;
-        width: auto;
-        height: auto;
-        object-fit: contain;
-        border-radius: 12px;
-        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.95);
-        border: 2px solid rgba(59, 130, 246, 0.3);
-        background: #000;
-        cursor: default;
-    }
-
-    .tweet-card-wrapper {
-        cursor: default;
-        width: 550px;
-        max-width: 580px;
-        max-height: 85vh;
-        overflow-y: auto;
-        border-radius: 14px;
-        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.95);
-    }
-
-    .tweet-card-wrapper::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .tweet-card-wrapper::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 3px;
-    }
-
-    /* BOTÃO DE PICTURE-IN-PICTURE (Oculto no OBS) */
-    #btn-pip {
-        display: none;
-        position: fixed;
-        top: 14px;
-        right: 14px;
-        z-index: 999999;
-        background: rgba(15, 23, 42, 0.85);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        color: #cbd5e1;
-        font-family: inherit;
-        font-size: 0.75rem;
-        font-weight: 800;
-        padding: 6px 12px;
-        border-radius: 8px;
-        cursor: pointer;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-        align-items: center;
-        gap: 6px;
-        transition: all 0.2s ease;
-    }
-
-    #btn-pip:hover {
-        background: #2563eb;
-        color: #ffffff;
-        border-color: #3b82f6;
-        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
-        transform: translateY(-1px);
-    }
-
-    @keyframes piscarAnim {
-        0% {
-            box-shadow: inset 0 0 0px rgba(255, 255, 255, 0);
+            visibility: visible;
+            pointer-events: auto;
         }
 
-        100% {
-            box-shadow: inset 0 0 60px rgba(255, 255, 255, 0.9);
+        .escalacao-grid {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
         }
-    }
-</style>
+
+        .coluna-escalacao {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 0;
+        }
+
+        .coluna-escalacao.casa {
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            padding-right: 8px;
+        }
+
+        .titulo-escalacao {
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .titulos-stats {
+            display: flex;
+            gap: 6px;
+            color: #94a3b8;
+            font-size: 0.65rem;
+            align-items: center;
+        }
+
+        .jogador-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 4px 8px;
+            border-radius: 6px;
+            gap: 6px;
+        }
+
+        .jogador-item.saiu-normal {
+            background: rgba(0, 0, 0, 0.45);
+            opacity: 0.65;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .jogador-item.saiu-lesao {
+            background: rgba(127, 29, 29, 0.35);
+            opacity: 0.8;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .jogador-item.saiu-com-gol {
+            background: rgba(30, 58, 138, 0.22);
+            border: 1px solid rgba(59, 130, 246, 0.35);
+            opacity: 0.92;
+        }
+
+        /* FORMATO RESERVA MAIS COMPACTO */
+        .jogador-item.reserva-item {
+            padding: 2px 6px;
+            background: rgba(255, 255, 255, 0.015);
+            border-color: rgba(255, 255, 255, 0.01);
+        }
+
+        .jogador-item.reserva-item .jogador-foto {
+            width: 18px;
+            height: 18px;
+            margin-right: 4px;
+        }
+
+        .jogador-item.reserva-item .jogador-nome {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .jogador-item.reserva-item .jogador-numero {
+            font-size: 0.72rem;
+            min-width: 16px;
+            color: #94a3b8;
+        }
+
+        .jogador-item.reserva-item .jogador-rating {
+            font-size: 0.65rem;
+            padding: 1px 4px;
+            min-width: 22px;
+        }
+
+        .info-sub {
+            font-size: 0.65rem;
+            display: block;
+            margin-top: -2px;
+        }
+
+        .info-sub.out {
+            color: #f87171;
+        }
+
+        .info-sub.in {
+            color: #4ade80;
+        }
+
+        .nome-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .jogador-info {
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .bandeira-jogador {
+            width: 16px;
+            height: 11px;
+            object-fit: cover;
+            border-radius: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-right: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            display: inline-block;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+
+        .jogador-foto {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #1e293b;
+            flex-shrink: 0;
+            margin-right: 6px;
+        }
+
+        .jogador-numero {
+            font-size: 0.8rem;
+            font-weight: 800;
+            min-width: 20px;
+            margin-right: 8px;
+            display: inline-block;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .jogador-nome {
+            font-size: 0.8rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 130px;
+        }
+
+        .stats-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .estatisticas-jogador {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #e2e8f0;
+        }
+
+        .stat-box {
+            width: 24px;
+            text-align: right;
+            display: inline-block;
+        }
+
+        .stat-box.pts {
+            color: #f97316;
+            font-size: 0.85rem;
+        }
+
+        .rating-slot {
+            width: 34px;
+            margin-left: 2px;
+            display: flex;
+            justify-content: flex-end;
+            flex-shrink: 0;
+        }
+
+        .jogador-rating {
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 2px 5px;
+            border-radius: 4px;
+            color: #fff;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .rating-alta {
+            background-color: #10b981;
+        }
+
+        .rating-media {
+            background-color: #f59e0b;
+        }
+
+        .rating-baixa {
+            background-color: #ef4444;
+        }
+
+        .rating-10 {
+            background-color: #3b82f6;
+        }
+
+        .rating-neutra {
+            background-color: #475569;
+        }
+
+        .eventos-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 4px;
+            flex-shrink: 0;
+        }
+
+        .badge-capitao {
+            background: #ffd700;
+            color: #000;
+            font-size: 0.65rem;
+            font-weight: 900;
+            padding: 1px 4px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .badge-evento {
+            font-size: 0.75rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .badge-gc {
+            background: rgba(220, 38, 38, 0.3);
+            color: #ff6b6b;
+            font-size: 0.62rem;
+            font-weight: 900;
+            padding: 1px 4px;
+            border-radius: 3px;
+            border: 1px solid rgba(220, 38, 38, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            flex-shrink: 0;
+        }
+
+        .badge-sub {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: bold;
+            padding: 1px 3px;
+            border-radius: 3px;
+        }
+
+        .badge-sub.lesao {
+            background: rgba(240, 68, 56, 0.3);
+            color: #f87171;
+        }
+
+        .badge-cartao {
+            width: 8px;
+            height: 12px;
+            border-radius: 1.5px;
+            display: inline-block;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+            flex-shrink: 0;
+            border: 1px solid rgba(0, 0, 0, 0.4);
+        }
+
+        .badge-cartao.amarelo {
+            background-color: #facc15;
+        }
+
+        .badge-cartao.vermelho {
+            background-color: #ef4444;
+        }
+
+        /* NFL LÍDERES */
+        .nfl-lideres-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+            padding-top: 2px;
+        }
+
+        .nfl-lideres-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 4px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nfl-lideres-titulo {
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            color: #f87171;
+            text-transform: uppercase;
+        }
+
+        .nfl-teams-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2px 6px 6px 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .nfl-team-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+        }
+
+        .nfl-team-badge.away {
+            color: #60a5fa;
+        }
+
+        .nfl-team-badge.home {
+            color: #f87171;
+        }
+
+        .nfl-team-badge img {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+        }
+
+        .nfl-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 8px;
+            padding: 6px 10px;
+            gap: 8px;
+        }
+
+        .nfl-player {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .nfl-player.away {
+            justify-content: flex-start;
+        }
+
+        .nfl-player.home {
+            justify-content: flex-end;
+            text-align: right;
+        }
+
+        .nfl-player-photo {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #1e293b;
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            flex-shrink: 0;
+        }
+
+        .nfl-player-photo.empty {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .nfl-player-info {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .nfl-player-name-line {
+            font-size: 0.8rem;
+            font-weight: 800;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nfl-player.home .nfl-player-name-line {
+            justify-content: flex-end;
+        }
+
+        .nfl-player-pos {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #94a3b8;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        .nfl-player-stat-detail {
+            font-size: 0.65rem;
+            color: #94a3b8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 1px;
+        }
+
+        .nfl-stat-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-shrink: 0;
+            min-width: 160px;
+        }
+
+        .nfl-stat-val {
+            font-size: 1.15rem;
+            font-weight: 900;
+            font-family: monospace;
+            min-width: 38px;
+        }
+
+        .nfl-stat-val.away {
+            text-align: right;
+            color: #60a5fa;
+        }
+
+        .nfl-stat-val.home {
+            text-align: left;
+            color: #f87171;
+        }
+
+        .nfl-stat-label {
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: #cbd5e1;
+            text-transform: uppercase;
+            text-align: center;
+            min-width: 76px;
+            line-height: 1.1;
+        }
+
+        /* CAMADA DE ANIMAÇÕES */
+        .tela-anim {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            font-size: 2rem;
+            font-weight: 900;
+            font-style: italic;
+            text-transform: uppercase;
+            transform: translateY(-100%);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 50;
+            color: white;
+            padding: 0 15px;
+            box-sizing: border-box;
+        }
+
+        .tela-anim.mostrar {
+            transform: translateY(0);
+            animation: piscarAnim 0.6s infinite alternate;
+        }
+
+        .tela-anim img {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            padding: 4px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .tela-anim span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .tema-gol {
+            background: linear-gradient(90deg, #1d4ed8, #0284c7);
+        }
+
+        .tema-quarto-basq {
+            background: linear-gradient(90deg, #ea580c, #c2410c);
+            font-size: 2.2rem;
+        }
+
+        .tema-quarto-nfl {
+            background: linear-gradient(90deg, #1e3a8a, #991b1b);
+            font-size: 2.2rem;
+        }
+
+        .tema-td {
+            background: linear-gradient(90deg, #1d4ed8, #dc2626);
+            font-size: 2.3rem;
+        }
+
+        .tema-fg {
+            background: linear-gradient(90deg, #eab308, #ca8a04);
+            font-size: 2.3rem;
+        }
+
+        .tema-2min {
+            background: linear-gradient(90deg, #b45309, #d97706, #dc2626);
+            font-size: 2rem;
+        }
+
+        /* PAINEL DE MÍDIA */
+        #media-showcase {
+            position: absolute;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 99999;
+        }
+
+        #media-showcase.show {
+            display: flex;
+        }
+
+        #media-showcase img {
+            max-width: 580px;
+            max-height: 70vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.95);
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            background: #000;
+            cursor: default;
+        }
+
+        .tweet-card-wrapper {
+            cursor: default;
+            width: 550px;
+            max-width: 580px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border-radius: 14px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.95);
+        }
+
+        .tweet-card-wrapper::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .tweet-card-wrapper::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* BOTÃO DE PICTURE-IN-PICTURE (Oculto no OBS) */
+        #btn-pip {
+            display: none;
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            z-index: 999999;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #cbd5e1;
+            font-family: inherit;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        #btn-pip:hover {
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
+            transform: translateY(-1px);
+        }
+
+        @keyframes piscarAnim {
+            0% {
+                box-shadow: inset 0 0 0px rgba(255, 255, 255, 0);
+            }
+
+            100% {
+                box-shadow: inset 0 0 60px rgba(255, 255, 255, 0.9);
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -1373,13 +1379,48 @@
 
             let flagHtml = j.nacionalidade ? `<img src="https://flagcdn.com/w40/${j.nacionalidade}.png" class="bandeira-jogador" onerror="this.style.display='none'">` : '';
 
+            let clSubs = '';
+            let subInfo = '';
+            const fezGol = (j.gols_count > 0 || j.gol);
+
+            // Cartões e Capitão
             let bg = '';
             if (j.capitao) bg += `<span class="badge-capitao">C</span>`;
             if (j.amarelo) bg += `<span class="badge-cartao amarelo"></span>`;
             if (j.vermelho) bg += `<span class="badge-cartao vermelho"></span>`;
 
-            if (j.gols_count > 1) bg += `<span class="badge-evento">⚽x${j.gols_count}</span>`;
-            else if (j.gol) bg += `<span class="badge-evento">⚽</span>`;
+            if (!isReserva) {
+                // ABA TITULARES
+                if (j.saiu) {
+                    // Mantém o visual apagado original (saiu-normal) ou vermelho suave de lesão
+                    clSubs = j.lesao ? 'saiu-lesao' : 'saiu-normal';
+
+                    // Monta o texto dos gols apenas na linha de substituição
+                    let tagGol = '';
+                    if (fezGol) {
+                        const txtGols = (j.gols_count > 1) ? `⚽ x${j.gols_count}` : `⚽ 1 Gol`;
+                        tagGol = `<span style="color: #60a5fa; font-weight: 800;">${txtGols}</span> • `;
+                    }
+
+                    if (j.lesao) {
+                        subInfo = `<span class="info-sub in"><span style="color:#f87171;">🚑 Lesão</span> • ${tagGol}▲ Entrou: ${j.sub_nome}</span>`;
+                    } else {
+                        subInfo = `<span class="info-sub in">${tagGol}▲ Entrou: ${j.sub_nome || 'Substituído'}</span>`;
+                    }
+                } else {
+                    // Se o jogador AINDA ESTÁ EM CAMPO, o gol aparece no topo normalmente
+                    if (j.gols_count > 1) bg += `<span class="badge-evento">⚽x${j.gols_count}</span>`;
+                    else if (j.gol) bg += `<span class="badge-evento">⚽</span>`;
+                }
+            } else {
+                // ABA RESERVAS
+                if (j.gols_count > 1) bg += `<span class="badge-evento">⚽x${j.gols_count}</span>`;
+                else if (j.gol) bg += `<span class="badge-evento">⚽</span>`;
+
+                if (j.entrou) {
+                    subInfo = `<span class="info-sub out">▼ Saiu: ${j.sub_nome || 'Em campo'}</span>`;
+                }
+            }
 
             if (j.gols_contra_count > 1) bg += `<span class="badge-gc">⚽ GC x${j.gols_contra_count}</span>`;
             else if (j.gol_contra) bg += `<span class="badge-gc">⚽ GC</span>`;
@@ -1387,92 +1428,22 @@
             if (j.assists_count > 1) bg += `<span class="badge-evento">👟x${j.assists_count}</span>`;
             else if (j.assist) bg += `<span class="badge-evento">👟</span>`;
 
-            let clSubs = '';
-            let subInfo = '';
-
-            if (!isReserva) {
-                // ABA TITULARES: mostra quem ENTROU no lugar de quem saiu
-                if (j.saiu) {
-                    clSubs = j.lesao ? 'saiu-lesao' : 'saiu-normal';
-                    if (j.lesao) {
-                        subInfo = `<span class="info-sub in"><span style="color:#f87171;">🚑 Lesão</span> • ▲ Entrou: ${j.sub_nome}</span>`;
-                    } else {
-                        subInfo = `<span class="info-sub in">▲ Entrou: ${j.sub_nome || 'Substituída'}</span>`;
-                    }
-                }
-            } else {
-                // ABA RESERVAS: nas jogadoras que entraram, mostra quem SAIU
-                if (j.entrou) {
-                    subInfo = `<span class="info-sub out">▼ Saiu: ${j.sub_nome || 'Em campo'}</span>`;
-                }
-            }
-
             let extraClass = isReserva ? 'reserva-item' : '';
 
             return `<div class="jogador-item ${clSubs} ${extraClass}">
-                <div class="jogador-info">
-                    ${tf}${tn}
-                    <div class="nome-container">
-                        <div style="display: flex; align-items: center;">
-                            ${flagHtml}
-                            <span class="jogador-nome">${j.nome}</span>
-                        </div>
-                        ${subInfo}
-                    </div>
-                    <div class="eventos-badge">${bg}</div>
+        <div class="jogador-info">
+            ${tf}${tn}
+            <div class="nome-container">
+                <div style="display: flex; align-items: center;">
+                    ${flagHtml}
+                    <span class="jogador-nome">${j.nome}</span>
                 </div>
-                <div class="rating-slot">${tr}</div>
-            </div>`;
-        }
-
-        function htmlBasq(j) {
-            let cC = objClsRtg(j.rating);
-            const fallbackFoto = "https://pbs.twimg.com/profile_images/1858822306186878976/qPsDCLmQ_400x400.jpg";
-            let tf = `<img src="${j.foto || fallbackFoto}" class="jogador-foto" onerror="this.src='${fallbackFoto}'">`;
-            let tr = `<span class="jogador-rating ${cC}">${j.rating}</span>`;
-
-            let flagHtml = j.nacionalidade ? `<img src="https://flagcdn.com/w40/${j.nacionalidade}.png" class="bandeira-jogador" onerror="this.style.display='none'">` : '';
-
-            return `<div class="jogador-item">
-                <div class="jogador-info">
-                    ${tf}
-                    <div style="display: flex; align-items: center;">
-                        ${flagHtml}
-                        <span class="jogador-nome">${j.nome}</span>
-                    </div>
-                </div>
-                <div class="stats-wrapper">
-                    <div class="estatisticas-jogador">
-                        <span class="stat-box pts">${j.pts}</span>
-                        <span class="stat-box">${j.reb}</span>
-                        <span class="stat-box">${j.ast}</span>
-                    </div>
-                    <div class="rating-slot">${tr}</div>
-                </div>
-            </div>`;
-        }
-
-        function renderNflLider(ldr) {
-            const cat = ldr.categoria || "";
-            const away = ldr.away, home = ldr.home;
-
-            let pAwayHtml = `<div class="nfl-player away"><div class="nfl-player-photo empty"></div><div class="nfl-player-info"><div class="nfl-player-name-line"><span class="nfl-pname" style="opacity:0.4;">Nenhum</span></div></div></div>`;
-            let valAway = "--";
-            if (away) {
-                let fAway = away.foto ? `<img src="${away.foto}" class="nfl-player-photo" onerror="this.style.display='none'">` : `<div class="nfl-player-photo empty"></div>`;
-                pAwayHtml = `<div class="nfl-player away">${fAway}<div class="nfl-player-info"><div class="nfl-player-name-line"><span class="nfl-pname">${away.nome}</span>${away.posicao ? `<span class="nfl-player-pos">${away.posicao}</span>` : ''}</div>${away.detalhe ? `<span class="nfl-player-stat-detail">${away.detalhe}</span>` : ''}</div></div>`;
-                valAway = away.stat || "-";
-            }
-
-            let pHomeHtml = `<div class="nfl-player home"><div class="nfl-player-info"><div class="nfl-player-name-line"><span class="nfl-pname" style="opacity:0.4;">Nenhum</span></div></div><div class="nfl-player-photo empty"></div></div>`;
-            let valHome = "--";
-            if (home) {
-                let fHome = home.foto ? `<img src="${home.foto}" class="nfl-player-photo" onerror="this.style.display='none'">` : `<div class="nfl-player-photo empty"></div>`;
-                pHomeHtml = `<div class="nfl-player home"><div class="nfl-player-info"><div class="nfl-player-name-line">${home.posicao ? `<span class="nfl-player-pos">${home.posicao}</span>` : ''}<span class="nfl-pname">${home.nome}</span></div>${home.detalhe ? `<span class="nfl-player-stat-detail">${home.detalhe}</span>` : ''}</div>${fHome}</div>`;
-                valHome = home.stat || "-";
-            }
-
-            return `<div class="nfl-row">${pAwayHtml}<div class="nfl-stat-center"><span class="nfl-stat-val away">${valAway}</span><span class="nfl-stat-label">${cat}</span><span class="nfl-stat-val home">${valHome}</span></div>${pHomeHtml}</div>`;
+                ${subInfo}
+            </div>
+            <div class="eventos-badge">${bg}</div>
+        </div>
+        <div class="rating-slot">${tr}</div>
+    </div>`;
         }
 
         // 1. Lê os dados no servidor e identifica se houve troca de guia/jogo
