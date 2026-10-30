@@ -14,10 +14,10 @@
 3. O script irá automaticamente:
    * Verificar se existem versões mais recentes de `scraper.py` e `placar.html` no GitHub e atualizá-los.
    * Instalar as dependências necessárias (`selenium`, `webdriver-manager`).
-   * Abrir uma janela isolada do Google Chrome na porta de depuração `9333` (sem fechar o seu Chrome pessoal)[cite: 11, 13].
+   * Abrir uma janela isolada do Google Chrome na porta de depuração `9333` (sem fechar o seu Chrome pessoal).
    * Iniciar o servidor HTTP local na porta `8000`.
 4. No Chrome isolado aberto pelo inicializador, aceda à página do jogo pretendido no Sofascore ou na ESPN.
-5. O terminal iniciará a leitura contínua dos dados em segundo plano[cite: 11, 13].
+5. O terminal iniciará a leitura contínua dos dados em segundo plano.
 
 ---
 
