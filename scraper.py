@@ -23,7 +23,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 URL_DO_JOGO = ""
 
 # ==============================================================================
-# SISTEMA DE CACHE LOCAL VIA CHROME (Descarrega sem bloqueios)
+# SISTEMA DE CACHE LOCAL VIA CHROME
 # ==============================================================================
 CACHE_IMG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cache_img")
 os.makedirs(CACHE_IMG_DIR, exist_ok=True)
@@ -261,7 +261,6 @@ def extrair_dados_espn_nfl():
             }
             if (!gId) return null;
 
-            // 1. Tenta aceder a API do Gamepackage da ESPN (CDN)
             try {
                 let rCdn = await fetch(`https://cdn.espn.com/core/nfl/game?xhr=1&gameId=${gId}&t=${Date.now()}`, { cache: 'no-store' });
                 if (rCdn.ok) {
@@ -273,7 +272,6 @@ def extrair_dados_espn_nfl():
                 }
             } catch(e) {}
 
-            // 2. Fallback para a API REST Summary
             try {
                 let r = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=${gId}&t=${Date.now()}`, { cache: 'no-store' });
                 if (r.ok) {
@@ -633,33 +631,46 @@ def atualizar_placar():
     match_id = m_id.group(1)
     esporte = "basquete" if "basketball" in url_atual or "basquete" in url_atual else "futebol"
 
-    script_api_partida = """
+    script_api_partida = r"""
     const done = arguments[arguments.length - 1];
     const eventId = arguments[0];
     
     function extrairRelogioDOM() {
         try {
+            const seletores = [
+                '[data-testid="event-status"]',
+                '[data-testid="match-status"]',
+                '[class*="EventStatus"]',
+                '[class*="eventStatus"]',
+                '[class*="HeaderStatus"]',
+                '[class*="headerStatus"]'
+            ];
+            for (let sel of seletores) {
+                let el = document.querySelector(sel);
+                if (el) {
+                    let m = el.innerText.match(/\b([0-1]?[0-9]:[0-5][0-9])\b/);
+                    if (m) return m[1];
+                }
+            }
+
             const todos = document.querySelectorAll('span, div, p');
 
-            // 1. Prioridade máxima: deteta o formato completo do Sofascore "Q2 (7:53)" ou "OT (2:10)"
             for (let el of todos) {
                 let txt = (el.textContent || "").trim();
                 let mCompleto = txt.match(/(?:Q([1-4])|OT)\s*\(([0-1]?[0-9]:[0-5][0-9])\)/i);
                 if (mCompleto) {
                     let minSeg = mCompleto[2];
-                    if (minSeg.length === 4) minSeg = "0" + minSeg; // Formata 7:53 para 07:53
+                    if (minSeg.length === 4) minSeg = "0" + minSeg;
                     let qTxt = mCompleto[1] ? `${mCompleto[1]}º QUARTO` : 'OVERTIME';
                     return `${minSeg} - ${qTxt}`;
                 }
             }
 
-            // 2. Segunda verificação: procura elementos que contenham apenas o tempo entre parênteses "(7:53)"
             for (let el of todos) {
                 let txt = (el.textContent || "").trim();
                 let mP = txt.match(/\(([0-1]?[0-9]:[0-5][0-9])\)/);
                 if (mP) {
                     let rect = el.getBoundingClientRect();
-                    // Garante que está no cabeçalho superior do placar
                     if (rect.top >= 0 && rect.top <= 450 && rect.width > 0 && rect.height > 0) {
                         let minSeg = mP[1];
                         if (minSeg.length === 4) minSeg = "0" + minSeg;
@@ -671,6 +682,36 @@ def atualizar_placar():
         return "";
     }
 
+    function extrairCampanhaBasqueteDOM() {
+        let fora = "";
+        let casa = "";
+        try {
+            const regex = /^(\d{1,2}-\d{1,2})$/;
+            const elements = document.querySelectorAll('span, div, p');
+            const encontrados = [];
+            for (let el of elements) {
+                if (el.children.length === 0) {
+                    let txt = el.textContent.trim();
+                    if (regex.test(txt)) {
+                        let rect = el.getBoundingClientRect();
+                        if (rect.top >= 0 && rect.top <= 400 && rect.width > 0) {
+                            encontrados.push({ txt: txt, x: rect.left });
+                        }
+                    }
+                }
+            }
+            encontrados.sort((a, b) => a.x - b.x);
+            if (encontrados.length >= 2) {
+                fora = encontrados[0].txt;
+                casa = encontrados[1].txt;
+            } else if (encontrados.length === 1) {
+                if (encontrados[0].x < window.innerWidth / 2) fora = encontrados[0].txt;
+                else casa = encontrados[0].txt;
+            }
+        } catch(e) {}
+        return { casa, fora };
+    }
+
     Promise.all([
         fetch(`/api/v1/event/${eventId}`).then(r => r.json()).catch(() => ({})),
         fetch(`/api/v1/event/${eventId}/lineups`).then(r => r.json()).catch(() => ({})),
@@ -680,7 +721,8 @@ def atualizar_placar():
             evento: results[0] || {},
             lineups: results[1] || {},
             incidents: results[2] || {},
-            relogioDom: extrairRelogioDOM()
+            relogioDom: extrairRelogioDOM(),
+            campanhaBasquete: extrairCampanhaBasqueteDOM()
         });
     }).catch(() => done(null));
     """
@@ -690,17 +732,18 @@ def atualizar_placar():
         if not dados:
             return esporte
 
-        # Descompactação à prova de erros (aceita dict ou list)
         if isinstance(dados, dict):
             evento_data = dados.get("evento", {}).get("event", {})
             lineups_data = dados.get("lineups", {})
             incidents_data = dados.get("incidents", {}).get("incidents", [])
             relogio_dom = dados.get("relogioDom", "")
+            campanha_basquete = dados.get("campanhaBasquete", {})
         elif isinstance(dados, list) and len(dados) >= 3:
             evento_data = dados[0].get("event", {}) if isinstance(dados[0], dict) else {}
             lineups_data = dados[1] if isinstance(dados[1], dict) else {}
             incidents_data = dados[2].get("incidents", []) if isinstance(dados[2], dict) else []
             relogio_dom = dados[3] if len(dados) > 3 and isinstance(dados[3], str) else ""
+            campanha_basquete = {}
         else:
             return esporte
 
@@ -771,7 +814,6 @@ def atualizar_placar():
                 if "ESPERANDO PÊNALTIS" in tempo_str or "AWAITING PENALTIES" in tempo_str:
                     tempo_str = "AGUARD. PEN"
         else:
-            # BASQUETEBOL
             traducao = {
                 "1st quarter": "1º QUARTO", "2nd quarter": "2º QUARTO", "3rd quarter": "3º QUARTO",
                 "4th quarter": "4º QUARTO", "Halftime": "INTERVALO", "Pause": "PAUSA",
@@ -787,7 +829,6 @@ def atualizar_placar():
             elif "PAUSA" in quarto_txt:
                 tempo_str = "PAUSA"
             else:
-                # Se extraiu o formato completo direto da página (ex: "07:53 - 2º QUARTO")
                 if relogio_dom and "QUARTO" in relogio_dom:
                     tempo_str = relogio_dom
                 elif relogio_dom:
@@ -798,8 +839,13 @@ def atualizar_placar():
         ultimo_tempo_valido = tempo_str
 
         esc_casa, esc_fora = [], []
-        formacao_casa = lineups_data.get("home", {}).get("formation", "")
-        formacao_fora = lineups_data.get("away", {}).get("formation", "")
+        if esporte == "basquete":
+            campanha = campanha_basquete if isinstance(campanha_basquete, dict) else {}
+            formacao_casa = campanha.get("casa") or lineups_data.get("home", {}).get("formation", "")
+            formacao_fora = campanha.get("fora") or lineups_data.get("away", {}).get("formation", "")
+        else:
+            formacao_casa = lineups_data.get("home", {}).get("formation", "")
+            formacao_fora = lineups_data.get("away", {}).get("formation", "")
 
         def formatar_jogadores(time_lineup, is_home):
             jogadores = []
@@ -889,7 +935,6 @@ try:
         if contador_ciclos % 10 == 0:
             gc.collect()
 
-        # Ciclo rápido para detectar a troca de abas no Chrome quase em tempo real
         time.sleep(2)
             
 except KeyboardInterrupt:

@@ -535,12 +535,6 @@
             border: 1px solid rgba(239, 68, 68, 0.2);
         }
 
-        .jogador-item.saiu-com-gol {
-            background: rgba(30, 58, 138, 0.22);
-            border: 1px solid rgba(59, 130, 246, 0.35);
-            opacity: 0.92;
-        }
-
         /* FORMATO RESERVA MAIS COMPACTO */
         .jogador-item.reserva-item {
             padding: 2px 6px;
@@ -1117,7 +1111,6 @@
 </head>
 
 <body>
-    <!-- Botão visível exclusivamente no Google Chrome -->
     <button id="btn-pip">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
             stroke-linecap="round" stroke-linejoin="round">
@@ -1161,15 +1154,14 @@
 
     <script>
         // =========================================================================
-        // CONFIGURAÇÃO DE DELAY ANTI-SPOILER
-        // Ajuste os segundos de atraso (ex: 3, 4, 6...) para calibrar com o vídeo
+        // CONFIGURAÇÃO DE DELAY DINÂMICO & TROCA RÁPIDA DE GUIA
         // =========================================================================
         const ATRASO_SEGUNDOS_PADRAO = 3;       // Futebol e NFL
         const ATRASO_SEGUNDOS_BASQUETE = 15;    // Basquete durante o jogo
-        const ATRASO_SEGUNDOS_TROCA = 0.5;      // Troca de jogo / guia quase instantânea (meio segundo)
+        const ATRASO_SEGUNDOS_TROCA = 0.5;      // Troca rápida de tela (0.5s)
 
         let filaSnapshots = [];
-        let idPartidaAtiva = null; // Identificador para saber quando a guia/jogo mudou
+        let idPartidaAtiva = null;
 
         let placarSalvoCasa = localStorage.getItem('placarCasa') !== null ? parseInt(localStorage.getItem('placarCasa')) : null;
         let placarSalvoFora = localStorage.getItem('placarFora') !== null ? parseInt(localStorage.getItem('placarFora')) : null;
@@ -1187,11 +1179,10 @@
         let indiceTesteO = 0;
         let historicoOutrosJogos = {};
 
-        // Variáveis para prevenir o "pisca-pisca" (flickering)
         let lastPlacarState = "";
         let lastPainelState = "";
 
-        // LÓGICA DAS ABAS MANUAIS
+        // CONTROLE DAS ABAS MANUAIS
         document.getElementById('abas-painel').addEventListener('click', (e) => {
             e.stopPropagation();
             if (e.target.classList.contains('aba-btn')) {
@@ -1206,7 +1197,7 @@
             }
         });
 
-        // ABRIR/FECHAR O PAINEL
+        // ABRIR/FECHAR O PAINEL DE ESCALAÇÃO
         document.getElementById('card-principal').addEventListener('click', () => {
             const painel = document.getElementById('painel-escalacoes');
             painelAberto = !painelAberto;
@@ -1224,7 +1215,7 @@
             const tecla = e.key.toLowerCase();
             const modalidadeAtual = dadosPartidaAtual ? dadosPartidaAtual.esporte : 'futebol';
 
-            // ATALHOS EXCLUSIVOS DA NFL (Touchdown, Field Goal e 2-Minute Warning)
+            // NFL: Touchdown, Field Goal e 2-Minute Warning
             if (tecla === '1' || tecla === 't') {
                 if (modalidadeAtual !== 'nfl') return;
                 dispararEvento("TOUCHDOWN!", "tema-td");
@@ -1238,21 +1229,20 @@
                 dispararEvento("2-MINUTE WARNING!", "tema-2min");
             }
 
-            // FIM DE QUARTO (Válido para Basquete e NFL; ignorado no Futebol)
+            // Fim de Quarto (Basquete e NFL)
             else if (tecla === 'f') {
                 if (modalidadeAtual === 'futebol') return;
                 dispararEvento("FIM DE QUARTO!", modalidadeAtual === 'basquete' ? "tema-quarto-basq" : "tema-quarto-nfl");
             }
 
-            // ATALHO DE GOL (Exclusivo do Futebol)
+            // Gol (Futebol)
             else if (tecla === 'g') {
                 if (modalidadeAtual !== 'futebol') return;
                 const logo = dadosPartidaAtual ? (dadosPartidaAtual.logoCasa || "") : "";
                 dispararEvento("GOOOOOOL!", "tema-gol", Boolean(logo), logo);
             }
 
-            // EXIBIR OUTROS JOGOS MANUALMENTE (Futebol e Basquete)
-            // EXIBIR OUTROS JOGOS MANUALMENTE (Futebol e Basquete)
+            // Exibir Outros Jogos Manualmente (Futebol e Basquete)
             else if (tecla === 'o') {
                 if (modalidadeAtual !== 'futebol' && modalidadeAtual !== 'basquete') return;
                 if (!dadosPartidaAtual || !dadosPartidaAtual.outros_jogos || dadosPartidaAtual.outros_jogos.length === 0) return;
@@ -1278,7 +1268,7 @@
                     time2: j.time2,
                     placar2: p2,
                     tempo: j.status || 'AO VIVO',
-                    esporte: modalidadeAtual // Envia a modalidade para colorir o card
+                    esporte: modalidadeAtual
                 });
 
                 indiceTesteO++;
@@ -1321,17 +1311,17 @@
             const classeEsporte = (dados.esporte === 'basquete') ? 'basquete' : '';
 
             container.innerHTML = `
-        <div class="notificacao-gol-externo ${classeEsporte}">
-            <span class="badge-gol-pulsar">${badgeTexto}</span>
-            <img src="${dados.logoGol}" class="logo-alerta-gol" onerror="this.style.display='none'">
-            <span class="time-gol-destaque" title="${dados.timeGol}">${dados.timeGol}</span>
-            <div class="placar-alerta-caixa">
-                <span class="nome-time-min" title="${dados.time1}">${dados.time1}</span>
-                <span>${dados.placar1} - ${dados.placar2}</span>
-                <span class="nome-time-min" title="${dados.time2}">${dados.time2}</span>
-            </div>
-            <span class="tempo-alerta">(${dados.tempo})</span>
-        </div>`;
+                <div class="notificacao-gol-externo ${classeEsporte}">
+                    <span class="badge-gol-pulsar">${badgeTexto}</span>
+                    <img src="${dados.logoGol}" class="logo-alerta-gol" onerror="this.style.display='none'">
+                    <span class="time-gol-destaque" title="${dados.timeGol}">${dados.timeGol}</span>
+                    <div class="placar-alerta-caixa">
+                        <span class="nome-time-min" title="${dados.time1}">${dados.time1}</span>
+                        <span>${dados.placar1} - ${dados.placar2}</span>
+                        <span class="nome-time-min" title="${dados.time2}">${dados.time2}</span>
+                    </div>
+                    <span class="tempo-alerta">(${dados.tempo})</span>
+                </div>`;
 
             timerAlertaExterno = setTimeout(() => { container.innerHTML = ''; }, 7500);
         }
@@ -1383,22 +1373,17 @@
             let subInfo = '';
             const fezGol = (j.gols_count > 0 || j.gol);
 
-            // Cartões e Capitão
             let bg = '';
             if (j.capitao) bg += `<span class="badge-capitao">C</span>`;
             if (j.amarelo) bg += `<span class="badge-cartao amarelo"></span>`;
             if (j.vermelho) bg += `<span class="badge-cartao vermelho"></span>`;
 
             if (!isReserva) {
-                // ABA TITULARES
                 if (j.saiu) {
-                    // Mantém o visual apagado original (saiu-normal) ou vermelho suave de lesão
                     clSubs = j.lesao ? 'saiu-lesao' : 'saiu-normal';
-
-                    // Monta o texto dos gols apenas na linha de substituição
                     let tagGol = '';
                     if (fezGol) {
-                        const txtGols = (j.gols_count > 1) ? `⚽ x${j.gols_count}` : `⚽ 1 Gol`;
+                        const txtGols = (j.gols_count > 1) ? `⚽ ${j.gols_count} Gols` : `⚽ 1 Gol`;
                         tagGol = `<span style="color: #60a5fa; font-weight: 800;">${txtGols}</span> • `;
                     }
 
@@ -1408,12 +1393,10 @@
                         subInfo = `<span class="info-sub in">${tagGol}▲ Entrou: ${j.sub_nome || 'Substituído'}</span>`;
                     }
                 } else {
-                    // Se o jogador AINDA ESTÁ EM CAMPO, o gol aparece no topo normalmente
                     if (j.gols_count > 1) bg += `<span class="badge-evento">⚽x${j.gols_count}</span>`;
                     else if (j.gol) bg += `<span class="badge-evento">⚽</span>`;
                 }
             } else {
-                // ABA RESERVAS
                 if (j.gols_count > 1) bg += `<span class="badge-evento">⚽x${j.gols_count}</span>`;
                 else if (j.gol) bg += `<span class="badge-evento">⚽</span>`;
 
@@ -1431,37 +1414,81 @@
             let extraClass = isReserva ? 'reserva-item' : '';
 
             return `<div class="jogador-item ${clSubs} ${extraClass}">
-        <div class="jogador-info">
-            ${tf}${tn}
-            <div class="nome-container">
-                <div style="display: flex; align-items: center;">
-                    ${flagHtml}
-                    <span class="jogador-nome">${j.nome}</span>
+                <div class="jogador-info">
+                    ${tf}${tn}
+                    <div class="nome-container">
+                        <div style="display: flex; align-items: center;">
+                            ${flagHtml}
+                            <span class="jogador-nome">${j.nome}</span>
+                        </div>
+                        ${subInfo}
+                    </div>
+                    <div class="eventos-badge">${bg}</div>
                 </div>
-                ${subInfo}
-            </div>
-            <div class="eventos-badge">${bg}</div>
-        </div>
-        <div class="rating-slot">${tr}</div>
-    </div>`;
+                <div class="rating-slot">${tr}</div>
+            </div>`;
         }
 
-        // 1. Lê os dados no servidor e identifica se houve troca de guia/jogo
+        function htmlBasq(j) {
+            let cC = objClsRtg(j.rating);
+            const fallbackFoto = "https://pbs.twimg.com/profile_images/1858822306186878976/qPsDCLmQ_400x400.jpg";
+            let tf = `<img src="${j.foto || fallbackFoto}" class="jogador-foto" onerror="this.src='${fallbackFoto}'">`;
+            let tr = `<span class="jogador-rating ${cC}">${j.rating}</span>`;
+
+            let flagHtml = j.nacionalidade ? `<img src="https://flagcdn.com/w40/${j.nacionalidade}.png" class="bandeira-jogador" onerror="this.style.display='none'">` : '';
+
+            return `<div class="jogador-item">
+                <div class="jogador-info">
+                    ${tf}
+                    <div style="display: flex; align-items: center;">
+                        ${flagHtml}
+                        <span class="jogador-nome">${j.nome}</span>
+                    </div>
+                </div>
+                <div class="stats-wrapper">
+                    <div class="estatisticas-jogador">
+                        <span class="stat-box pts">${j.pts}</span>
+                        <span class="stat-box">${j.reb}</span>
+                        <span class="stat-box">${j.ast}</span>
+                    </div>
+                    <div class="rating-slot">${tr}</div>
+                </div>
+            </div>`;
+        }
+
+        function renderNflLider(ldr) {
+            const cat = ldr.categoria || "";
+            const away = ldr.away, home = ldr.home;
+
+            let pAwayHtml = `<div class="nfl-player away"><div class="nfl-player-photo empty"></div><div class="nfl-player-info"><div class="nfl-player-name-line"><span class="nfl-pname" style="opacity:0.4;">Nenhum</span></div></div></div>`;
+            let valAway = "--";
+            if (away) {
+                let fAway = away.foto ? `<img src="${away.foto}" class="nfl-player-photo" onerror="this.style.display='none'">` : `<div class="nfl-player-photo empty"></div>`;
+                pAwayHtml = `<div class="nfl-player away">${fAway}<div class="nfl-player-info"><div class="nfl-player-name-line"><span class="nfl-pname">${away.nome}</span>${away.posicao ? `<span class="nfl-player-pos">${away.posicao}</span>` : ''}</div>${away.detalhe ? `<span class="nfl-player-stat-detail">${away.detalhe}</span>` : ''}</div></div>`;
+                valAway = away.stat || "-";
+            }
+
+            let pHomeHtml = `<div class="nfl-player home"><div class="nfl-player-info"><div class="nfl-player-name-line"><span class="nfl-pname" style="opacity:0.4;">Nenhum</span></div></div><div class="nfl-player-photo empty"></div></div>`;
+            let valHome = "--";
+            if (home) {
+                let fHome = home.foto ? `<img src="${home.foto}" class="nfl-player-photo" onerror="this.style.display='none'">` : `<div class="nfl-player-photo empty"></div>`;
+                pHomeHtml = `<div class="nfl-player home"><div class="nfl-player-info"><div class="nfl-player-name-line">${home.posicao ? `<span class="nfl-player-pos">${home.posicao}</span>` : ''}<span class="nfl-pname">${home.nome}</span></div>${home.detalhe ? `<span class="nfl-player-stat-detail">${home.detalhe}</span>` : ''}</div>${fHome}</div>`;
+                valHome = home.stat || "-";
+            }
+
+            return `<div class="nfl-row">${pAwayHtml}<div class="nfl-stat-center"><span class="nfl-stat-val away">${valAway}</span><span class="nfl-stat-label">${cat}</span><span class="nfl-stat-val home">${valHome}</span></div>${pHomeHtml}</div>`;
+        }
+
         async function buscarDadosServidor() {
             try {
                 const res = await fetch('dados.json?t=' + Date.now(), { cache: 'no-store' });
                 const d = await res.json();
                 if (d && d.length > 0) {
                     const jg = d[0];
-                    // Cria um identificador único para o jogo atual
                     const idNovoJogo = `${jg.esporte}_${jg.timeCasa}_${jg.timeFora}`;
 
-                    // DETECTOU TROCA DE JOGO OU NOVA GUIA NO CHROME
                     if (idPartidaAtiva !== null && idPartidaAtiva !== idNovoJogo) {
-                        // Limpa a fila antiga para não exibir lances atrasados do jogo anterior
                         filaSnapshots = [];
-
-                        // Reseta os placares para NÃO disparar alertas falsos de gol/touchdown na troca
                         placarSalvoCasa = null;
                         placarSalvoFora = null;
                         localStorage.removeItem('placarCasa');
@@ -1472,11 +1499,9 @@
                         alerta2MinQ2 = false;
                         alerta2MinQ4 = false;
 
-                        // Limpa banners de alerta antigos
                         const containerAlerta = document.getElementById('container-alerta-externo');
                         if (containerAlerta) containerAlerta.innerHTML = '';
 
-                        // Insere com flag de troca rápida (0.5s)
                         filaSnapshots.push({
                             momento: Date.now(),
                             dados: d,
@@ -1484,7 +1509,6 @@
                         });
                         idPartidaAtiva = idNovoJogo;
                     } else {
-                        // Primeira execução ao abrir o placar
                         const isPrimeiraVez = (idPartidaAtiva === null);
                         if (isPrimeiraVez) idPartidaAtiva = idNovoJogo;
 
@@ -1498,7 +1522,6 @@
             } catch (e) { }
         }
 
-        // 2. Aplica 0.5s na troca de partida e o delay normal (3s ou 15s) durante o jogo
         function processarFilaAntiSpoiler() {
             if (filaSnapshots.length === 0) return;
 
@@ -1511,10 +1534,8 @@
 
                 let delaySegundos;
                 if (snapshot.isTrocaJogo) {
-                    // Se for a troca de tela/guia, entra na hora (0.5s)
                     delaySegundos = ATRASO_SEGUNDOS_TROCA;
                 } else {
-                    // Durante a partida, respeita o delay anti-spoiler
                     delaySegundos = (esp === 'basquete') ? ATRASO_SEGUNDOS_BASQUETE : ATRASO_SEGUNDOS_PADRAO;
                 }
 
@@ -1531,7 +1552,7 @@
                 filaSnapshots = filaSnapshots.slice(indiceEscolhido);
             }
         }
-        // 3. Aplica os dados da partida na interface
+
         function aplicarNaTela(d) {
             try {
                 if (!d || d.length === 0) return;
@@ -1545,7 +1566,6 @@
                 if (jg.torneio) document.getElementById('txt-torneio').innerText = jg.torneio;
                 if (jg.estadio) document.getElementById('txt-estadio').innerText = jg.estadio;
 
-                // Alerta de outros jogos (bloqueado no basquete para evitar alertas de gol a cada cesta)
                 if (jg.outros_jogos && jg.esporte === "futebol") {
                     verificarGolsOutrosJogos(jg.outros_jogos, jg.timeCasa, jg.timeFora);
                 }
@@ -1616,14 +1636,20 @@
                 } else { relogioRodando = false; tExib = tBruto.toUpperCase(); }
 
                 if (!animando) {
-                    let nomeEsquerda = jg.esporte === 'nfl' ? jg.timeFora : jg.timeCasa;
-                    let logoEsquerda = jg.esporte === 'nfl' ? jg.logoFora : jg.logoCasa;
-                    let placarEsquerda = jg.esporte === 'nfl' ? jg.placarFora : jg.placarCasa;
-                    let nomeDireita = jg.esporte === 'nfl' ? jg.timeCasa : jg.timeFora;
-                    let logoDireita = jg.esporte === 'nfl' ? jg.logoCasa : jg.logoFora;
-                    let placarDireita = jg.esporte === 'nfl' ? jg.placarCasa : jg.placarFora;
-                    let fC = jg.formacaoCasa && jg.esporte === 'futebol' ? `<span class="time-formacao">${jg.formacaoCasa}</span>` : '';
-                    let fF = jg.formacaoFora && jg.esporte === 'futebol' ? `<span class="time-formacao">${jg.formacaoFora}</span>` : '';
+                    const inverterLados = (jg.esporte === 'nfl' || jg.esporte === 'basquete');
+
+                    let nomeEsquerda = inverterLados ? jg.timeFora : jg.timeCasa;
+                    let logoEsquerda = inverterLados ? jg.logoFora : jg.logoCasa;
+                    let placarEsquerda = inverterLados ? jg.placarFora : jg.placarCasa;
+                    let formacaoEsquerda = inverterLados ? jg.formacaoFora : jg.formacaoCasa;
+
+                    let nomeDireita = inverterLados ? jg.timeCasa : jg.timeFora;
+                    let logoDireita = inverterLados ? jg.logoCasa : jg.logoFora;
+                    let placarDireita = inverterLados ? jg.placarCasa : jg.placarFora;
+                    let formacaoDireita = inverterLados ? jg.formacaoCasa : jg.formacaoFora;
+
+                    let fEsq = formacaoEsquerda ? `<span class="time-formacao">${formacaoEsquerda}</span>` : '';
+                    let fDir = formacaoDireita ? `<span class="time-formacao">${formacaoDireita}</span>` : '';
                     let separador = `<span style="font-size: 1.2rem; opacity: 0.5; margin: 0 4px;">-</span>`;
 
                     let penaltisCentroHtml = '';
@@ -1632,7 +1658,7 @@
                     let clockDisplay = tExib;
 
                     if (jg.temPenaltis) {
-                        let isHomeLeft = jg.esporte !== 'nfl';
+                        let isHomeLeft = !inverterLados;
                         const renderSeq = (seq) => seq.map(acerto => acerto ? `<span style="color: #4ade80; font-size: 1.2rem; filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.5)); line-height: 0.8;">●</span>` : `<span style="color: #ef4444; font-size: 1.2rem; font-weight: bold; filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.5)); line-height: 0.8;">x</span>`).join('');
                         let htmlSeqEsq = isHomeLeft ? renderSeq(jg.seqPenCasa) : renderSeq(jg.seqPenFora);
                         let htmlSeqDir = isHomeLeft ? renderSeq(jg.seqPenFora) : renderSeq(jg.seqPenCasa);
@@ -1645,7 +1671,7 @@
                         seqDirHtml = `<div style="display:flex; gap:4px; margin-top:4px; justify-content: flex-start;">${htmlSeqDir}</div>`;
                     }
 
-                    let currentPlacarState = JSON.stringify({ nomeEsquerda, fC, logoEsquerda, placarEsquerda, placarDireita, nomeDireita, fF, logoDireita, tp: jg.temPenaltis, spc: jg.scorePenCasa, spf: jg.scorePenFora, sqc: jg.seqPenCasa, sqf: jg.seqPenFora, t: clockDisplay });
+                    let currentPlacarState = JSON.stringify({ nomeEsquerda, fEsq, logoEsquerda, placarEsquerda, placarDireita, nomeDireita, fDir, logoDireita, tp: jg.temPenaltis, spc: jg.scorePenCasa, spf: jg.scorePenFora, sqc: jg.seqPenCasa, sqf: jg.seqPenFora, t: clockDisplay });
 
                     if (currentPlacarState !== lastPlacarState) {
                         document.getElementById('placar-dinamico').innerHTML = `
@@ -1653,7 +1679,7 @@
                                 <div class="time-box casa">
                                     <div class="textos-time casa">
                                         <span class="time-nome">${nomeEsquerda}</span>
-                                        ${fC}
+                                        ${fEsq}
                                         ${seqEsqHtml}
                                     </div>
                                     <img src="${logoEsquerda}" class="time-logo" onerror="this.style.display='none'">
@@ -1667,7 +1693,7 @@
                                     <img src="${logoDireita}" class="time-logo" onerror="this.style.display='none'">
                                     <div class="textos-time fora">
                                         <span class="time-nome">${nomeDireita}</span>
-                                        ${fF}
+                                        ${fDir}
                                         ${seqDirHtml}
                                     </div>
                                 </div>
@@ -1696,17 +1722,22 @@
                                 ${rows}
                             </div>`;
                         } else if (jg.esporte === "basquete") {
-                            let headerCasa = `<span>FORA</span><div class="stats-wrapper"><div class="titulos-stats"><span class="stat-box">PTS</span><span class="stat-box">REB</span><span class="stat-box">AST</span></div><div class="rating-slot"></div></div>`;
-                            let headerFora = `<span>CASA</span><div class="stats-wrapper"><div class="titulos-stats"><span class="stat-box">PTS</span><span class="stat-box">REB</span><span class="stat-box">AST</span></div><div class="rating-slot"></div></div>`;
-                            let listCasa = "", listFora = "";
-                            if (jg.escalacaoCasa) {
-                                let srtPts = (a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0);
-                                listCasa = [...jg.escalacaoCasa].sort(srtPts).map(htmlBasq).join('');
-                                listFora = [...jg.escalacaoFora].sort(srtPts).map(htmlBasq).join('');
+                            let headerEsq = `<span>FORA</span><div class="stats-wrapper"><div class="titulos-stats"><span class="stat-box">PTS</span><span class="stat-box">REB</span><span class="stat-box">AST</span></div><div class="rating-slot"></div></div>`;
+                            let headerDir = `<span>CASA</span><div class="stats-wrapper"><div class="titulos-stats"><span class="stat-box">PTS</span><span class="stat-box">REB</span><span class="stat-box">AST</span></div><div class="rating-slot"></div></div>`;
+                            let listEsq = "", listDir = "";
+                            let srtPts = (a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0);
+                            if (jg.escalacaoFora) {
+                                listEsq = [...jg.escalacaoFora].sort(srtPts).map(htmlBasq).join('');
                             }
-                            painelConteudo.innerHTML = `<div class="escalacao-grid"><div class="coluna-escalacao casa"><div class="titulo-escalacao">${headerCasa}</div><div>${listCasa}</div></div><div class="coluna-escalacao fora"><div class="titulo-escalacao">${headerFora}</div><div>${listFora}</div></div></div>`;
+                            if (jg.escalacaoCasa) {
+                                listDir = [...jg.escalacaoCasa].sort(srtPts).map(htmlBasq).join('');
+                            }
+                            painelConteudo.innerHTML = `
+                            <div class="escalacao-grid">
+                                <div class="coluna-escalacao casa"><div class="titulo-escalacao">${headerEsq}</div><div>${listEsq}</div></div>
+                                <div class="coluna-escalacao fora"><div class="titulo-escalacao">${headerDir}</div><div>${listDir}</div></div>
+                            </div>`;
                         } else {
-                            // Titulares originais na aba Titulares
                             let titCasa = jg.escalacaoCasa.filter(j => !j.reserva).map(j => htmlFut(j, false)).join('');
                             let resCasa = jg.escalacaoCasa.filter(j => j.reserva).map(j => htmlFut(j, true)).join('');
 
@@ -1799,7 +1830,6 @@
             }
         });
 
-        // Inicia a leitura do ficheiro e o processamento da fila com atraso
         buscarDadosServidor();
         setInterval(buscarDadosServidor, 1000);
         setInterval(processarFilaAntiSpoiler, 500);
@@ -1813,27 +1843,20 @@
             }
         }, 1000);
 
-        // =========================================================================
-        // SISTEMA DE PICTURE-IN-PICTURE EXCLUSIVO PARA O GOOGLE CHROME
-        // =========================================================================
         (function configurarPiP() {
             const btnPip = document.getElementById('btn-pip');
             if (!btnPip) return;
 
-            // Detecta se a página está rodando dentro do OBS Studio
             const isOBS = !!(window.obsstudio || navigator.userAgent.includes("OBS"));
             const suportaDocPiP = 'documentPictureInPicture' in window;
 
-            // Se estiver no OBS ou o navegador não for compatível, não mostra o botão
             if (isOBS || !suportaDocPiP) {
                 btnPip.style.display = 'none';
                 return;
             }
 
-            // Exibe o botão apenas no Chrome convencional
             btnPip.style.display = 'flex';
 
-            // Garante que o placar continue atualizando os dados mesmo dentro da janela flutuante
             const originalGetElementById = document.getElementById.bind(document);
             document.getElementById = function (id) {
                 let el = originalGetElementById(id);
@@ -1850,40 +1873,35 @@
                 }
 
                 try {
-                    // Abre uma janela nativa suspensa do Chrome
                     const pipWindow = await window.documentPictureInPicture.requestWindow({
                         width: 660,
                         height: 380
                     });
                     window._pipWindow = pipWindow;
 
-                    // Clona todos os estilos CSS e fontes (Montserrat) para a janela suspensa
                     [...document.querySelectorAll('link[rel="stylesheet"], style')].forEach((node) => {
                         pipWindow.document.head.appendChild(node.cloneNode(true));
                     });
 
-                    // Ajusta o fundo da janela PiP
                     pipWindow.document.body.style.cssText = `
-                margin: 0;
-                padding: 12px;
-                background: #080c18;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                min-height: 100vh;
-                box-sizing: border-box;
-                overflow-x: hidden;
-            `;
+                        margin: 0;
+                        padding: 12px;
+                        background: #080c18;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        min-height: 100vh;
+                        box-sizing: border-box;
+                        overflow-x: hidden;
+                    `;
 
-                    // Transfere o card do placar para a janela flutuante
                     const card = document.getElementById('card-principal');
                     const containerPai = card.parentNode;
                     pipWindow.document.body.appendChild(card);
 
                     btnPip.querySelector('span').innerText = "Fechar PiP";
 
-                    // Encaminha os atalhos de teclado (gols, alertas, expandir) para a janela principal
                     pipWindow.addEventListener('keydown', (e) => {
                         window.dispatchEvent(new KeyboardEvent('keydown', {
                             key: e.key,
@@ -1892,7 +1910,6 @@
                         }));
                     });
 
-                    // Quando a janela flutuante for fechada, devolve o placar para a aba principal
                     pipWindow.addEventListener('pagehide', () => {
                         containerPai.appendChild(card);
                         window._pipWindow = null;
