@@ -615,6 +615,7 @@ def atualizar_placar():
     except Exception:
         return "futebol"
     
+    # 1. ROTA DA NFL (ESPN)
     if "espn" in url_atual:
         dados_nfl = extrair_dados_espn_nfl()
         if dados_nfl:
@@ -624,6 +625,7 @@ def atualizar_placar():
             return "nfl"
         return "futebol"
     
+    # 2. ROTA SOFASCORE (Futebol e Basquetebol)
     m_id = re.search(r'id:(\d+)', url_atual)
     if not m_id:
         return "futebol"
@@ -635,21 +637,72 @@ def atualizar_placar():
     const done = arguments[arguments.length - 1];
     const eventId = arguments[0];
     
+    function extrairRelogioDOM() {
+        try {
+            const todos = document.querySelectorAll('span, div, p');
+
+            // 1. Prioridade máxima: deteta o formato completo do Sofascore "Q2 (7:53)" ou "OT (2:10)"
+            for (let el of todos) {
+                let txt = (el.textContent || "").trim();
+                let mCompleto = txt.match(/(?:Q([1-4])|OT)\s*\(([0-1]?[0-9]:[0-5][0-9])\)/i);
+                if (mCompleto) {
+                    let minSeg = mCompleto[2];
+                    if (minSeg.length === 4) minSeg = "0" + minSeg; // Formata 7:53 para 07:53
+                    let qTxt = mCompleto[1] ? `${mCompleto[1]}º QUARTO` : 'OVERTIME';
+                    return `${minSeg} - ${qTxt}`;
+                }
+            }
+
+            // 2. Segunda verificação: procura elementos que contenham apenas o tempo entre parênteses "(7:53)"
+            for (let el of todos) {
+                let txt = (el.textContent || "").trim();
+                let mP = txt.match(/\(([0-1]?[0-9]:[0-5][0-9])\)/);
+                if (mP) {
+                    let rect = el.getBoundingClientRect();
+                    // Garante que está no cabeçalho superior do placar
+                    if (rect.top >= 0 && rect.top <= 450 && rect.width > 0 && rect.height > 0) {
+                        let minSeg = mP[1];
+                        if (minSeg.length === 4) minSeg = "0" + minSeg;
+                        return minSeg;
+                    }
+                }
+            }
+        } catch(e) {}
+        return "";
+    }
+
     Promise.all([
         fetch(`/api/v1/event/${eventId}`).then(r => r.json()).catch(() => ({})),
         fetch(`/api/v1/event/${eventId}/lineups`).then(r => r.json()).catch(() => ({})),
         fetch(`/api/v1/event/${eventId}/incidents`).then(r => r.json()).catch(() => ({}))
-    ]).then(results => done(results));
+    ]).then(results => {
+        done({
+            evento: results[0] || {},
+            lineups: results[1] || {},
+            incidents: results[2] || {},
+            relogioDom: extrairRelogioDOM()
+        });
+    }).catch(() => done(null));
     """
     
     try:
         dados = driver.execute_async_script(script_api_partida, match_id)
-        if not dados or len(dados) != 3:
+        if not dados:
             return esporte
-            
-        evento_data = dados[0].get("event", {})
-        lineups_data = dados[1]
-        incidents_data = dados[2].get("incidents", [])
+
+        # Descompactação à prova de erros (aceita dict ou list)
+        if isinstance(dados, dict):
+            evento_data = dados.get("evento", {}).get("event", {})
+            lineups_data = dados.get("lineups", {})
+            incidents_data = dados.get("incidents", {}).get("incidents", [])
+            relogio_dom = dados.get("relogioDom", "")
+        elif isinstance(dados, list) and len(dados) >= 3:
+            evento_data = dados[0].get("event", {}) if isinstance(dados[0], dict) else {}
+            lineups_data = dados[1] if isinstance(dados[1], dict) else {}
+            incidents_data = dados[2].get("incidents", []) if isinstance(dados[2], dict) else []
+            relogio_dom = dados[3] if len(dados) > 3 and isinstance(dados[3], str) else ""
+        else:
+            return esporte
 
         time_casa = evento_data.get("homeTeam", {}).get("shortName") or evento_data.get("homeTeam", {}).get("name", "Casa")
         id_casa = evento_data.get("homeTeam", {}).get("id", "")
@@ -718,12 +771,29 @@ def atualizar_placar():
                 if "ESPERANDO PÊNALTIS" in tempo_str or "AWAITING PENALTIES" in tempo_str:
                     tempo_str = "AGUARD. PEN"
         else:
+            # BASQUETEBOL
             traducao = {
                 "1st quarter": "1º QUARTO", "2nd quarter": "2º QUARTO", "3rd quarter": "3º QUARTO",
                 "4th quarter": "4º QUARTO", "Halftime": "INTERVALO", "Pause": "PAUSA",
-                "Ended": "FIM", "Awaiting extra time": "AGUARD. OT", "Extra time": "OVERTIME"
+                "Ended": "FIM", "Awaiting extra time": "AGUARD. OT", "Extra time": "OVERTIME",
+                "Overtime": "OVERTIME"
             }
-            tempo_str = traducao.get(status_desc, status_desc).upper()
+            quarto_txt = traducao.get(status_desc, status_desc).upper()
+
+            if status_code == 31 or "INTERVALO" in quarto_txt or "HALFTIME" in str(status_desc).upper():
+                tempo_str = "INTERVALO"
+            elif status_code in [100, 110, 120, 9] or "FIM" in quarto_txt or "ENDED" in str(status_desc).upper():
+                tempo_str = "FIM"
+            elif "PAUSA" in quarto_txt:
+                tempo_str = "PAUSA"
+            else:
+                # Se extraiu o formato completo direto da página (ex: "07:53 - 2º QUARTO")
+                if relogio_dom and "QUARTO" in relogio_dom:
+                    tempo_str = relogio_dom
+                elif relogio_dom:
+                    tempo_str = f"{relogio_dom} - {quarto_txt}"
+                else:
+                    tempo_str = quarto_txt
             
         ultimo_tempo_valido = tempo_str
 
@@ -816,15 +886,11 @@ try:
         esp = atualizar_placar()
         contador_ciclos += 1
         
-        if contador_ciclos % 5 == 0:
+        if contador_ciclos % 10 == 0:
             gc.collect()
 
-        if esp == "nfl":
-            time.sleep(5)
-        elif esp == "basquete":
-            time.sleep(10)
-        else:
-            time.sleep(10)
+        # Ciclo rápido para detectar a troca de abas no Chrome quase em tempo real
+        time.sleep(2)
             
 except KeyboardInterrupt:
     print("\nEncerrando leitura do placar...")
