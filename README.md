@@ -29,6 +29,6 @@
    http://localhost:8000/placar.html
 3. **Defina as dimensões da fonte:**
    * **Largura:** `800` (ou `1920` se preferir posicionamento livre em tela cheia)
-   * **Altura:** `750`
+   * **Altura:** `800`
 4. **Marque a opção:**
    * ☑ **Atualizar o navegador quando a cena se tornar ativa**
