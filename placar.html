@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer">
+    <title>Placar Universal - Aldo Luiz Live</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            background: transparent;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', Arial, sans-serif;
+            color: white;
+            user-select: none;
+        }
+
+        /* NOTIFICAÇÃO DE GOL DE OUTROS JOGOS */
+        #container-alerta-externo {
+            min-height: 46px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 8px;
+            z-index: 200;
+            pointer-events: none;
+        }
+
+        .notificacao-gol-externo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, rgba(7, 10, 24, 0.98), rgba(18, 38, 92, 0.98));
+            border: 2px solid #3b82f6;
+            border-radius: 40px;
+            padding: 5px 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(59, 130, 246, 0.6);
+            animation: surgirGolTop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 580px;
+        }
+
+        .badge-gol-pulsar {
+            background: #ef4444;
+            color: white;
+            font-size: 0.68rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            animation: piscarLive 0.8s infinite alternate;
+        }
+
+        .logo-alerta-gol {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            border-radius: 50%;
+            background: white;
+            padding: 2px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+        }
+
+        .time-gol-destaque {
+            font-weight: 900;
+            font-size: 0.88rem;
+            color: #60a5fa;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 110px;
+            display: inline-block;
+        }
+
+        .placar-alerta-caixa {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: 900;
+            font-family: monospace;
+            font-size: 0.95rem;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nome-time-min {
+            max-width: 80px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+        }
+
+        .tempo-alerta {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        @keyframes surgirGolTop {
+            0% {
+                transform: translateY(-25px) scale(0.9);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes piscarLive {
+            0% {
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .container {
+            box-sizing: border-box;
+            background: linear-gradient(155deg, rgba(7, 9, 20, 0.98), rgba(13, 19, 45, 0.95));
+            padding: 12px 16px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* TEMAS */
+        .container.futebol {
+            width: 640px;
+            border-bottom: 4px solid #2563eb;
+            border-top: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 10px 30px rgba(4, 7, 18, 0.9), 0 0 15px rgba(37, 99, 235, 0.2);
+        }
+
+        .container.futebol .numeros {
+            background-color: rgba(3, 7, 18, 0.7);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            color: white;
+        }
+
+        .container.futebol .status-jogo,
+        .container.futebol .titulo-escalacao,
+        .container.futebol .txt-torneio,
+        .container.futebol .jogador-numero {
+            color: #60a5fa;
+        }
+
+        .container.basquete {
+            width: 620px;
+            border-bottom: 4px solid #f97316;
+            border-top: 1px solid rgba(249, 115, 22, 0.2);
+            box-shadow: 0 10px 30px rgba(4, 7, 18, 0.9), 0 0 15px rgba(249, 115, 22, 0.2);
+        }
+
+        .container.basquete .numeros {
+            background-color: rgba(3, 7, 18, 0.8);
+            border: 1px solid rgba(249, 115, 22, 0.4);
+            color: #fdba74;
+        }
+
+        .container.basquete .status-jogo,
+        .container.basquete .titulo-escalacao,
+        .container.basquete .txt-torneio {
+            color: #fb923c;
+        }
+
+        .container.nfl {
+            width: 660px;
+            background: linear-gradient(155deg, rgba(8, 12, 28, 0.98), rgba(14, 20, 44, 0.96));
+            border-bottom: 4px solid #dc2626;
+            border-top: 1px solid rgba(220, 38, 38, 0.3);
+            box-shadow: 0 10px 30px rgba(4, 7, 18, 0.9), 0 0 15px rgba(220, 38, 38, 0.2);
+        }
+
+        .container.nfl .numeros {
+            background-color: rgba(3, 7, 18, 0.8);
+            border: 1px solid rgba(37, 99, 235, 0.4);
+            color: white;
+        }
+
+        .container.nfl .status-jogo,
+        .container.nfl .txt-torneio {
+            color: #60a5fa;
+        }
+
+        /* ESTRUTURA GERAL */
+        .branding-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 8px;
+            margin-bottom: 2px;
+        }
+
+        .brand-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .canal-logo {
+            height: 34px;
+            max-width: 90px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+        }
+
+        .info-jogo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .txt-torneio {
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .txt-estadio {
+            font-size: 0.65rem;
+            color: #94a3b8;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-live-stream {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #ffffff;
+            color: #070913;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.68rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .dot-live-stream {
+            width: 7px;
+            height: 7px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            display: inline-block;
+            animation: piscarLive 1s infinite alternate;
+        }
+
+        .placar-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2px;
+        }
+
+        .time-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .time-box.casa {
+            justify-content: flex-end;
+        }
+
+        .time-box.fora {
+            justify-content: flex-start;
+        }
+
+        .textos-time {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .textos-time.casa {
+            align-items: flex-end;
+        }
+
+        .textos-time.fora {
+            align-items: flex-start;
+        }
+
+        .time-nome {
+            font-size: 1.3rem;
+            font-weight: 900;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            letter-spacing: -0.5px;
+        }
+
+        .time-formacao {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            font-weight: 700;
+            margin-top: 1px;
+        }
+
+        .time-logo {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            background-color: white;
+            border-radius: 50%;
+            padding: 4px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+
+        .centro-placar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin: 0 15px;
+            flex-shrink: 0;
+            min-width: 160px;
+            max-width: 260px;
+        }
+
+        .numeros {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 6px 18px;
+            border-radius: 8px;
+            font-size: 2.1rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        .status-jogo {
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        /* PAINÉIS INFERIORES E BOTOES DE RESERVA */
+        .painel-escalacoes {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.5s ease-in-out;
+            margin-top: 0px;
+        }
+
+        .painel-escalacoes.aberto {
+            max-height: 700px;
+            opacity: 1;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .abas-painel {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .aba-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 5px 16px;
+            border-radius: 20px;
+            font-family: inherit;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .aba-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .aba-btn.ativa {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+            box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4);
+        }
+
+        .container-views {
+            display: grid;
+        }
+
+        .view-titulares,
+        .view-reservas {
+            grid-area: 1 / 1;
+            transition: opacity 0.4s ease-in-out, visibility 0.4s;
+        }
+
+        .view-reservas {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #painel-escalacoes.modo-reservas .view-titulares {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #painel-escalacoes.modo-reservas .view-reservas {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .escalacao-grid {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .coluna-escalacao {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 0;
+        }
+
+        .coluna-escalacao.casa {
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            padding-right: 8px;
+        }
+
+        .titulo-escalacao {
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .titulos-stats {
+            display: flex;
+            gap: 6px;
+            color: #94a3b8;
+            font-size: 0.65rem;
+            align-items: center;
+        }
+
+        .jogador-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 4px 8px;
+            border-radius: 6px;
+            gap: 6px;
+        }
+
+        .jogador-item.saiu-normal {
+            background: rgba(0, 0, 0, 0.45);
+            opacity: 0.65;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .jogador-item.saiu-lesao {
+            background: rgba(127, 29, 29, 0.35);
+            opacity: 0.8;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        /* FORMATO RESERVA MAIS COMPACTO */
+        .jogador-item.reserva-item {
+            padding: 2px 6px;
+            background: rgba(255, 255, 255, 0.015);
+            border-color: rgba(255, 255, 255, 0.01);
+        }
+
+        .jogador-item.reserva-item .jogador-foto {
+            width: 18px;
+            height: 18px;
+            margin-right: 4px;
+        }
+
+        .jogador-item.reserva-item .jogador-nome {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .jogador-item.reserva-item .jogador-numero {
+            font-size: 0.72rem;
+            min-width: 16px;
+            color: #94a3b8;
+        }
+
+        .jogador-item.reserva-item .jogador-rating {
+            font-size: 0.65rem;
+            padding: 1px 4px;
+            min-width: 22px;
+        }
+
+        .info-sub {
+            font-size: 0.65rem;
+            display: block;
+            margin-top: -2px;
+        }
+
+        .info-sub.out {
+            color: #f87171;
+        }
+
+        .info-sub.in {
+            color: #4ade80;
+        }
+
+        .nome-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .jogador-info {
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .bandeira-jogador {
+            width: 16px;
+            height: 11px;
+            object-fit: cover;
+            border-radius: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-right: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            display: inline-block;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+
+        .jogador-foto {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #1e293b;
+            flex-shrink: 0;
+            margin-right: 6px;
+        }
+
+        .jogador-numero {
+            font-size: 0.8rem;
+            font-weight: 800;
+            min-width: 20px;
+            margin-right: 8px;
+            display: inline-block;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .jogador-nome {
+            font-size: 0.8rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 130px;
+        }
+
+        .stats-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .estatisticas-jogador {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #e2e8f0;
+        }
+
+        .stat-box {
+            width: 24px;
+            text-align: right;
+            display: inline-block;
+        }
+
+        .stat-box.pts {
+            color: #f97316;
+            font-size: 0.85rem;
+        }
+
+        .rating-slot {
+            width: 34px;
+            margin-left: 2px;
+            display: flex;
+            justify-content: flex-end;
+            flex-shrink: 0;
+        }
+
+        .jogador-rating {
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 2px 5px;
+            border-radius: 4px;
+            color: #fff;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .rating-alta {
+            background-color: #10b981;
+        }
+
+        .rating-media {
+            background-color: #f59e0b;
+        }
+
+        .rating-baixa {
+            background-color: #ef4444;
+        }
+
+        .rating-10 {
+            background-color: #3b82f6;
+        }
+
+        .rating-neutra {
+            background-color: #475569;
+        }
+
+        .eventos-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 4px;
+            flex-shrink: 0;
+        }
+
+        .badge-capitao {
+            background: #ffd700;
+            color: #000;
+            font-size: 0.65rem;
+            font-weight: 900;
+            padding: 1px 4px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .badge-evento {
+            font-size: 0.75rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .badge-gc {
+            background: rgba(220, 38, 38, 0.3);
+            color: #ff6b6b;
+            font-size: 0.62rem;
+            font-weight: 900;
+            padding: 1px 4px;
+            border-radius: 3px;
+            border: 1px solid rgba(220, 38, 38, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            flex-shrink: 0;
+        }
+
+        .badge-sub {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: bold;
+            padding: 1px 3px;
+            border-radius: 3px;
+        }
+
+        .badge-sub.lesao {
+            background: rgba(240, 68, 56, 0.3);
+            color: #f87171;
+        }
+
+        .badge-cartao {
+            width: 8px;
+            height: 12px;
+            border-radius: 1.5px;
+            display: inline-block;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+            flex-shrink: 0;
+            border: 1px solid rgba(0, 0, 0, 0.4);
+        }
+
+        .badge-cartao.amarelo {
+            background-color: #facc15;
+        }
+
+        .badge-cartao.vermelho {
+            background-color: #ef4444;
+        }
+
+        /* NFL LÍDERES */
+        .nfl-lideres-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+            padding-top: 2px;
+        }
+
+        .nfl-lideres-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 4px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nfl-lideres-titulo {
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            color: #f87171;
+            text-transform: uppercase;
+        }
+
+        .nfl-teams-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2px 6px 6px 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .nfl-team-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+        }
+
+        .nfl-team-badge.away {
+            color: #60a5fa;
+        }
+
+        .nfl-team-badge.home {
+            color: #f87171;
+        }
+
+        .nfl-team-badge img {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+        }
+
+        .nfl-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 8px;
+            padding: 6px 10px;
+            gap: 8px;
+        }
+
+        .nfl-player {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .nfl-player.away {
+            justify-content: flex-start;
+        }
+
+        .nfl-player.home {
+            justify-content: flex-end;
+            text-align: right;
+        }
+
+        .nfl-player-photo {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #1e293b;
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            flex-shrink: 0;
+        }
+
+        .nfl-player-photo.empty {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .nfl-player-info {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .nfl-player-name-line {
+            font-size: 0.8rem;
+            font-weight: 800;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nfl-player.home .nfl-player-name-line {
+            justify-content: flex-end;
+        }
+
+        .nfl-player-pos {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #94a3b8;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        .nfl-player-stat-detail {
+            font-size: 0.65rem;
+            color: #94a3b8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 1px;
+        }
+
+        .nfl-stat-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-shrink: 0;
+            min-width: 160px;
+        }
+
+        .nfl-stat-val {
+            font-size: 1.15rem;
+            font-weight: 900;
+            font-family: monospace;
+            min-width: 38px;
+        }
+
+        .nfl-stat-val.away {
+            text-align: right;
+            color: #60a5fa;
+        }
+
+        .nfl-stat-val.home {
+            text-align: left;
+            color: #f87171;
+        }
+
+        .nfl-stat-label {
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: #cbd5e1;
+            text-transform: uppercase;
+            text-align: center;
+            min-width: 76px;
+            line-height: 1.1;
+        }
+
+        /* CAMADA DE ANIMAÇÕES */
+        .tela-anim {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            font-size: 2rem;
+            font-weight: 900;
+            font-style: italic;
+            text-transform: uppercase;
+            transform: translateY(-100%);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 50;
+            color: white;
+            padding: 0 15px;
+            box-sizing: border-box;
+        }
+
+        .tela-anim.mostrar {
+            transform: translateY(0);
+            animation: piscarAnim 0.6s infinite alternate;
+        }
+
+        .tela-anim img {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            padding: 4px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .tela-anim span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .tema-gol {
+            background: linear-gradient(90deg, #1d4ed8, #0284c7);
+        }
+
+        .tema-quarto-basq {
+            background: linear-gradient(90deg, #ea580c, #c2410c);
+            font-size: 2.2rem;
+        }
+
+        .tema-quarto-nfl {
+            background: linear-gradient(90deg, #1e3a8a, #991b1b);
+            font-size: 2.2rem;
+        }
+
+        .tema-td {
+            background: linear-gradient(90deg, #1d4ed8, #dc2626);
+            font-size: 2.3rem;
+        }
+
+        .tema-fg {
+            background: linear-gradient(90deg, #eab308, #ca8a04);
+            font-size: 2.3rem;
+        }
+
+        .tema-2min {
+            background: linear-gradient(90deg, #b45309, #d97706, #dc2626);
+            font-size: 2rem;
+        }
+
+        /* PAINEL DE MÍDIA */
+        #media-showcase {
+            position: absolute;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 99999;
+        }
+
+        #media-showcase.show {
+            display: flex;
+        }
+
+        #media-showcase img {
+            max-width: 580px;
+            max-height: 70vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.95);
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            background: #000;
+            cursor: default;
+        }
+
+        .tweet-card-wrapper {
+            cursor: default;
+            width: 550px;
+            max-width: 580px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border-radius: 14px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.95);
+        }
+
+        .tweet-card-wrapper::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .tweet-card-wrapper::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* BOTÃO DE PICTURE-IN-PICTURE (Oculto por padrão para nunca vazar no OBS) */
+        #btn-pip {
+            display: none;
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            z-index: 999999;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #cbd5e1;
+            font-family: inherit;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        #btn-pip:hover {
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
+            transform: translateY(-1px);
+        }
+
+        @keyframes piscarAnim {
+            0% {
+                box-shadow: inset 0 0 0px rgba(255, 255, 255, 0);
+            }
+
+            100% {
+                box-shadow: inset 0 0 60px rgba(255, 255, 255, 0.9);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Botão visível exclusivamente no Google Chrome -->
+    <button id="btn-pip">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <rect x="11" y="9" width="9" height="7" rx="1" ry="1" fill="currentColor"></rect>
+        </svg>
+        <span>Mini Placar (PiP)</span>
+    </button>
+    <div id="container-alerta-externo"></div>
+    <div id="media-showcase" title="Clique para fechar ou pressione ESC"></div>
+
+    <div class="container futebol" id="card-principal" title="Clique para expandir">
+        <div id="camada-animacao" class="tela-anim">
+            <img id="img-anim" src="" alt="" style="display: none;">
+            <span id="texto-anim">EVENTO!</span>
+        </div>
+
+        <div class="branding-bar">
+            <div class="brand-left">
+                <img src="logo_canal.png" class="canal-logo" onerror="this.style.display='none'">
+                <div class="info-jogo">
+                    <span id="txt-torneio" class="txt-torneio">AGUARDE...</span>
+                    <span id="txt-estadio" class="txt-estadio"></span>
+                </div>
+            </div>
+            <div class="badge-live-stream"><span class="dot-live-stream"></span>LIVE</div>
+        </div>
+
+        <div id="placar-dinamico">
+            <div style="text-align: center; font-size: 1rem; padding: 10px;">Carregando dados...</div>
+        </div>
+
+        <div id="painel-escalacoes" class="painel-escalacoes">
+            <div class="abas-painel" id="abas-painel" style="display: none;">
+                <button id="btn-titulares" class="aba-btn ativa">Titulares</button>
+                <button id="btn-reservas" class="aba-btn">Reservas</button>
+            </div>
+            <div id="container-conteudo"></div>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================================
+        // CONFIGURAÇÃO DE DELAY ANTI-SPOILER
+        // Ajuste os segundos de atraso (ex: 3, 4, 6...) para calibrar com o vídeo
+        // =========================================================================
+        const ATRASO_SEGUNDOS_PADRAO = 3;      // Futebol e NFL
+        const ATRASO_SEGUNDOS_BASQUETE = 15;    // 15 segundos exclusivo para basquete
+        let filaSnapshots = [];
+
+        let placarSalvoCasa = localStorage.getItem('placarCasa') !== null ? parseInt(localStorage.getItem('placarCasa')) : null;
+        let placarSalvoFora = localStorage.getItem('placarFora') !== null ? parseInt(localStorage.getItem('placarFora')) : null;
+        let ultimoAlertaTime = 0;
+        let tempoAnteriorBruto = null;
+        let animando = false;
+        let minutosLocais = 0;
+        let segundosLocais = 0;
+        let relogioRodando = false;
+        let painelAberto = false;
+        let dadosPartidaAtual = null;
+
+        let alerta2MinQ2 = false;
+        let alerta2MinQ4 = false;
+        let indiceTesteO = 0;
+        let historicoOutrosJogos = {};
+
+        // Variáveis para prevenir o "pisca-pisca" (flickering)
+        let lastPlacarState = "";
+        let lastPainelState = "";
+
+        // LÓGICA DAS ABAS MANUAIS
+        document.getElementById('abas-painel').addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (e.target.classList.contains('aba-btn')) {
+                document.querySelectorAll('.aba-btn').forEach(b => b.classList.remove('ativa'));
+                e.target.classList.add('ativa');
+                const painel = document.getElementById('painel-escalacoes');
+                if (e.target.id === 'btn-reservas') {
+                    painel.classList.add('modo-reservas');
+                } else {
+                    painel.classList.remove('modo-reservas');
+                }
+            }
+        });
+
+        // ABRIR/FECHAR O PAINEL
+        document.getElementById('card-principal').addEventListener('click', () => {
+            const painel = document.getElementById('painel-escalacoes');
+            painelAberto = !painelAberto;
+            if (painelAberto) {
+                painel.classList.add('aberto');
+            } else {
+                painel.classList.remove('aberto');
+                painel.classList.remove('modo-reservas');
+                document.getElementById('btn-titulares').classList.add('ativa');
+                document.getElementById('btn-reservas').classList.remove('ativa');
+            }
+        });
+
+        window.addEventListener('keydown', (e) => {
+            const tecla = e.key.toLowerCase();
+            const modalidadeAtual = dadosPartidaAtual ? dadosPartidaAtual.esporte : 'futebol';
+
+            if (tecla === '1' || tecla === 't') dispararEvento("TOUCHDOWN!", "tema-td");
+            else if (tecla === '3' || tecla === 'k') dispararEvento("FIELD GOAL!", "tema-fg");
+            else if (tecla === 'w') dispararEvento("2-MINUTE WARNING!", "tema-2min");
+            else if (tecla === 'f') dispararEvento("FIM DE QUARTO!", modalidadeAtual === 'basquete' ? "tema-quarto-basq" : "tema-quarto-nfl");
+            else if (tecla === 'g') {
+                // Ignora atalho de gol se a transmissão atual for de basquete
+                if (modalidadeAtual === 'basquete') return;
+                const logo = dadosPartidaAtual ? ("") : "";
+                dispararEvento("GOOOOOOL!", "tema-gol", Boolean(logo), logo);
+            }
+            else if (tecla === 'o') {
+                // Ignora teste de gol da rodada no basquete
+                if (modalidadeAtual === 'basquete') return;
+                if (!dadosPartidaAtual || !dadosPartidaAtual.outros_jogos || dadosPartidaAtual.outros_jogos.length === 0) return;
+                const lista = dadosPartidaAtual.outros_jogos;
+                if (indiceTesteO >= lista.length) indiceTesteO = 0;
+
+                const j = lista[indiceTesteO];
+                const p1 = parseInt(j.placar1) || 0;
+                const p2 = parseInt(j.placar2) || 0;
+
+                let timeDestaque = j.time1, logoDestaque = j.logo1;
+                if (p2 > p1) { timeDestaque = j.time2; logoDestaque = j.logo2; }
+
+                dispararAlertaGolExterno({
+                    badgeTexto: "RODADA", timeGol: timeDestaque, logoGol: logoDestaque,
+                    time1: j.time1, placar1: p1, time2: j.time2, placar2: p2, tempo: j.status || 'AO VIVO'
+                });
+                indiceTesteO++;
+            }
+        });
+
+        function dispararEvento(texto, classeTema, usaImg = false, logoSrc = "") {
+            animando = true;
+            const tela = document.getElementById('camada-animacao');
+            const img = document.getElementById('img-anim');
+            document.getElementById('texto-anim').innerText = texto;
+
+            if (texto.includes("GOOOOOOL")) {
+                let audio = new Audio('alertaGOL.mp3');
+                audio.volume = 0.5;
+                audio.play().catch(e => console.log("Áudio bloqueado: ", e));
+            } else if (texto.includes("TOUCHDOWN")) {
+                let audio = new Audio('alertaTOUCHDOWN.mp3');
+                audio.volume = 0.5;
+                audio.play().catch(e => console.log("Áudio bloqueado: ", e));
+            }
+
+            if (usaImg && logoSrc && logoSrc.trim() !== "") {
+                img.src = logoSrc; img.style.display = 'block';
+            } else {
+                img.style.display = 'none';
+            }
+
+            tela.className = `tela-anim ${classeTema} mostrar`;
+            setTimeout(() => { tela.className = 'tela-anim'; animando = false; }, 6000);
+        }
+
+        let timerAlertaExterno = null;
+        function dispararAlertaGolExterno(dados) {
+            const container = document.getElementById('container-alerta-externo');
+            if (!container) return;
+            if (timerAlertaExterno) clearTimeout(timerAlertaExterno);
+            const badgeTexto = dados.badgeTexto || "⚽ GOL!";
+            container.innerHTML = `
+                <div class="notificacao-gol-externo">
+                    <span class="badge-gol-pulsar">${badgeTexto}</span>
+                    <img src="${dados.logoGol}" class="logo-alerta-gol" onerror="this.style.display='none'">
+                    <span class="time-gol-destaque" title="${dados.timeGol}">${dados.timeGol}</span>
+                    <div class="placar-alerta-caixa">
+                        <span class="nome-time-min" title="${dados.time1}">${dados.time1}</span>
+                        <span>${dados.placar1} - ${dados.placar2}</span>
+                        <span class="nome-time-min" title="${dados.time2}">${dados.time2}</span>
+                    </div>
+                    <span class="tempo-alerta">(${dados.tempo})</span>
+                </div>`;
+            timerAlertaExterno = setTimeout(() => { container.innerHTML = ''; }, 6500);
+        }
+
+        function verificarGolsOutrosJogos(listaOutros, timePrincipalCasa, timePrincipalFora) {
+            if (!listaOutros || !Array.isArray(listaOutros)) return;
+            const tCasa = (timePrincipalCasa || "").toLowerCase(), tFora = (timePrincipalFora || "").toLowerCase();
+
+            listaOutros.forEach(jogo => {
+                const id = jogo.id, p1 = parseInt(jogo.placar1), p2 = parseInt(jogo.placar2);
+                if (isNaN(p1) || isNaN(p2)) return;
+
+                const j1 = jogo.time1.toLowerCase(), j2 = jogo.time2.toLowerCase();
+                if (tCasa.includes(j1) || j1.includes(tCasa) || tFora.includes(j2) || j2.includes(tFora)) return;
+
+                if (!historicoOutrosJogos[id]) {
+                    historicoOutrosJogos[id] = { p1: p1, p2: p2 };
+                } else {
+                    const ant = historicoOutrosJogos[id];
+                    if (p1 > ant.p1) {
+                        dispararAlertaGolExterno({ timeGol: jogo.time1, logoGol: jogo.logo1, time1: jogo.time1, placar1: p1, time2: jogo.time2, placar2: p2, tempo: jogo.status || 'AO VIVO' });
+                    } else if (p2 > ant.p2) {
+                        dispararAlertaGolExterno({ timeGol: jogo.time2, logoGol: jogo.logo2, time1: jogo.time1, placar1: p1, time2: jogo.time2, placar2: p2, tempo: jogo.status || 'AO VIVO' });
+                    }
+                    historicoOutrosJogos[id].p1 = p1; historicoOutrosJogos[id].p2 = p2;
+                }
+            });
+        }
+
+        function objClsRtg(val) {
+            let n = parseFloat(val);
+            if (isNaN(n)) return 'rating-neutra';
+            if (n >= 10) return 'rating-10';
+            if (n >= 7) return 'rating-alta';
+            if (n >= 6) return 'rating-media';
+            return 'rating-baixa';
+        }
+
+        function htmlFut(j, isReserva = false) {
+            let cC = objClsRtg(j.rating);
+            const fallbackFoto = "https://pbs.twimg.com/profile_images/1858822306186878976/qPsDCLmQ_400x400.jpg";
+            let tf = `<img src="${j.foto || fallbackFoto}" class="jogador-foto" onerror="this.src='${fallbackFoto}'">`;
+            let tr = `<span class="jogador-rating ${cC}">${j.rating}</span>`;
+            let tn = (j.numero && j.numero !== '-') ? `<span class="jogador-numero">${j.numero}</span>` : `<span class="jogador-numero"></span>`;
+
+            let flagHtml = j.nacionalidade ? `<img src="https://flagcdn.com/w40/${j.nacionalidade}.png" class="bandeira-jogador" onerror="this.style.display='none'">` : '';
+
+            let bg = '';
+            if (j.capitao) bg += `<span class="badge-capitao">C</span>`;
+            if (j.amarelo) bg += `<span class="badge-cartao amarelo"></span>`;
+            if (j.vermelho) bg += `<span class="badge-cartao vermelho"></span>`;
+
+            if (j.gols_count > 1) bg += `<span class="badge-evento">⚽x${j.gols_count}</span>`;
+            else if (j.gol) bg += `<span class="badge-evento">⚽</span>`;
+
+            if (j.gols_contra_count > 1) bg += `<span class="badge-gc">⚽ GC x${j.gols_contra_count}</span>`;
+            else if (j.gol_contra) bg += `<span class="badge-gc">⚽ GC</span>`;
+
+            if (j.assists_count > 1) bg += `<span class="badge-evento">👟x${j.assists_count}</span>`;
+            else if (j.assist) bg += `<span class="badge-evento">👟</span>`;
+
+            let clSubs = '';
+            let subInfo = '';
+
+            if (!isReserva) {
+                // ABA TITULARES: mostra quem ENTROU no lugar de quem saiu
+                if (j.saiu) {
+                    clSubs = j.lesao ? 'saiu-lesao' : 'saiu-normal';
+                    if (j.lesao) {
+                        subInfo = `<span class="info-sub in"><span style="color:#f87171;">🚑 Lesão</span> • ▲ Entrou: ${j.sub_nome}</span>`;
+                    } else {
+                        subInfo = `<span class="info-sub in">▲ Entrou: ${j.sub_nome || 'Substituída'}</span>`;
+                    }
+                }
+            } else {
+                // ABA RESERVAS: nas jogadoras que entraram, mostra quem SAIU
+                if (j.entrou) {
+                    subInfo = `<span class="info-sub out">▼ Saiu: ${j.sub_nome || 'Em campo'}</span>`;
+                }
+            }
+
+            let extraClass = isReserva ? 'reserva-item' : '';
+
+            return `<div class="jogador-item ${clSubs} ${extraClass}">
+                <div class="jogador-info">
+                    ${tf}${tn}
+                    <div class="nome-container">
+                        <div style="display: flex; align-items: center;">
+                            ${flagHtml}
+                            <span class="jogador-nome">${j.nome}</span>
+                        </div>
+                        ${subInfo}
+                    </div>
+                    <div class="eventos-badge">${bg}</div>
+                </div>
+                <div class="rating-slot">${tr}</div>
+            </div>`;
+        }
+
+        function htmlBasq(j) {
+            let cC = objClsRtg(j.rating);
+            const fallbackFoto = "https://pbs.twimg.com/profile_images/1858822306186878976/qPsDCLmQ_400x400.jpg";
+            let tf = `<img src="${j.foto || fallbackFoto}" class="jogador-foto" onerror="this.src='${fallbackFoto}'">`;
+            let tr = `<span class="jogador-rating ${cC}">${j.rating}</span>`;
+
+            let flagHtml = j.nacionalidade ? `<img src="https://flagcdn.com/w40/${j.nacionalidade}.png" class="bandeira-jogador" onerror="this.style.display='none'">` : '';
+
+            return `<div class="jogador-item">
+                <div class="jogador-info">
+                    ${tf}
+                    <div style="display: flex; align-items: center;">
+                        ${flagHtml}
+                        <span class="jogador-nome">${j.nome}</span>
+                    </div>
+                </div>
+                <div class="stats-wrapper">
+                    <div class="estatisticas-jogador">
+                        <span class="stat-box pts">${j.pts}</span>
+                        <span class="stat-box">${j.reb}</span>
+                        <span class="stat-box">${j.ast}</span>
+                    </div>
+                    <div class="rating-slot">${tr}</div>
+                </div>
+            </div>`;
+        }
+
+        function renderNflLider(ldr) {
+            const cat = ldr.categoria || "";
+            const away = ldr.away, home = ldr.home;
+
+            let pAwayHtml = `<div class="nfl-player away"><div class="nfl-player-photo empty"></div><div class="nfl-player-info"><div class="nfl-player-name-line"><span class="nfl-pname" style="opacity:0.4;">Nenhum</span></div></div></div>`;
+            let valAway = "--";
+            if (away) {
+                let fAway = away.foto ? `<img src="${away.foto}" class="nfl-player-photo" onerror="this.style.display='none'">` : `<div class="nfl-player-photo empty"></div>`;
+                pAwayHtml = `<div class="nfl-player away">${fAway}<div class="nfl-player-info"><div class="nfl-player-name-line"><span class="nfl-pname">${away.nome}</span>${away.posicao ? `<span class="nfl-player-pos">${away.posicao}</span>` : ''}</div>${away.detalhe ? `<span class="nfl-player-stat-detail">${away.detalhe}</span>` : ''}</div></div>`;
+                valAway = away.stat || "-";
+            }
+
+            let pHomeHtml = `<div class="nfl-player home"><div class="nfl-player-info"><div class="nfl-player-name-line"><span class="nfl-pname" style="opacity:0.4;">Nenhum</span></div></div><div class="nfl-player-photo empty"></div></div>`;
+            let valHome = "--";
+            if (home) {
+                let fHome = home.foto ? `<img src="${home.foto}" class="nfl-player-photo" onerror="this.style.display='none'">` : `<div class="nfl-player-photo empty"></div>`;
+                pHomeHtml = `<div class="nfl-player home"><div class="nfl-player-info"><div class="nfl-player-name-line">${home.posicao ? `<span class="nfl-player-pos">${home.posicao}</span>` : ''}<span class="nfl-pname">${home.nome}</span></div>${home.detalhe ? `<span class="nfl-player-stat-detail">${home.detalhe}</span>` : ''}</div>${fHome}</div>`;
+                valHome = home.stat || "-";
+            }
+
+            return `<div class="nfl-row">${pAwayHtml}<div class="nfl-stat-center"><span class="nfl-stat-val away">${valAway}</span><span class="nfl-stat-label">${cat}</span><span class="nfl-stat-val home">${valHome}</span></div>${pHomeHtml}</div>`;
+        }
+
+        // 1. Lê os dados no servidor e guarda na fila cronometrada
+        async function buscarDadosServidor() {
+            try {
+                const res = await fetch('dados.json?t=' + Date.now(), { cache: 'no-store' });
+                const d = await res.json();
+                if (d && d.length > 0) {
+                    filaSnapshots.push({
+                        momento: Date.now(),
+                        dados: d
+                    });
+                }
+            } catch (e) { }
+        }
+
+        // 2. Só liberta para o ecrã aquilo que já cumpriu o atraso definido
+        function processarFilaAntiSpoiler() {
+            if (filaSnapshots.length === 0) return;
+
+            const agora = Date.now();
+            let indiceEscolhido = -1;
+
+            for (let i = filaSnapshots.length - 1; i >= 0; i--) {
+                const snapshot = filaSnapshots[i];
+                const esp = (snapshot.dados && snapshot.dados[0]) ? snapshot.dados[0].esporte : 'futebol';
+
+                // Aplica 8 segundos caso seja basquete; caso contrário, mantém 3 segundos
+                const delaySegundos = (esp === 'basquete') ? ATRASO_SEGUNDOS_BASQUETE : ATRASO_SEGUNDOS_PADRAO;
+                const limiteAtraso = agora - (delaySegundos * 1000);
+
+                if (snapshot.momento <= limiteAtraso) {
+                    indiceEscolhido = i;
+                    break;
+                }
+            }
+
+            if (indiceEscolhido !== -1) {
+                aplicarNaTela(filaSnapshots[indiceEscolhido].dados);
+                filaSnapshots = filaSnapshots.slice(indiceEscolhido);
+            }
+        }
+
+        // 3. Aplica os dados da partida na interface
+        function aplicarNaTela(d) {
+            try {
+                if (!d || d.length === 0) return;
+
+                const jg = d[0];
+                dadosPartidaAtual = jg;
+                const cnt = document.getElementById('card-principal');
+                const painelConteudo = document.getElementById('container-conteudo');
+
+                cnt.className = "container " + jg.esporte;
+                if (jg.torneio) document.getElementById('txt-torneio').innerText = jg.torneio;
+                if (jg.estadio) document.getElementById('txt-estadio').innerText = jg.estadio;
+
+                // Alerta de outros jogos (bloqueado no basquete para evitar alertas de gol a cada cesta)
+                if (jg.outros_jogos && jg.esporte !== "basquete") {
+                    verificarGolsOutrosJogos(jg.outros_jogos, jg.timeCasa, jg.timeFora);
+                } else if (jg.esporte === "basquete") {
+                    const containerAlerta = document.getElementById('container-alerta-externo');
+                    if (containerAlerta) containerAlerta.innerHTML = '';
+                }
+
+                let aC = parseInt(jg.placarCasa), aF = parseInt(jg.placarFora);
+                if (!isNaN(aC) && !isNaN(aF)) {
+                    if (placarSalvoCasa === null) { placarSalvoCasa = aC; localStorage.setItem('placarCasa', aC); }
+                    if (placarSalvoFora === null) { placarSalvoFora = aF; localStorage.setItem('placarFora', aF); }
+
+                    let dC = aC - placarSalvoCasa, dF = aF - placarSalvoFora, agora = Date.now();
+                    if ((dC > 0 || dF > 0) && (agora - ultimoAlertaTime > 6000)) {
+                        if (jg.esporte === "futebol") {
+                            if (dC > 0) dispararEvento(`GOOOOOOL ${jg.timeCasa}!`, "tema-gol", true, jg.logoCasa);
+                            else dispararEvento(`GOOOOOOL ${jg.timeFora}!`, "tema-gol", true, jg.logoFora);
+                        } else if (jg.esporte === "nfl") {
+                            if (dC >= 6 || dF >= 6) dispararEvento("TOUCHDOWN!", "tema-td");
+                            else if (dC === 3 || dF === 3) dispararEvento("FIELD GOAL!", "tema-fg");
+                        }
+                        ultimoAlertaTime = agora;
+                    }
+                    placarSalvoCasa = aC; placarSalvoFora = aF;
+                    localStorage.setItem('placarCasa', aC); localStorage.setItem('placarFora', aF);
+                }
+
+                let tBruto = (jg.tempo || "").trim(), tLower = tBruto.toLowerCase();
+                const tParadas = ["finalizado", "encerrado", "fim", "ft", "terminado", "intervalo", "ht", "half-time", "adiado", "pausa"];
+                let jogoParado = tParadas.some(w => tLower.includes(w));
+
+                if ((jg.esporte === "basquete" || jg.esporte === "nfl") && tempoAnteriorBruto !== null && tempoAnteriorBruto !== tBruto) {
+                    let tOld = tempoAnteriorBruto.toLowerCase();
+                    let isBrkNow = tParadas.some(w => tLower.includes(w)), wasBrk = tParadas.some(w => tOld.includes(w));
+                    if (isBrkNow && !wasBrk) {
+                        let txt = "FIM DE QUARTO!";
+                        if (tLower.includes("intervalo") || tLower.includes("ht")) txt = "INTERVALO!";
+                        if (tLower.includes("finalizado") || tLower.includes("fim")) txt = "FIM DE JOGO!";
+                        dispararEvento(txt, jg.esporte === "basquete" ? "tema-quarto-basq" : "tema-quarto-nfl");
+                    }
+                }
+                tempoAnteriorBruto = tBruto;
+
+                if (jg.esporte === "nfl") {
+                    let isQ1 = tLower.includes("1º") || tLower.includes("1q") || tLower.includes("1°");
+                    let isQ2 = tLower.includes("2º") || tLower.includes("2q") || tLower.includes("2°");
+                    let isQ3 = tLower.includes("3º") || tLower.includes("3q") || tLower.includes("3°");
+                    let isQ4 = tLower.includes("4º") || tLower.includes("4q") || tLower.includes("4°");
+                    if (isQ1) alerta2MinQ2 = false;
+                    if (isQ3) alerta2MinQ4 = false;
+
+                    let isTwoMinExplicit = tLower.includes("two-minute") || tLower.includes("2-minute") || tLower.includes("2 minute") || tLower.includes("dois minutos");
+                    let matchTempo = tLower.match(/(\d+):(\d+)/), segundosRestantes = null;
+                    if (matchTempo) segundosRestantes = parseInt(matchTempo[1]) * 60 + parseInt(matchTempo[2]);
+
+                    if (isQ2 && !alerta2MinQ2 && (isTwoMinExplicit || (segundosRestantes !== null && segundosRestantes <= 120 && segundosRestantes >= 90))) {
+                        alerta2MinQ2 = true; dispararEvento("2-MINUTE WARNING!", "tema-2min");
+                    }
+                    if (isQ4 && !alerta2MinQ4 && (isTwoMinExplicit || (segundosRestantes !== null && segundosRestantes <= 120 && segundosRestantes >= 90))) {
+                        alerta2MinQ4 = true; dispararEvento("2-MINUTE WARNING!", "tema-2min");
+                    }
+                }
+
+                let ptTime = tBruto.split(':'), tExib = "";
+                if (!jogoParado && ptTime.length === 2 && !isNaN(parseInt(ptTime[0])) && jg.esporte === "futebol") {
+                    let ms = parseInt(ptTime[0]), ss = parseInt(ptTime[1]);
+                    if (!relogioRodando || Math.abs((ms * 60 + ss) - (minutosLocais * 60 + segundosLocais)) > 15) {
+                        minutosLocais = ms; segundosLocais = ss; relogioRodando = true;
+                    }
+                    tExib = `${minutosLocais}:${segundosLocais.toString().padStart(2, '0')}`;
+                } else { relogioRodando = false; tExib = tBruto.toUpperCase(); }
+
+                if (!animando) {
+                    let nomeEsquerda = jg.esporte === 'nfl' ? jg.timeFora : jg.timeCasa;
+                    let logoEsquerda = jg.esporte === 'nfl' ? jg.logoFora : jg.logoCasa;
+                    let placarEsquerda = jg.esporte === 'nfl' ? jg.placarFora : jg.placarCasa;
+                    let nomeDireita = jg.esporte === 'nfl' ? jg.timeCasa : jg.timeFora;
+                    let logoDireita = jg.esporte === 'nfl' ? jg.logoCasa : jg.logoFora;
+                    let placarDireita = jg.esporte === 'nfl' ? jg.placarCasa : jg.placarFora;
+                    let fC = jg.formacaoCasa && jg.esporte === 'futebol' ? `<span class="time-formacao">${jg.formacaoCasa}</span>` : '';
+                    let fF = jg.formacaoFora && jg.esporte === 'futebol' ? `<span class="time-formacao">${jg.formacaoFora}</span>` : '';
+                    let separador = `<span style="font-size: 1.2rem; opacity: 0.5; margin: 0 4px;">-</span>`;
+
+                    let penaltisCentroHtml = '';
+                    let seqEsqHtml = '';
+                    let seqDirHtml = '';
+                    let clockDisplay = tExib;
+
+                    if (jg.temPenaltis) {
+                        let isHomeLeft = jg.esporte !== 'nfl';
+                        const renderSeq = (seq) => seq.map(acerto => acerto ? `<span style="color: #4ade80; font-size: 1.2rem; filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.5)); line-height: 0.8;">●</span>` : `<span style="color: #ef4444; font-size: 1.2rem; font-weight: bold; filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.5)); line-height: 0.8;">x</span>`).join('');
+                        let htmlSeqEsq = isHomeLeft ? renderSeq(jg.seqPenCasa) : renderSeq(jg.seqPenFora);
+                        let htmlSeqDir = isHomeLeft ? renderSeq(jg.seqPenFora) : renderSeq(jg.seqPenCasa);
+                        let pEsq = isHomeLeft ? jg.scorePenCasa : jg.scorePenFora;
+                        let pDir = isHomeLeft ? jg.scorePenFora : jg.scorePenCasa;
+
+                        clockDisplay = '';
+                        penaltisCentroHtml = `<div style="color: #fb923c; font-size: 1.15rem; font-weight: 900; letter-spacing: 1px; margin-top: -2px;">PEN ${pEsq} - ${pDir}</div>`;
+                        seqEsqHtml = `<div style="display:flex; gap:4px; margin-top:4px; justify-content: flex-end;">${htmlSeqEsq}</div>`;
+                        seqDirHtml = `<div style="display:flex; gap:4px; margin-top:4px; justify-content: flex-start;">${htmlSeqDir}</div>`;
+                    }
+
+                    let currentPlacarState = JSON.stringify({ nomeEsquerda, fC, logoEsquerda, placarEsquerda, placarDireita, nomeDireita, fF, logoDireita, tp: jg.temPenaltis, spc: jg.scorePenCasa, spf: jg.scorePenFora, sqc: jg.seqPenCasa, sqf: jg.seqPenFora, t: clockDisplay });
+
+                    if (currentPlacarState !== lastPlacarState) {
+                        document.getElementById('placar-dinamico').innerHTML = `
+                            <div class="placar-wrapper">
+                                <div class="time-box casa">
+                                    <div class="textos-time casa">
+                                        <span class="time-nome">${nomeEsquerda}</span>
+                                        ${fC}
+                                        ${seqEsqHtml}
+                                    </div>
+                                    <img src="${logoEsquerda}" class="time-logo" onerror="this.style.display='none'">
+                                </div>
+                                <div class="centro-placar">
+                                    <div class="numeros"><span>${placarEsquerda}</span>${separador}<span>${placarDireita}</span></div>
+                                    ${penaltisCentroHtml}
+                                    <div id="relogio-tela" class="status-jogo" title="${clockDisplay}">${clockDisplay}</div>
+                                </div>
+                                <div class="time-box fora">
+                                    <img src="${logoDireita}" class="time-logo" onerror="this.style.display='none'">
+                                    <div class="textos-time fora">
+                                        <span class="time-nome">${nomeDireita}</span>
+                                        ${fF}
+                                        ${seqDirHtml}
+                                    </div>
+                                </div>
+                            </div>`;
+                        lastPlacarState = currentPlacarState;
+                    } else {
+                        let relogioEl = document.getElementById('relogio-tela');
+                        if (relogioEl && relogioEl.innerText !== clockDisplay) {
+                            relogioEl.innerText = clockDisplay;
+                            relogioEl.title = clockDisplay;
+                        }
+                    }
+
+                    let currentPainelState = JSON.stringify({ esp: jg.esporte, c: jg.escalacaoCasa, f: jg.escalacaoFora, n: jg.lideres_nfl });
+
+                    if (currentPainelState !== lastPainelState) {
+                        document.getElementById('abas-painel').style.display = (jg.esporte === 'futebol') ? 'flex' : 'none';
+
+                        if (jg.esporte === "nfl") {
+                            const titulo = jg.titulo_destaques || "LÍDERES DO JOGO";
+                            const rows = (jg.lideres_nfl || []).map(renderNflLider).join('');
+                            painelConteudo.innerHTML = `
+                            <div class="nfl-lideres-container">
+                                <div class="nfl-lideres-header"><span class="nfl-lideres-titulo">${titulo}</span></div>
+                                <div class="nfl-teams-bar"><div class="nfl-team-badge away"><img src="${jg.logoFora}"><span>${jg.abbrevFora || jg.timeFora}</span></div><div class="nfl-team-badge home"><span>${jg.abbrevCasa || jg.timeCasa}</span><img src="${jg.logoCasa}"></div></div>
+                                ${rows}
+                            </div>`;
+                        } else if (jg.esporte === "basquete") {
+                            let headerCasa = `<span>FORA</span><div class="stats-wrapper"><div class="titulos-stats"><span class="stat-box">PTS</span><span class="stat-box">REB</span><span class="stat-box">AST</span></div><div class="rating-slot"></div></div>`;
+                            let headerFora = `<span>CASA</span><div class="stats-wrapper"><div class="titulos-stats"><span class="stat-box">PTS</span><span class="stat-box">REB</span><span class="stat-box">AST</span></div><div class="rating-slot"></div></div>`;
+                            let listCasa = "", listFora = "";
+                            if (jg.escalacaoCasa) {
+                                let srtPts = (a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0);
+                                listCasa = [...jg.escalacaoCasa].sort(srtPts).map(htmlBasq).join('');
+                                listFora = [...jg.escalacaoFora].sort(srtPts).map(htmlBasq).join('');
+                            }
+                            painelConteudo.innerHTML = `<div class="escalacao-grid"><div class="coluna-escalacao casa"><div class="titulo-escalacao">${headerCasa}</div><div>${listCasa}</div></div><div class="coluna-escalacao fora"><div class="titulo-escalacao">${headerFora}</div><div>${listFora}</div></div></div>`;
+                        } else {
+                            // Titulares originais na aba Titulares
+                            let titCasa = jg.escalacaoCasa.filter(j => !j.reserva).map(j => htmlFut(j, false)).join('');
+                            let resCasa = jg.escalacaoCasa.filter(j => j.reserva).map(j => htmlFut(j, true)).join('');
+
+                            let titFora = jg.escalacaoFora.filter(j => !j.reserva).map(j => htmlFut(j, false)).join('');
+                            let resFora = jg.escalacaoFora.filter(j => j.reserva).map(j => htmlFut(j, true)).join('');
+
+                            painelConteudo.innerHTML = `
+                            <div class="container-views">
+                                <div class="view-titulares">
+                                    <div class="escalacao-grid">
+                                        <div class="coluna-escalacao casa"><div class="titulo-escalacao">Titulares Casa</div><div>${titCasa}</div></div>
+                                        <div class="coluna-escalacao fora"><div class="titulo-escalacao">Titulares Fora</div><div>${titFora}</div></div>
+                                    </div>
+                                </div>
+                                <div class="view-reservas">
+                                    <div class="escalacao-grid">
+                                        <div class="coluna-escalacao casa"><div class="titulo-escalacao">Reservas Casa</div><div>${resCasa}</div></div>
+                                        <div class="coluna-escalacao fora"><div class="titulo-escalacao">Reservas Fora</div><div>${resFora}</div></div>
+                                    </div>
+                                </div>
+                            </div>`;
+                        }
+                        lastPainelState = currentPainelState;
+                    }
+                }
+            } catch (e) { }
+        }
+
+        const mediaShowcase = document.getElementById('media-showcase');
+        const cardPrincipal = document.getElementById('card-principal');
+        mediaShowcase.addEventListener('click', fecharMedia);
+        window.addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharMedia(); });
+
+        function fecharMedia() {
+            mediaShowcase.classList.remove('show');
+            mediaShowcase.innerHTML = '';
+            cardPrincipal.style.display = 'flex';
+        }
+
+        function mostrarImagem(url) {
+            cardPrincipal.style.display = 'none';
+            mediaShowcase.innerHTML = '';
+            const img = document.createElement('img');
+            img.src = url; img.alt = 'Print Screen';
+            img.addEventListener('click', (e) => e.stopPropagation());
+            mediaShowcase.appendChild(img);
+            mediaShowcase.classList.add('show');
+        }
+
+        function mostrarTweet(tweetUrl) {
+            cardPrincipal.style.display = 'none';
+            mediaShowcase.innerHTML = '';
+            const wrapper = document.createElement('div');
+            wrapper.className = 'tweet-card-wrapper';
+            wrapper.addEventListener('click', (e) => e.stopPropagation());
+            wrapper.innerHTML = `<blockquote class="twitter-tweet" data-dnt="true" data-theme="dark" data-conversation="none" data-align="center"><a href="${tweetUrl}"></a></blockquote>`;
+            mediaShowcase.appendChild(wrapper);
+            mediaShowcase.classList.add('show');
+            const permitirFullscreen = () => {
+                wrapper.querySelectorAll('iframe').forEach(f => { f.setAttribute('allowfullscreen', 'true'); f.setAttribute('allow', 'autoplay; fullscreen'); });
+            };
+            if (!window.twttr) {
+                const scriptTw = document.createElement('script');
+                scriptTw.src = "https://platform.twitter.com/widgets.js";
+                scriptTw.async = true;
+                scriptTw.onload = () => { setTimeout(permitirFullscreen, 400); setTimeout(permitirFullscreen, 1200); };
+                document.body.appendChild(scriptTw);
+            } else {
+                window.twttr.widgets.load(wrapper);
+                setTimeout(permitirFullscreen, 400); setTimeout(permitirFullscreen, 1200);
+            }
+        }
+
+        window.addEventListener('paste', (e) => {
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            let colouImagem = false;
+            for (let index in items) {
+                const item = items[index];
+                if (item.kind === 'file' && item.type.startsWith('image/')) {
+                    mostrarImagem(URL.createObjectURL(item.getAsFile()));
+                    colouImagem = true; break;
+                } else if (item.kind === 'string' && item.type === 'text/plain') {
+                    item.getAsString((text) => {
+                        if (!colouImagem && (text.includes('twitter.com') || text.includes('x.com'))) {
+                            const match = text.match(/https?:\/\/(?:www\.)?(?:twitter\.com|x\.com)\/([a-zA-Z0-9_]+)\/status\/([0-9]+)/i);
+                            if (match) mostrarTweet(`https://twitter.com/${match[1]}/status/${match[2]}`);
+                        }
+                    });
+                }
+            }
+        });
+
+        // Inicia a leitura do ficheiro e o processamento da fila com atraso
+        buscarDadosServidor();
+        setInterval(buscarDadosServidor, 1000);
+        setInterval(processarFilaAntiSpoiler, 500);
+
+        setInterval(() => {
+            if (relogioRodando && !animando && document.getElementById('card-principal').classList.contains('futebol')) {
+                segundosLocais++;
+                if (segundosLocais >= 60) { segundosLocais = 0; minutosLocais++; }
+                let el = document.getElementById('relogio-tela');
+                if (el && el.innerText !== "") el.innerText = `${minutosLocais}:${segundosLocais.toString().padStart(2, '0')}`;
+            }
+        }, 1000);
+
+        // =========================================================================
+        // SISTEMA DE PICTURE-IN-PICTURE EXCLUSIVO PARA O GOOGLE CHROME
+        // =========================================================================
+        (function configurarPiP() {
+            const btnPip = document.getElementById('btn-pip');
+            if (!btnPip) return;
+
+            // Detecta se a página está rodando dentro do OBS Studio
+            const isOBS = !!(window.obsstudio || navigator.userAgent.includes("OBS"));
+            const suportaDocPiP = 'documentPictureInPicture' in window;
+
+            // Se estiver no OBS ou o navegador não for compatível, não mostra o botão
+            if (isOBS || !suportaDocPiP) {
+                btnPip.style.display = 'none';
+                return;
+            }
+
+            // Exibe o botão apenas no Chrome convencional
+            btnPip.style.display = 'flex';
+
+            // Garante que o placar continue atualizando os dados mesmo dentro da janela flutuante
+            const originalGetElementById = document.getElementById.bind(document);
+            document.getElementById = function (id) {
+                let el = originalGetElementById(id);
+                if (!el && window._pipWindow && !window._pipWindow.closed) {
+                    el = window._pipWindow.document.getElementById(id);
+                }
+                return el;
+            };
+
+            btnPip.addEventListener('click', async () => {
+                if (window._pipWindow && !window._pipWindow.closed) {
+                    window._pipWindow.close();
+                    return;
+                }
+
+                try {
+                    // Abre uma janela nativa suspensa do Chrome
+                    const pipWindow = await window.documentPictureInPicture.requestWindow({
+                        width: 660,
+                        height: 380
+                    });
+                    window._pipWindow = pipWindow;
+
+                    // Clona todos os estilos CSS e fontes (Montserrat) para a janela suspensa
+                    [...document.querySelectorAll('link[rel="stylesheet"], style')].forEach((node) => {
+                        pipWindow.document.head.appendChild(node.cloneNode(true));
+                    });
+
+                    // Ajusta o fundo da janela PiP
+                    pipWindow.document.body.style.cssText = `
+                margin: 0;
+                padding: 12px;
+                background: #080c18;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                box-sizing: border-box;
+                overflow-x: hidden;
+            `;
+
+                    // Transfere o card do placar para a janela flutuante
+                    const card = document.getElementById('card-principal');
+                    const containerPai = card.parentNode;
+                    pipWindow.document.body.appendChild(card);
+
+                    btnPip.querySelector('span').innerText = "Fechar PiP";
+
+                    // Encaminha os atalhos de teclado (gols, alertas, expandir) para a janela principal
+                    pipWindow.addEventListener('keydown', (e) => {
+                        window.dispatchEvent(new KeyboardEvent('keydown', {
+                            key: e.key,
+                            code: e.code,
+                            bubbles: true
+                        }));
+                    });
+
+                    // Quando a janela flutuante for fechada, devolve o placar para a aba principal
+                    pipWindow.addEventListener('pagehide', () => {
+                        containerPai.appendChild(card);
+                        window._pipWindow = null;
+                        btnPip.querySelector('span').innerText = "Mini Placar (PiP)";
+                    });
+
+                } catch (err) {
+                    console.error("Falha ao abrir o modo Picture-in-Picture:", err);
+                }
+            });
+        })();
+    </script>
+</body>
+
+</html>

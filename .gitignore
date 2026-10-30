@@ -1,0 +1,11 @@
+# Dados de tempo real e temporarios
+dados.json
+*.tmp
+
+# Pasta de cache local de fotos e logos
+cache_img/
+
+# Ambientes virtuais e cache do Python
+__pycache__/
+*.py[cod]
+.venv/
