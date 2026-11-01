@@ -13,10 +13,10 @@ echo [0/4] A verificar e descarregar atualizacoes completas do GitHub...
 set "REPO_ZIP_MAIN=https://github.com/pedrodomingosdev/lives-placar/archive/refs/heads/main.zip"
 set "REPO_ZIP_MASTER=https://github.com/pedrodomingosdev/lives-placar/archive/refs/heads/master.zip"
 
-Tenta descarregar a branch main com quebra de cache
+:: Tenta descarregar a branch main com quebra de cache
 curl -s -f -L "%REPO_ZIP_MAIN%?nocache=%RANDOM%" -o "update.zip"
 
-Se a branch for master, efetua o fallback automatico
+:: Se a branch for master, efetua o fallback automatico
 if not exist "update.zip" (
     curl -s -f -L "%REPO_ZIP_MASTER%?nocache=%RANDOM%" -o "update.zip"
 )
