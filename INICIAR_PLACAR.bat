@@ -21,7 +21,7 @@ if not exist "update.zip" (
     curl -s -f -L "%REPO_ZIP_MASTER%?nocache=%RANDOM%" -o "update.zip"
 )
 
-Descompacta e substitui todos os ficheiros (scripts, html, sons .mp3 e imagens)
+:: Descompacta e substitui todos os ficheiros (scripts, html, sons .mp3 e imagens)
 if exist "update.zip" (
 tar -xf "update.zip" --strip-components=1
 del /f /q "update.zip" >nul 2>&1
