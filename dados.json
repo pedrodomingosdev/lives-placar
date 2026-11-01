@@ -1,95 +1,95 @@
 [
     {
         "esporte": "nfl",
-        "timeCasa": "Green Bay Packers",
-        "logoCasa": "cache_img/326327a929be2994d256091892aabdf8.png",
-        "abbrevCasa": "GB",
-        "placarCasa": "27",
-        "timeFora": "Carolina Panthers",
-        "logoFora": "cache_img/1c56fdf960b5dca2b1f3f8f1203fc772.png",
-        "abbrevFora": "CAR",
-        "placarFora": "19",
-        "tempo": "FINALIZADO",
+        "timeCasa": "Denver Broncos",
+        "logoCasa": "cache_img/5728a2ef45f9dd280aa57c1854d40a28.png",
+        "abbrevCasa": "DEN",
+        "placarCasa": "6",
+        "timeFora": "Kansas City Chiefs",
+        "logoFora": "cache_img/64cb1dde5cb3dad957c23e13df218880.png",
+        "abbrevFora": "KC",
+        "placarFora": "7",
+        "tempo": "11:40 - 2º QUARTO",
         "torneio": "NFL",
         "titulo_destaques": "LÍDERES DO JOGO",
         "lideres_nfl": [
             {
                 "categoria": "Jds/Passe",
                 "away": {
-                    "nome": "B. Young",
+                    "nome": "P. Mahomes",
                     "posicao": "QB",
-                    "detalhe": "23/41 1 TD, 1 INT",
-                    "stat": "209",
-                    "foto": "cache_img/2b1e9b6c527112cf4ace838bd3a47e16.png"
+                    "detalhe": "7/11 1 TD",
+                    "stat": "60",
+                    "foto": "cache_img/62f56e9fdc6b03a60f72239df25a1e5f.png"
                 },
                 "home": {
-                    "nome": "J. Love",
+                    "nome": "B. Nix",
                     "posicao": "QB",
-                    "detalhe": "30/41 3 TD, 1 INT",
-                    "stat": "288",
-                    "foto": "cache_img/478208e23aa9b4a47dee6d3362b249d1.png"
+                    "detalhe": "6/12",
+                    "stat": "82",
+                    "foto": "cache_img/d42e8bd84dd141eb2d3a779a80dc2d5a.png"
                 }
             },
             {
                 "categoria": "Jds/corrida",
                 "away": {
-                    "nome": "C. Hubbard",
+                    "nome": "K. Walker III",
                     "posicao": "RB",
-                    "detalhe": "81 JDS, 1 TD",
-                    "stat": "22",
-                    "foto": "cache_img/a8fd0704e7dcca88f8e8a5c1ed7efab8.png"
+                    "detalhe": "9 JDS",
+                    "stat": "4",
+                    "foto": "cache_img/2046d7299fbe69255dafd01a7f498165.png"
                 },
                 "home": {
-                    "nome": "J. Jacobs",
+                    "nome": "J.K. Dobbins",
                     "posicao": "RB",
-                    "detalhe": "39 JDS, 1 TD",
-                    "stat": "21",
-                    "foto": "cache_img/7a4669ca5d46feae15b8ca67c79983c0.png"
+                    "detalhe": "10 JDS",
+                    "stat": "6",
+                    "foto": "cache_img/d874171acf1aee770e755e694b2046a7.png"
                 }
             },
             {
                 "categoria": "Jds recebidas",
                 "away": {
-                    "nome": "T. McMillan",
+                    "nome": "R. Rice",
                     "posicao": "WR",
-                    "detalhe": "58 JDS",
-                    "stat": "6",
-                    "foto": "cache_img/cef60d3bb102554e8470b9fd2ac010a0.png"
+                    "detalhe": "26 JDS, 1 TD",
+                    "stat": "3",
+                    "foto": "cache_img/ed2203bf19c77a30fc2f896757c70cd1.png"
                 },
                 "home": {
-                    "nome": "C. Watson",
+                    "nome": "J. Waddle",
                     "posicao": "WR",
-                    "detalhe": "113 JDS",
-                    "stat": "8",
-                    "foto": "cache_img/75444ba65c955593b5ca569fee805cb7.png"
+                    "detalhe": "35 JDS",
+                    "stat": "1",
+                    "foto": "cache_img/4dcb0548e5ce2eccf1e3c77bb1cdc9ab.png"
                 }
             },
             {
                 "categoria": "Sacks",
-                "away": null,
-                "home": {
-                    "nome": "B. Cox Jr.",
+                "away": {
+                    "nome": "G. Karlaftis",
                     "posicao": "DE",
                     "detalhe": "",
                     "stat": "1",
-                    "foto": "cache_img/0c11e296c7a53fdd4c996ecff075ffa9.png"
-                }
+                    "foto": "cache_img/b2f5aa3360e836b760d11ec8cb6c5f91.png"
+                },
+                "home": null
             },
             {
                 "categoria": "Tackles",
                 "away": {
-                    "nome": "M. Wilson",
-                    "posicao": "CB",
-                    "detalhe": "",
-                    "stat": "8",
-                    "foto": "cache_img/8d9a6541fe2908ebee2ad74e7027b73f.png"
-                },
-                "home": {
-                    "nome": "I. McDuffie",
+                    "nome": "N. Bolton",
                     "posicao": "LB",
                     "detalhe": "",
-                    "stat": "10",
-                    "foto": "cache_img/1cf8092ae5e957ae4a4467c7a8e44ced.png"
+                    "stat": "3",
+                    "foto": "cache_img/e5a0aee1af36e36098606575754d176e.png"
+                },
+                "home": {
+                    "nome": "A. Singleton",
+                    "posicao": "LB",
+                    "detalhe": "",
+                    "stat": "3",
+                    "foto": "cache_img/c273a9e5332736c743406924d68b63ee.png"
                 }
             }
         ]

@@ -230,6 +230,180 @@
             color: #60a5fa;
         }
 
+        /* CONTAINER FÓRMULA 1 ESTILO TRANSMISSÃO DE TV */
+        .container.f1 {
+            width: 790px;
+            background: linear-gradient(160deg, rgba(8, 11, 22, 0.98), rgba(15, 20, 36, 0.96));
+            border-bottom: 4px solid #e10600;
+            border-top: 1px solid rgba(225, 6, 0, 0.3);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(225, 6, 0, 0.25);
+        }
+
+        .scroll-f1 {
+            width: 100%;
+            max-height: 440px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .scroll-f1::-webkit-scrollbar {
+            width: 4px;
+        }
+        .scroll-f1::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .scroll-f1::-webkit-scrollbar-thumb {
+            background: rgba(225, 6, 0, 0.6);
+            border-radius: 4px;
+        }
+
+        /* BARRA DE MENU COM O SEPARADOR PIPE "|" */
+        .f1-menu-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+        .f1-botoes-grupo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .f1-divisor-pipe {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.25);
+            margin: 0 4px;
+            user-select: none;
+        }
+
+        /* CABEÇALHO E LINHAS DA TABELA */
+        .tabela-f1-cabecalho {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 14px;
+            font-size: 0.68rem;
+            font-weight: 900;
+            color: #94a3b8;
+            text-transform: uppercase;
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
+            letter-spacing: 0.8px;
+        }
+
+        .linha-f1 {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 14px;
+            background: rgba(255, 255, 255, 0.025);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.035);
+            font-size: 0.8rem;
+            position: relative;
+            transition: background 0.15s ease;
+        }
+        .linha-f1:nth-child(even) {
+            background: rgba(255, 255, 255, 0.012);
+        }
+
+        /* PILOTO QUE ABANDONOU (DNF, NC, DNS, DSQ) */
+        .linha-f1.piloto-out {
+            opacity: 0.42;
+            background: rgba(0, 0, 0, 0.45) !important;
+            filter: grayscale(40%);
+        }
+        .linha-f1.piloto-out .badge-pos-f1 {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.15);
+            border-radius: 3px;
+            padding: 1px 3px;
+        }
+
+        .col-f1-piloto {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* CONTAINER DA FOTO DO PILOTO (ZOOM NO ROSTO) */
+        .foto-container-f1 {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+            flex-shrink: 0;
+            background: #111526;
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+        }
+        .foto-piloto-f1 {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 6% !important;
+            transform: scale(1.22); /* Amplia para enquadrar os olhos e capacete */
+        }
+
+        /* BADGE COM LOGO OFICIAL DA EQUIPE */
+        .badge-logo-equipe {
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+            flex-shrink: 0;
+            padding: 2.5px;
+            box-sizing: border-box;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .logo-equipe-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .col-f1-tempos {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: monospace;
+            font-weight: 700;
+            font-size: 0.78rem;
+            flex-shrink: 0;
+        }
+
+        .badge-pos-f1 {
+            width: 26px;
+            font-weight: 900;
+            color: #ffffff;
+            font-size: 0.82rem;
+            flex-shrink: 0;
+        }
+
+        .aba-btn.ativa-f1 {
+            background: #e10600 !important;
+            color: #ffffff !important;
+            border-color: #e10600 !important;
+            box-shadow: 0 2px 10px rgba(225, 6, 0, 0.5) !important;
+        }
+
+
+        .stripe-equipe {
+            width: 4px;
+            height: 16px;
+            border-radius: 2px;
+            margin-right: 6px;
+            flex-shrink: 0;
+            display: inline-block;
+        }
+
         /* ESTRUTURA GERAL */
         .branding-bar {
             display: flex;
@@ -439,11 +613,11 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
-        .aba-btn.ativa {
-            background: #3b82f6;
+        .aba-btn.ativa-f1 {
+            background: #e10600;
             color: white;
-            border-color: #3b82f6;
-            box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4);
+            border-color: #e10600;
+            box-shadow: 0 2px 10px rgba(225, 6, 0, 0.4);
         }
 
         .container-views {
@@ -1153,12 +1327,9 @@
     </div>
 
     <script>
-        // =========================================================================
-        // CONFIGURAÇÃO DE DELAY DINÂMICO & TROCA RÁPIDA DE GUIA
-        // =========================================================================
-        const ATRASO_SEGUNDOS_PADRAO = 3;       // Futebol e NFL
-        const ATRASO_SEGUNDOS_BASQUETE = 15;    // Basquete durante o jogo
-        const ATRASO_SEGUNDOS_TROCA = 0.5;      // Troca rápida de tela (0.5s)
+        const ATRASO_SEGUNDOS_PADRAO = 3;
+        const ATRASO_SEGUNDOS_BASQUETE = 15;
+        const ATRASO_SEGUNDOS_TROCA = 0.5;
 
         let filaSnapshots = [];
         let idPartidaAtiva = null;
@@ -1181,25 +1352,13 @@
 
         let lastPlacarState = "";
         let lastPainelState = "";
+        let abaAtualF1 = "Qualificação"; // Botão por defeito na F1
 
-        // CONTROLE DAS ABAS MANUAIS
-        document.getElementById('abas-painel').addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (e.target.classList.contains('aba-btn')) {
-                document.querySelectorAll('.aba-btn').forEach(b => b.classList.remove('ativa'));
-                e.target.classList.add('ativa');
-                const painel = document.getElementById('painel-escalacoes');
-                if (e.target.id === 'btn-reservas') {
-                    painel.classList.add('modo-reservas');
-                } else {
-                    painel.classList.remove('modo-reservas');
-                }
-            }
-        });
-
-        // ABRIR/FECHAR O PAINEL DE ESCALAÇÃO
-        document.getElementById('card-principal').addEventListener('click', () => {
+        document.getElementById('card-principal').addEventListener('click', (e) => {
+            if (e.target.closest('.aba-btn')) return;
             const painel = document.getElementById('painel-escalacoes');
+            if (painel.style.display === 'none') return;
+
             painelAberto = !painelAberto;
             if (painelAberto) {
                 painel.classList.add('aberto');
@@ -1215,7 +1374,6 @@
             const tecla = e.key.toLowerCase();
             const modalidadeAtual = dadosPartidaAtual ? dadosPartidaAtual.esporte : 'futebol';
 
-            // NFL: Touchdown, Field Goal e 2-Minute Warning
             if (tecla === '1' || tecla === 't') {
                 if (modalidadeAtual !== 'nfl') return;
                 dispararEvento("TOUCHDOWN!", "tema-td");
@@ -1228,21 +1386,15 @@
                 if (modalidadeAtual !== 'nfl') return;
                 dispararEvento("2-MINUTE WARNING!", "tema-2min");
             }
-
-            // Fim de Quarto (Basquete e NFL)
             else if (tecla === 'f') {
                 if (modalidadeAtual === 'futebol') return;
                 dispararEvento("FIM DE QUARTO!", modalidadeAtual === 'basquete' ? "tema-quarto-basq" : "tema-quarto-nfl");
             }
-
-            // Gol (Futebol)
             else if (tecla === 'g') {
                 if (modalidadeAtual !== 'futebol') return;
                 const logo = dadosPartidaAtual ? (dadosPartidaAtual.logoCasa || "") : "";
                 dispararEvento("GOOOOOOL!", "tema-gol", Boolean(logo), logo);
             }
-
-            // Exibir Outros Jogos Manualmente (Futebol e Basquete)
             else if (tecla === 'o') {
                 if (modalidadeAtual !== 'futebol' && modalidadeAtual !== 'basquete') return;
                 if (!dadosPartidaAtual || !dadosPartidaAtual.outros_jogos || dadosPartidaAtual.outros_jogos.length === 0) return;
@@ -1533,12 +1685,13 @@
                 const esp = (snapshot.dados && snapshot.dados[0]) ? snapshot.dados[0].esporte : 'futebol';
 
                 let delaySegundos;
-                if (snapshot.isTrocaJogo) {
+                if (esp === 'f1') {
+                    delaySegundos = 0; // Sem atraso na Fórmula 1
+                } else if (snapshot.isTrocaJogo) {
                     delaySegundos = ATRASO_SEGUNDOS_TROCA;
                 } else {
                     delaySegundos = (esp === 'basquete') ? ATRASO_SEGUNDOS_BASQUETE : ATRASO_SEGUNDOS_PADRAO;
                 }
-
                 const limiteAtraso = agora - (delaySegundos * 1000);
 
                 if (snapshot.momento <= limiteAtraso) {
@@ -1566,6 +1719,216 @@
                 if (jg.torneio) document.getElementById('txt-torneio').innerText = jg.torneio;
                 if (jg.estadio) document.getElementById('txt-estadio').innerText = jg.estadio;
 
+                // ==========================================
+                // ROTA DA FÓRMULA 1 (TV BROADCAST OFICIAL)
+                // ==========================================
+                if (jg.esporte === "f1") {
+                    cnt.removeAttribute('title');
+                    
+                    let abaAtiva = jg.abaAtiva || "Corrida";
+                    let subTreino = jg.subTreino || "Treino 1";
+                    let currentPlacarState = JSON.stringify({ sessao: abaAtiva, sub: subTreino, dados: jg.classificacaoF1 });
+                    
+                    if (currentPlacarState !== lastPlacarState) {
+                        const isTreinoAtivo = (abaAtiva === 'Treino' || abaAtiva.startsWith('Treino '));
+                        
+                        // BARRA DE MENU COM O PIPELINE "|"
+                        const abasHtml = `
+                            <div class="f1-menu-bar">
+                                <div class="f1-botoes-grupo">
+                                    <button class="aba-f1 aba-btn ${isTreinoAtivo ? 'ativa-f1' : ''}" data-sessao="Treino 1">TREINO</button>
+                                    <button class="aba-f1 aba-btn ${abaAtiva === 'Sprint' ? 'ativa-f1' : ''}" data-sessao="Sprint">SPRINT</button>
+                                    <button class="aba-f1 aba-btn ${abaAtiva === 'Quali' ? 'ativa-f1' : ''}" data-sessao="Quali">QUALI</button>
+                                    <button class="aba-f1 aba-btn ${abaAtiva === 'Corrida' ? 'ativa-f1' : ''}" data-sessao="Corrida">CORRIDA</button>
+                                </div>
+                                <span class="f1-divisor-pipe">|</span>
+                                <div class="f1-botoes-grupo">
+                                    <button class="aba-f1 aba-btn ${abaAtiva === 'Pilotos' ? 'ativa-f1' : ''}" data-sessao="Pilotos">PILOTOS</button>
+                                    <button class="aba-f1 aba-btn ${abaAtiva === 'Equipes' ? 'ativa-f1' : ''}" data-sessao="Equipes">CONSTRUTORES</button>
+                                </div>
+                            </div>
+                        `;
+
+                        // Barra com os 3 Treinos Livres
+                        let subTreinoHtml = '';
+                        if (isTreinoAtivo) {
+                            subTreinoHtml = `
+                                <div style="display: flex; justify-content: center; gap: 6px; margin-bottom: 8px;">
+                                    <button class="aba-f1 aba-btn ${subTreino === 'Treino 1' ? 'ativa-f1' : ''}" data-sessao="Treino 1" style="font-size:0.65rem; padding: 2px 10px;">TREINO 1</button>
+                                    <button class="aba-f1 aba-btn ${subTreino === 'Treino 2' ? 'ativa-f1' : ''}" data-sessao="Treino 2" style="font-size:0.65rem; padding: 2px 10px;">TREINO 2</button>
+                                    <button class="aba-f1 aba-btn ${subTreino === 'Treino 3' ? 'ativa-f1' : ''}" data-sessao="Treino 3" style="font-size:0.65rem; padding: 2px 10px;">TREINO 3</button>
+                                </div>
+                            `;
+                        }
+
+                        // CABEÇALHOS ESPECÍFICOS PARA CADA TIPO DE TABELA
+                        let cabecalhoHtml = '';
+                        if (abaAtiva === 'Equipes') {
+                            cabecalhoHtml = `
+                                <div class="tabela-f1-cabecalho">
+                                    <div class="col-f1-piloto">POS / ESCUDERIA</div>
+                                    <div class="col-f1-tempos" style="width: 80px; justify-content: flex-end;">
+                                        <span style="width: 60px; text-align: right; color:#ef4444;">PONTOS</span>
+                                    </div>
+                                </div>`;
+                        } else if (abaAtiva === 'Pilotos') {
+                            cabecalhoHtml = `
+                                <div class="tabela-f1-cabecalho">
+                                    <div class="col-f1-piloto">POS / PILOTO</div>
+                                    <div class="col-f1-tempos" style="width: 240px; justify-content: space-between;">
+                                        <span style="width: 160px; text-align: left;">EQUIPE</span>
+                                        <span style="width: 60px; text-align: right; color:#ef4444;">PONTOS</span>
+                                    </div>
+                                </div>`;
+                        } else if (abaAtiva === 'Quali') {
+                            cabecalhoHtml = `
+                                <div class="tabela-f1-cabecalho">
+                                    <div class="col-f1-piloto">POS / PILOTO</div>
+                                    <div class="col-f1-tempos" style="width: 290px;">
+                                        <span style="width: 74px; text-align: center;">Q1</span>
+                                        <span style="width: 74px; text-align: center;">Q2</span>
+                                        <span style="width: 74px; text-align: center; color:#ef4444;">Q3</span>
+                                        <span style="width: 44px; text-align: center;">VOLT</span>
+                                    </div>
+                                </div>`;
+                        } else if (abaAtiva === 'Corrida' || abaAtiva === 'Sprint') {
+                            cabecalhoHtml = `
+                                <div class="tabela-f1-cabecalho">
+                                    <div class="col-f1-piloto">POS / PILOTO</div>
+                                    <div class="col-f1-tempos" style="width: 230px;">
+                                        <span style="width: 120px; text-align: center;">TEMPO / GAP</span>
+                                        <span style="width: 45px; text-align: center;">VOLT</span>
+                                        <span style="width: 45px; text-align: center; color:#ef4444;">PTS</span>
+                                    </div>
+                                </div>`;
+                        } else {
+                            cabecalhoHtml = `
+                                <div class="tabela-f1-cabecalho">
+                                    <div class="col-f1-piloto">POS / PILOTO</div>
+                                    <div class="col-f1-tempos" style="width: 180px;">
+                                        <span style="width: 120px; text-align: center;">TEMPO / GAP</span>
+                                        <span style="width: 45px; text-align: center;">VOLT</span>
+                                    </div>
+                                </div>`;
+                        }
+
+                        let linhas = (jg.classificacaoF1 || []).map(p => {
+                            if (p.piloto === "Sem resultados") {
+                                return `<div class="linha-f1" style="justify-content:center; color:#94a3b8; font-weight:bold; padding: 20px;">
+                                    Sem resultados
+                                </div>`;
+                            }
+
+                            // BADGE DO LOGO DA EQUIPE COM A COR OFICIAL DE FUNDO
+                            let logoBadgeHtml = p.logoEquipe ? `
+                                <span class="badge-logo-equipe" style="background-color: ${p.corEquipe || 'rgba(255,255,255,0.08)'};">
+                                    <img src="${p.logoEquipe}" class="logo-equipe-img" onerror="this.style.display='none'">
+                                </span>` : '';
+
+                            // RENDERIZAÇÃO: CAMPEONATO DE CONSTRUTORES (EQUIPES)
+                            if (p.isEquipes) {
+                                return `<div class="linha-f1">
+                                    <div class="col-f1-piloto">
+                                        <span class="badge-pos-f1">${p.pos}</span>
+                                        ${logoBadgeHtml}
+                                        <span style="font-weight: 800; font-size: 0.85rem; color: #fff;">${p.equipe}</span>
+                                    </div>
+                                    <div class="col-f1-tempos" style="width: 80px; justify-content: flex-end;">
+                                        <span style="font-size: 0.95rem; font-weight: 900; color: #ef4444; width: 60px; text-align: right;">${p.pts}</span>
+                                    </div>
+                                </div>`;
+                            }
+
+                            // RENDERIZAÇÃO: PILOTOS OU SESSÕES DO GP
+                            let fotoContainerHtml = p.foto ? `
+                                <div class="foto-container-f1">
+                                    <img src="${p.foto}" class="foto-piloto-f1" onerror="this.style.display='none'">
+                                </div>` : '';
+
+                            let flagHtml = p.nacionalidade ? `<img src="https://flagcdn.com/w40/${p.nacionalidade}.png" style="width:16px; height:11px; object-fit:cover; border-radius:2px; margin-right:6px;" onerror="this.style.display='none'">` : '';
+
+                            let temposLinhaHtml = '';
+                            if (abaAtiva === 'Pilotos') {
+                                temposLinhaHtml = `
+                                    <div class="col-f1-tempos" style="width: 240px; justify-content: space-between;">
+                                        <div style="display:flex; align-items:center; width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                                            ${logoBadgeHtml}
+                                            <span style="color:#94a3b8; font-weight:600; font-size:0.75rem;">${p.equipe}</span>
+                                        </div>
+                                        <span style="width: 60px; text-align: right; font-size: 0.95rem; font-weight: 900; color: #ef4444;">${p.pts}</span>
+                                    </div>`;
+                            } else if (abaAtiva === 'Quali') {
+                                temposLinhaHtml = `
+                                    <div class="col-f1-tempos" style="width: 290px;">
+                                        <span style="width: 74px; text-align: center;">${p.q1 || '-'}</span>
+                                        <span style="width: 74px; text-align: center;">${p.q2 || '-'}</span>
+                                        <span style="width: 74px; text-align: center; color: ${p.q3 && p.q3 !== '-' ? '#4ade80' : 'inherit'};">${p.q3 || '-'}</span>
+                                        <span style="width: 44px; text-align: center; color:#94a3b8;">${p.laps || '-'}</span>
+                                    </div>`;
+                            } else if (abaAtiva === 'Corrida' || abaAtiva === 'Sprint') {
+                                let timeColor = p.isOut ? '#ef4444' : 'inherit';
+                                temposLinhaHtml = `
+                                    <div class="col-f1-tempos" style="width: 230px;">
+                                        <span style="width: 120px; text-align: center; font-weight: ${p.isOut ? '900' : '700'}; color: ${timeColor};">${p.timeGap || '-'}</span>
+                                        <span style="width: 45px; text-align: center; color:#94a3b8;">${p.laps || '-'}</span>
+                                        <span style="width: 45px; text-align: center; font-weight:900; color:#ef4444;">${p.pts || '0'}</span>
+                                    </div>`;
+                            } else {
+                                temposLinhaHtml = `
+                                    <div class="col-f1-tempos" style="width: 180px;">
+                                        <span style="width: 120px; text-align: center;">${p.timeGap || '-'}</span>
+                                        <span style="width: 45px; text-align: center; color:#94a3b8;">${p.laps || '-'}</span>
+                                    </div>`;
+                            }
+
+                            let classeOut = p.isOut ? 'piloto-out' : '';
+                            let equipaNomeHtml = (abaAtiva !== 'Pilotos' && p.equipe) ? ` <small style="color:#94a3b8; font-weight:600;">(${p.equipe})</small>` : '';
+
+                            return `<div class="linha-f1 ${classeOut}">
+                                <div class="col-f1-piloto">
+                                    <span class="badge-pos-f1">${p.pos}</span>
+                                    ${logoBadgeHtml}
+                                    ${fotoContainerHtml}
+                                    ${flagHtml}
+                                    <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"><strong>${p.piloto}</strong>${equipaNomeHtml}</span>
+                                </div>
+                                ${temposLinhaHtml}
+                            </div>`;
+                        }).join('');
+
+                        document.getElementById('placar-dinamico').innerHTML = abasHtml + subTreinoHtml + cabecalhoHtml + `<div class="scroll-f1">${linhas}</div>`;
+                        document.getElementById('painel-escalacoes').style.display = 'none';
+                        
+                        document.querySelectorAll('.aba-f1').forEach(btn => {
+                            btn.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                let sessaoEscolhida = e.target.getAttribute('data-sessao');
+                                document.querySelectorAll('.aba-f1').forEach(b => b.classList.remove('ativa-f1'));
+                                e.target.classList.add('ativa-f1');
+                                
+                                if (sessaoEscolhida.startsWith('Treino')) {
+                                    let btnTreinoPrincipal = document.querySelector('.aba-f1[data-sessao="Treino 1"]:not([style])');
+                                    if(btnTreinoPrincipal) btnTreinoPrincipal.classList.add('ativa-f1');
+                                }
+
+                                fetch('/trocar_sessao_f1', { method: 'POST', body: sessaoEscolhida }).catch(()=>{});
+                                setTimeout(buscarDadosServidor, 350);
+                                setTimeout(buscarDadosServidor, 700);
+                            });
+                        });
+                        
+                        lastPlacarState = currentPlacarState;
+                    }
+                    
+                    document.getElementById('txt-estadio').innerText = jg.tempo;
+                    return; 
+                } else {
+                    document.getElementById('painel-escalacoes').style.display = 'block';
+                }
+
+                // ==========================================
+                // LÓGICA ORIGINAL DE FUTEBOL/NFL/BASQUETE
+                // ==========================================
                 if (jg.outros_jogos && jg.esporte === "futebol") {
                     verificarGolsOutrosJogos(jg.outros_jogos, jg.timeCasa, jg.timeFora);
                 }
