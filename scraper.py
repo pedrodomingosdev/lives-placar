@@ -881,31 +881,117 @@ def atualizar_placar():
 
         let ev = rEvento?.event || {};
         let uId = ev?.tournament?.uniqueTournament?.id;
+        let tId = ev?.tournament?.id;
         let sId = ev?.season?.id;
         let rStandings = {};
         let rCuptrees = {};
 
-        if (uId && !sId) {
+        if (!sId && uId) {
             try {
-                let rSeasons = await fetch(`/api/v1/unique-tournament/${uId}/seasons`).then(r => r.json());
+                let rSeasons = await fetch(`/api/v1/unique-tournament/${uId}/seasons`).then(r => r.json()).catch(() => ({}));
+                if (rSeasons?.seasons?.length > 0) sId = rSeasons.seasons[0].id;
+            } catch(e) {}
+        }
+        if (!sId && tId) {
+            try {
+                let rSeasons = await fetch(`/api/v1/tournament/${tId}/seasons`).then(r => r.json()).catch(() => ({}));
                 if (rSeasons?.seasons?.length > 0) sId = rSeasons.seasons[0].id;
             } catch(e) {}
         }
 
+        // 1. Grupos / Classificação
         if (uId && sId) {
             try {
-                let [resSt, resCup] = await Promise.all([
-                    fetch(`/api/v1/unique-tournament/${uId}/season/${sId}/standings/total`).then(r => r.ok ? r.json() : {}).catch(() => ({})),
-                    fetch(`/api/v1/unique-tournament/${uId}/season/${sId}/cuptrees`).then(r => r.ok ? r.json() : {}).catch(() => ({}))
-                ]);
-                rStandings = resSt || {};
-                rCuptrees = resCup || {};
-                if (!rCuptrees || Object.keys(rCuptrees).length === 0) {
-                    try {
-                        let r2 = await fetch(`/api/v1/unique-tournament/${uId}/season/${sId}/cuptree`).then(r => r.ok ? r.json() : {}).catch(() => ({}));
-                        if (r2 && Object.keys(r2).length > 0) rCuptrees = r2;
-                    } catch(e) {}
+                rStandings = await fetch(`/api/v1/unique-tournament/${uId}/season/${sId}/standings/total`).then(r => r.ok ? r.json() : {}).catch(() => ({}));
+            } catch(e) {}
+        }
+
+        // 2. Mata-Mata / Cuptrees (Coleta completa sem corte de 32 IDs)
+        if (uId && sId) {
+            try {
+                let resCup = await fetch(`/api/v1/unique-tournament/${uId}/season/${sId}/cuptrees`).then(r => r.ok ? r.json() : {}).catch(() => ({}));
+                let trees = resCup?.cupTrees || resCup?.cupTree || [];
+
+                let treeAlvo = null;
+                if (Array.isArray(trees) && trees.length > 0) {
+                    treeAlvo = trees.find(t => {
+                        let n = (t.name || "").toLowerCase();
+                        let isPre = n.includes("qualif") || n.includes("prelimin") || n.includes("pré") || n.includes("pre-");
+                        return !isPre && (n.includes("knockout") || n.includes("playoff") || n.includes("final") || n.includes("eliminat") || n.includes("bracket"));
+                    });
+
+                    if (!treeAlvo) {
+                        treeAlvo = trees.slice().reverse().find(t => {
+                            let n = (t.name || "").toLowerCase();
+                            return !n.includes("qualif") && !n.includes("prelimin") && !n.includes("pré");
+                        }) || trees[trees.length - 1];
+                    }
                 }
+
+                let dTree = null;
+                if (treeAlvo?.id) {
+                    let tid = treeAlvo.id;
+                    let [d1, d2] = await Promise.all([
+                        fetch(`/api/v1/cup-tree/${tid}`).then(r => r.ok ? r.json() : null).catch(() => null),
+                        fetch(`/api/v1/unique-tournament/${uId}/season/${sId}/cuptree/${tid}`).then(r => r.ok ? r.json() : null).catch(() => null)
+                    ]);
+                    dTree = d1 || d2;
+                }
+
+                let arvoreFinal = dTree || treeAlvo || resCup;
+
+                // Coleta eventos já existentes na resposta da API
+                let eventosDetalhados = {};
+                function registrarEvento(ev) {
+                    if (ev && ev.id && (ev.homeScore !== undefined || ev.status !== undefined)) {
+                        eventosDetalhados[String(ev.id)] = ev;
+                    }
+                }
+
+                if (Array.isArray(resCup?.events)) resCup.events.forEach(registrarEvento);
+                if (Array.isArray(dTree?.events)) dTree.events.forEach(registrarEvento);
+
+                // Coleta todos os IDs da árvore eliminatória
+                let idsSet = new Set();
+                function coletarIds(obj) {
+                    if (!obj || typeof obj !== 'object') return;
+                    if (Array.isArray(obj)) {
+                        obj.forEach(coletarIds);
+                    } else {
+                        if (Array.isArray(obj.events)) {
+                            obj.events.forEach(id => {
+                                if (typeof id === 'number' || typeof id === 'string') idsSet.add(id);
+                                else if (id && id.id) { idsSet.add(id.id); registrarEvento(id); }
+                            });
+                        }
+                        if (Array.isArray(obj.matches)) {
+                            obj.matches.forEach(id => {
+                                if (typeof id === 'number' || typeof id === 'string') idsSet.add(id);
+                                else if (id && id.id) { idsSet.add(id.id); registrarEvento(id); }
+                            });
+                        }
+                        Object.values(obj).forEach(coletarIds);
+                    }
+                }
+                coletarIds(arvoreFinal);
+
+                // Busca apenas os IDs que ainda não vieram inclusos na resposta
+                let listaIds = Array.from(idsSet).filter(id => !eventosDetalhados[String(id)]);
+                if (listaIds.length > 0) {
+                    let promessas = listaIds.slice(0, 64).map(id =>
+                        fetch(`/api/v1/event/${id}`)
+                            .then(r => r.ok ? r.json() : null)
+                            .then(j => j && j.event ? j.event : null)
+                            .catch(() => null)
+                    );
+                    let resps = await Promise.all(promessas);
+                    resps.forEach(registrarEvento);
+                }
+
+                rCuptrees = {
+                    tree: arvoreFinal,
+                    eventsMap: eventosDetalhados
+                };
             } catch(e) {}
         }
 
@@ -919,7 +1005,7 @@ def atualizar_placar():
             campanhaBasquete: {}
         };
     }
-
+    
     obterDadosCompletos().then(res => done(res)).catch(() => done(null));
     """
     
@@ -1063,21 +1149,26 @@ def atualizar_placar():
         if esporte == "futebol" and standings_data:
             standings_list = standings_data.get("standings", [])
             for grp in standings_list:
+                if not isinstance(grp, dict): continue
                 nome_grp = grp.get("name") or grp.get("groupName") or "Classificação"
                 linhas_grp = []
                 for r in grp.get("rows", []):
-                    tm = r.get("team", {})
+                    if not isinstance(r, dict): continue
+                    tm = r.get("team") if isinstance(r.get("team"), dict) else {}
                     t_id = tm.get("id")
                     diff = r.get("scoreDiffFormatted")
                     if diff is None:
                         diff = r.get("scoresFor", 0) - r.get("scoresAgainst", 0)
                         diff = f"+{diff}" if diff > 0 else str(diff)
 
+                    promo_obj = r.get("promotion")
+                    promo_txt = promo_obj.get("text", "") if isinstance(promo_obj, dict) else str(promo_obj or "")
+
                     linhas_grp.append({
                         "pos": r.get("position"),
                         "id": t_id,
                         "nome": tm.get("shortName") or tm.get("name", ""),
-                        "promocao": r.get("promotion", {}).get("text", ""),
+                        "promocao": promo_txt,
                         "logo": f"https://api.sofascore.app/api/v1/team/{t_id}/image" if t_id else "",
                         "jogos": r.get("matches", 0),
                         "v": r.get("wins", 0),
@@ -1096,73 +1187,330 @@ def atualizar_placar():
                     "times": linhas_grp
                 })
 
-            # Tabela simples de fallback (grupo do jogo atual)
             grupo_principal = next((g for g in tabelas_grupos if g["ativoPadrao"]), None)
             if not grupo_principal and tabelas_grupos:
                 grupo_principal = tabelas_grupos[0]
             if grupo_principal:
                 tabela_classificacao = grupo_principal["times"]
 
-        # 2. PROCESSAR O MATA-MATA (CHAVEAMENTO RESILIENTE)
+       # 2. PROCESSAR O MATA-MATA (COM SUPORTE COMPLETO A PENÁLTIS E IDA/VOLTA)
         matamata_fases = []
         if esporte == "futebol" and cuptrees_data:
-            arvores = []
-            if isinstance(cuptrees_data, dict):
-                arvores = cuptrees_data.get("cupTrees") or cuptrees_data.get("cupTree") or cuptrees_data.get("rounds") or []
-            elif isinstance(cuptrees_data, list):
-                arvores = cuptrees_data
+            rounds_encontrados = []
 
-            if isinstance(arvores, dict):
-                arvores = [arvores]
+            def buscar_rounds_recursivo(obj):
+                if not obj: return
+                if isinstance(obj, dict):
+                    if "rounds" in obj and isinstance(obj["rounds"], list) and len(obj["rounds"]) > 0:
+                        rounds_encontrados.extend(obj["rounds"])
+                        return
+                    for k, v in obj.items():
+                        if k in ["tree", "selectedTree", "views", "cupTree", "cupTrees"]:
+                            if isinstance(v, (dict, list)):
+                                buscar_rounds_recursivo(v)
+                        elif k != "eventsMap":
+                            if isinstance(v, (dict, list)):
+                                buscar_rounds_recursivo(v)
+                elif isinstance(obj, list):
+                    for item in obj:
+                        buscar_rounds_recursivo(item)
 
-            rounds = []
-            if arvores and isinstance(arvores, list):
-                for arv in arvores:
-                    if isinstance(arv, dict) and "rounds" in arv:
-                        rounds.extend(arv.get("rounds", []))
-                    elif isinstance(arv, dict):
-                        rounds.append(arv)
+            buscar_rounds_recursivo(cuptrees_data)
 
-            for rnd in rounds:
+            mapa_eventos = cuptrees_data.get("eventsMap", {}) if isinstance(cuptrees_data, dict) else {}
+
+            def extrair_num(val):
+                if val is None or val == "": return None
+                if isinstance(val, dict):
+                    v = val.get("display", val.get("current", val.get("score")))
+                    if v is not None:
+                        try: return int(v)
+                        except Exception: pass
+                    return None
+                try: return int(val)
+                except Exception: return None
+
+            def obter_time_info(tm_obj):
+                if not tm_obj: return "", "A definir"
+                if isinstance(tm_obj, dict):
+                    t_id = str(tm_obj.get("id", ""))
+                    t_nome = tm_obj.get("shortName") or tm_obj.get("name") or tm_obj.get("slug") or "A definir"
+                    return t_id, t_nome
+                return str(tm_obj), str(tm_obj)
+
+            def obter_status_texto(obj):
+                if not isinstance(obj, dict): return str(obj or "")
+                st = obj.get("status")
+                if isinstance(st, dict): return str(st.get("description") or st.get("type") or "")
+                return str(st or "")
+
+            def extrair_penaltis_evento(ev):
+                if not isinstance(ev, dict): return None, None
+                hs = ev.get("homeScore") if isinstance(ev.get("homeScore"), dict) else {}
+                aws = ev.get("awayScore") if isinstance(ev.get("awayScore"), dict) else {}
+                
+                p_h = None
+                p_a = None
+                for k in ["penalties", "shootout", "penalty", "penaltyScore", "p"]:
+                    if p_h is None and hs.get(k) is not None: p_h = hs.get(k)
+                    if p_a is None and aws.get(k) is not None: p_a = aws.get(k)
+                
+                if p_h is None and ev.get("homePenaltyScore") is not None:
+                    p_h = ev.get("homePenaltyScore")
+                if p_a is None and ev.get("awayPenaltyScore") is not None:
+                    p_a = ev.get("awayPenaltyScore")
+
+                return extrair_num(p_h), extrair_num(p_a)
+
+            for rnd in rounds_encontrados:
                 if not isinstance(rnd, dict): continue
-                nome_fase = rnd.get("description") or rnd.get("name") or "Eliminatória"
+
+                nome_fase = rnd.get("description") or rnd.get("name") or rnd.get("slug") or "Eliminatória"
+                nome_low = nome_fase.lower()
+
+                if any(p in nome_low for p in ["qualif", "prelimin", "pré", "pre-", "fase prévia"]):
+                    continue
+
                 confrontos = []
                 blocos = rnd.get("blocks") or rnd.get("events") or rnd.get("matches") or []
 
                 for blk in blocos:
                     if not isinstance(blk, dict): continue
-                    eventos = blk.get("events") or blk.get("matches") or []
-                    if not eventos and blk.get("event"): eventos = [blk.get("event")]
-                    if not eventos and blk.get("match"): eventos = [blk.get("match")]
-                    if not eventos and (blk.get("homeTeam") or blk.get("team1")):
-                        eventos = [blk]
 
-                    for ev in eventos:
-                        if not isinstance(ev, dict): continue
-                        h_tm = ev.get("homeTeam") or ev.get("team1") or {}
-                        a_tm = ev.get("awayTeam") or ev.get("team2") or {}
-                        h_id = h_tm.get("id")
-                        a_id = a_tm.get("id")
-                        h_sc = ev.get("homeScore", {}).get("display", ev.get("homeScore", {}).get("current", "-"))
-                        a_sc = ev.get("awayScore", {}).get("display", ev.get("awayScore", {}).get("current", "-"))
-                        status_ev = ev.get("status", {}).get("description", "")
+                    raw_events = blk.get("events") or blk.get("matches") or []
+                    eventos_internos = []
+                    if isinstance(raw_events, list):
+                        for item in raw_events:
+                            if isinstance(item, dict):
+                                eventos_internos.append(item)
+                            elif isinstance(item, (int, str)):
+                                ev_key = str(item)
+                                if ev_key in mapa_eventos:
+                                    eventos_internos.append(mapa_eventos[ev_key])
 
-                        confrontos.append({
-                            "time1": h_tm.get("shortName") or h_tm.get("name", "A definir"),
-                            "logo1": f"https://api.sofascore.app/api/v1/team/{h_id}/image" if h_id else "",
-                            "placar1": str(h_sc) if h_sc is not None else "-",
-                            "time2": a_tm.get("shortName") or a_tm.get("name", "A definir"),
-                            "logo2": f"https://api.sofascore.app/api/v1/team/{a_id}/image" if a_id else "",
-                            "placar2": str(a_sc) if a_sc is not None else "-",
-                            "status": status_ev,
-                            "isJogoAtual": (str(h_id) in [str(id_casa), str(id_fora)]) or (str(a_id) in [str(id_casa), str(id_fora)])
-                        })
+                    eventos_internos.sort(key=lambda x: x.get("startTimestamp", 0) if isinstance(x, dict) else 0)
+
+                    h_tm = None
+                    a_tm = None
+                    scores_parts_0 = None
+                    scores_parts_1 = None
+                    pen_part_0 = None
+                    pen_part_1 = None
+
+                    parts = blk.get("participants") or blk.get("competitors") or blk.get("teams") or []
+                    if isinstance(parts, list) and len(parts) >= 2:
+                        p0, p1 = parts[0], parts[1]
+                        h_tm = p0.get("team") if (isinstance(p0, dict) and "team" in p0) else p0
+                        a_tm = p1.get("team") if (isinstance(p1, dict) and "team" in p1) else p1
+                        
+                        if isinstance(p0, dict):
+                            if isinstance(p0.get("scores"), list): scores_parts_0 = [extrair_num(x) for x in p0["scores"]]
+                            for pk in ["penalties", "shootout", "penaltyScore", "penalty"]:
+                                if p0.get(pk) is not None: pen_part_0 = extrair_num(p0.get(pk)); break
+                        if isinstance(p1, dict):
+                            if isinstance(p1.get("scores"), list): scores_parts_1 = [extrair_num(x) for x in p1["scores"]]
+                            for pk in ["penalties", "shootout", "penaltyScore", "penalty"]:
+                                if p1.get(pk) is not None: pen_part_1 = extrair_num(p1.get(pk)); break
+
+                    if not h_tm:
+                        h_tm = blk.get("homeTeam") or blk.get("team1")
+                        a_tm = blk.get("awayTeam") or blk.get("team2")
+
+                    if not h_tm and eventos_internos:
+                        ev0 = eventos_internos[0]
+                        if isinstance(ev0, dict):
+                            h_tm = ev0.get("homeTeam") or ev0.get("team1")
+                            a_tm = ev0.get("awayTeam") or ev0.get("team2")
+
+                    h_id, nome1 = obter_time_info(h_tm)
+                    a_id, nome2 = obter_time_info(a_tm)
+
+                    is_jogo_atual = False
+                    if id_casa and id_fora:
+                        cond_id = (str(h_id) == str(id_casa) and str(a_id) == str(id_fora)) or (str(h_id) == str(id_fora) and str(a_id) == str(id_casa))
+                        n1_low, n2_low = nome1.lower(), nome2.lower()
+                        tc_low, tf_low = str(time_casa).lower(), str(time_fora).lower()
+                        cond_nome = (tc_low in n1_low or n1_low in tc_low) and (tf_low in n2_low or n2_low in tf_low)
+                        cond_nome_inv = (tf_low in n1_low or n1_low in tf_low) and (tc_low in n2_low or n2_low in tc_low)
+                        if cond_id or cond_nome or cond_nome_inv:
+                            is_jogo_atual = True
+
+                    pernas_textos = []
+                    total_t1 = 0
+                    total_t2 = 0
+                    teve_jogo_resolvido = False
+                    p1_pen = pen_part_0
+                    p2_pen = pen_part_1
+
+                    # CASO 1: Ida e Volta com array de scores em participants
+                    if scores_parts_0 and scores_parts_1 and len(scores_parts_0) >= 2 and len(scores_parts_1) >= 2:
+                        s0_ida, s0_volta = scores_parts_0[0], scores_parts_0[1]
+                        s1_ida, s1_volta = scores_parts_1[0], scores_parts_1[1]
+
+                        if s0_ida is not None and s1_ida is not None:
+                            pernas_textos.append(f"Ida: {s0_ida}-{s1_ida}")
+                            total_t1 += s0_ida
+                            total_t2 += s1_ida
+                            teve_jogo_resolvido = True
+
+                        if s0_volta is not None and s1_volta is not None:
+                            pernas_textos.append(f"Volta: {s0_volta}-{s1_volta}")
+                            total_t1 += s0_volta
+                            total_t2 += s1_volta
+                            teve_jogo_resolvido = True
+
+                    # CASO 2: Ida e Volta com eventos associados
+                    elif len(eventos_internos) >= 2:
+                        for idx, ev in enumerate(eventos_internos[:2]):
+                            rotulo = "Ida" if idx == 0 else "Volta"
+                            ev_hid = str(ev.get("homeTeam", {}).get("id", ""))
+
+                            sc_h = extrair_num(ev.get("homeScore"))
+                            sc_a = extrair_num(ev.get("awayScore"))
+
+                            pen_h, pen_a = extrair_penaltis_evento(ev)
+                            if pen_h is not None and pen_a is not None:
+                                p1_pen = pen_h if ev_hid == h_id else pen_a
+                                p2_pen = pen_a if ev_hid == h_id else pen_h
+
+                            if sc_h is not None and sc_a is not None:
+                                g_t1 = sc_h if ev_hid == str(h_id) else sc_a
+                                g_t2 = sc_a if ev_hid == str(h_id) else sc_h
+                                total_t1 += g_t1
+                                total_t2 += g_t2
+                                pernas_textos.append(f"{rotulo}: {g_t1}-{g_t2}")
+                                teve_jogo_resolvido = True
+                            else:
+                                st_desc = obter_status_texto(ev)
+                                if st_desc and st_desc.lower() not in ["not started", "em breve"]:
+                                    pernas_textos.append(f"{rotulo}: {st_desc}")
+
+                    # CASO 3: Jogo Único catalogado
+                    elif len(eventos_internos) == 1:
+                        ev = eventos_internos[0]
+                        ev_hid = str(ev.get("homeTeam", {}).get("id", ""))
+                        sc_h = extrair_num(ev.get("homeScore"))
+                        sc_a = extrair_num(ev.get("awayScore"))
+
+                        pen_h, pen_a = extrair_penaltis_evento(ev)
+                        if pen_h is not None and pen_a is not None:
+                            p1_pen = pen_h if ev_hid == h_id else pen_a
+                            p2_pen = pen_a if ev_hid == h_id else pen_h
+
+                        if sc_h is not None and sc_a is not None:
+                            total_t1 = sc_h if ev_hid == str(h_id) else sc_a
+                            total_t2 = sc_a if ev_hid == str(h_id) else sc_h
+                            teve_jogo_resolvido = True
+
+                        st_desc = obter_status_texto(ev)
+                        if st_desc: pernas_textos.append(st_desc)
+
+                    # CASO 4: Fallback amplo em participantes / bloco
+                    if not teve_jogo_resolvido:
+                        raw_h = None
+                        raw_a = None
+
+                        if parts and len(parts) >= 2:
+                            p0, p1 = parts[0], parts[1]
+                            if isinstance(p0, dict) and isinstance(p1, dict):
+                                for k in ["score", "aggregatedScore", "aggregateScore", "goals", "points", "value"]:
+                                    if raw_h is None and p0.get(k) is not None: raw_h = p0.get(k)
+                                    if raw_a is None and p1.get(k) is not None: raw_a = p1.get(k)
+
+                        if raw_h is None or raw_a is None:
+                            for kh, ka in [("aggregatedHomeScore", "aggregatedAwayScore"),
+                                          ("aggregateHomeScore", "aggregateAwayScore"),
+                                          ("homeTeamScore", "awayTeamScore"),
+                                          ("homeScore", "awayScore"),
+                                          ("score1", "score2")]:
+                                if raw_h is None and blk.get(kh) is not None: raw_h = blk.get(kh)
+                                if raw_a is None and blk.get(ka) is not None: raw_a = blk.get(ka)
+
+                        if raw_h is None or raw_a is None:
+                            res_val = blk.get("result") or blk.get("score")
+                            if isinstance(res_val, str) and (":" in res_val or "-" in res_val):
+                                limpo = re.sub(r'\(.*?\)', '', res_val).strip()
+                                partes_res = re.split(r'[:\-]', limpo)
+                                if len(partes_res) == 2:
+                                    if raw_h is None: raw_h = partes_res[0].strip()
+                                    if raw_a is None: raw_a = partes_res[1].strip()
+
+                        h_num = extrair_num(raw_h)
+                        a_num = extrair_num(raw_a)
+
+                        if h_num is not None and a_num is not None:
+                            placar1_final = str(h_num)
+                            placar2_final = str(a_num)
+                            teve_jogo_resolvido = True
+                        else:
+                            placar1_final = "-"
+                            placar2_final = "-"
+                    else:
+                        placar1_final = str(total_t1)
+                        placar2_final = str(total_t2)
+
+                    # Tenta extrair penáltis no bloco via texto (ex: "(4) 1-1 (2)" ou "(p. 4-2)")
+                    if p1_pen is None or p2_pen is None:
+                        res_str = str(blk.get("result") or blk.get("score") or "")
+                        m_pen = re.search(r'\((?:pên|pen|p\.?)?\s*(\d+)\s*[-:]\s*(\d+)\)', res_str, re.IGNORECASE)
+                        if m_pen:
+                            p1_pen, p2_pen = int(m_pen.group(1)), int(m_pen.group(2))
+                        else:
+                            m_pen2 = re.search(r'\((\d+)\)\s*\d+\s*[-:]\s*\d+\s*\((\d+)\)', res_str)
+                            if m_pen2:
+                                p1_pen, p2_pen = int(m_pen2.group(1)), int(m_pen2.group(2))
+
+                    # Se for o jogo atual ao vivo, sincroniza os penáltis do direto
+                    if is_jogo_atual:
+                        if (placar1_final == "-" or placar2_final == "-") and placar_casa is not None and placar_casa != "-":
+                            if str(h_id) == str(id_casa) or (str(time_casa).lower() in nome1.lower()):
+                                placar1_final, placar2_final = str(placar_casa), str(placar_fora)
+                            else:
+                                placar1_final, placar2_final = str(placar_fora), str(placar_casa)
+                        
+                        if tem_penaltis:
+                            if str(h_id) == str(id_casa) or (str(time_casa).lower() in nome1.lower()):
+                                p1_pen, p2_pen = score_pen_casa, score_pen_fora
+                            else:
+                                p1_pen, p2_pen = score_pen_fora, score_pen_casa
+
+                    # Montagem do status e rodapé com penáltis
+                    penaltis_str = f" (Pên: {p1_pen}-{p2_pen})" if (p1_pen is not None and p2_pen is not None) else ""
+                    
+                    if len(pernas_textos) > 0:
+                        status_final = " • ".join(pernas_textos) + penaltis_str
+                    else:
+                        base_st = obter_status_texto(blk)
+                        if not base_st:
+                            base_st = "FIM" if (teve_jogo_resolvido and placar1_final != "-") else "EM BREVE"
+                        status_final = (base_st + penaltis_str).strip()
+
+                    if is_jogo_atual and (not status_final or status_final == "EM BREVE"):
+                        status_final = ultimo_tempo_valido + penaltis_str
+
+                    confrontos.append({
+                        "time1": nome1,
+                        "logo1": f"https://api.sofascore.app/api/v1/team/{h_id}/image" if h_id else "",
+                        "placar1": placar1_final,
+                        "pen1": str(p1_pen) if p1_pen is not None else None,
+                        "time2": nome2,
+                        "logo2": f"https://api.sofascore.app/api/v1/team/{a_id}/image" if a_id else "",
+                        "placar2": placar2_final,
+                        "pen2": str(p2_pen) if p2_pen is not None else None,
+                        "status": status_final,
+                        "isJogoAtual": is_jogo_atual
+                    })
 
                 if confrontos:
                     matamata_fases.append({
                         "fase": nome_fase,
                         "jogos": confrontos
                     })
+
+            if matamata_fases:
+                nomes_fases = [f["fase"] for f in matamata_fases]
+                print(f"[MATA-MATA] Sucesso! {len(matamata_fases)} fase(s) com placares e penáltis carregada(s): {nomes_fases}")
+                
         jogo = [{
             "esporte": esporte, "timeCasa": time_casa, "logoCasa": logo_casa, "formacaoCasa": formacao_casa,
             "escalacaoCasa": esc_casa, "placarCasa": placar_casa, "timeFora": time_fora, "logoFora": logo_fora,

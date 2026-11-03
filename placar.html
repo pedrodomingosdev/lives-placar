@@ -27,6 +27,7 @@
             user-select: none;
         }
 
+        /* NOTIFICAÇÃO COMPACTA DE OUTROS JOGOS */
         #container-alerta-externo {
             min-height: 40px;
             display: flex;
@@ -169,6 +170,7 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
+        /* TEMAS */
         .container.futebol {
             width: 640px;
             border-bottom: 4px solid #2563eb;
@@ -227,6 +229,7 @@
             color: #60a5fa;
         }
 
+        /* FÓRMULA 1 */
         .container.f1 {
             width: 790px;
             background: linear-gradient(160deg, rgba(8, 11, 22, 0.98), rgba(15, 20, 36, 0.96));
@@ -393,6 +396,7 @@
             box-shadow: 0 2px 10px rgba(225, 6, 0, 0.5) !important;
         }
 
+        /* HEADER E BRANDING */
         .branding-bar {
             display: flex;
             justify-content: space-between;
@@ -456,6 +460,7 @@
             animation: piscarLive 1s infinite alternate;
         }
 
+        /* PLACAR */
         .placar-wrapper {
             display: flex;
             justify-content: space-between;
@@ -559,11 +564,12 @@
             width: 100%;
         }
 
+        /* PAINEL ESCALAÇÕES */
         .painel-escalacoes {
             max-height: 0;
             opacity: 0;
             overflow: hidden;
-            transition: all 0.5s ease-in-out;
+            transition: all 0.45s ease-in-out;
             margin-top: 0px;
         }
 
@@ -582,7 +588,6 @@
             margin-bottom: 10px;
         }
 
-        /* BOTÕES DE ESCALAÇÃO COMPACTOS */
         .aba-btn {
             background: rgba(255, 255, 255, 0.05);
             color: #94a3b8;
@@ -933,6 +938,7 @@
             background-color: #ef4444;
         }
 
+        /* NFL LÍDERES */
         .nfl-lideres-container {
             display: flex;
             flex-direction: column;
@@ -1107,6 +1113,7 @@
             line-height: 1.1;
         }
 
+        /* ANIMAÇÃO */
         .tela-anim {
             position: absolute;
             top: 0;
@@ -1254,7 +1261,7 @@
             transform: translateY(-1px);
         }
 
-        /* BOTÕES DE CABEÇALHO ESCALAÇÃO E TABELA REDUZIDOS */
+        /* BOTÕES DE TOPO COMPACTOS */
         .btn-tabela-topo {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.18);
@@ -1285,7 +1292,7 @@
             box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
         }
 
-        /* TRANSIÇÃO IDÊNTICA À ESCALAÇÃO */
+        /* PAINEL DA TABELA COM TRANSIÇÃO IDÊNTICA À ESCALAÇÃO E SCROLLBAR FINA */
         .painel-tabela {
             max-height: 0;
             opacity: 0;
@@ -1294,6 +1301,8 @@
             margin-top: 0;
             width: 100%;
             box-sizing: border-box;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(37, 99, 235, 0.6) rgba(255, 255, 255, 0.02);
         }
 
         .painel-tabela.aberto {
@@ -1305,79 +1314,22 @@
             overflow-y: auto;
         }
 
-        /* --- CORES DE CLASSIFICAÇÃO COM ELEVADO CONTRASTE --- */
-
-        /* Champions League / Oitavos (1º ao 8º): Azul forte / elétrico */
-        .pos-ucl,
-        .pos-oitavos {
-            background: rgba(29, 78, 216, 0.4) !important;
-            color: #60a5fa !important;
-            border: 1px solid #3b82f6 !important;
+        .painel-tabela::-webkit-scrollbar {
+            width: 4px;
         }
 
-        /* Play-offs / Fase Preliminar (9º ao 24º): Ciano vivo */
-        .pos-pre-lib,
-        .pos-playoff {
-            background: rgba(6, 182, 212, 0.22) !important;
-            color: #38bdf8 !important;
-            border: 1px solid rgba(56, 189, 248, 0.6) !important;
+        .painel-tabela::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 4px;
         }
 
-        /* Europa League: Laranja */
-        .pos-uel {
-            background: rgba(249, 115, 22, 0.22) !important;
-            color: #fb923c !important;
-            border: 1px solid rgba(249, 115, 22, 0.6) !important;
+        .painel-tabela::-webkit-scrollbar-thumb {
+            background: rgba(37, 99, 235, 0.6);
+            border-radius: 4px;
         }
 
-        /* Conference League: Verde oficial */
-        .pos-conference {
-            background: rgba(34, 197, 94, 0.25) !important;
-            color: #4ade80 !important;
-            border: 1px solid rgba(74, 222, 128, 0.7) !important;
-        }
-
-        /* Rebaixamento / Eliminação: Vermelho */
-        .pos-rebaixamento {
-            background: rgba(239, 68, 68, 0.22) !important;
-            color: #f87171 !important;
-            border: 1px solid rgba(239, 68, 68, 0.6) !important;
-        }
-
-        .pos-neutra {
-            color: #94a3b8;
-            border: 1px solid transparent;
-        }
-
-        .legenda-dot.ucl,
-        .legenda-dot.oitavos {
-            background: #2563eb;
-            box-shadow: 0 0 6px rgba(37, 99, 235, 0.8);
-        }
-
-        .legenda-dot.conf {
-            background: #22c55e;
-            box-shadow: 0 0 6px rgba(34, 197, 94, 0.8);
-        }
-
-        .legenda-dot.pre,
-        .legenda-dot.playoff {
-            background: #06b6d4;
-            box-shadow: 0 0 6px rgba(6, 182, 212, 0.8);
-        }
-
-        .legenda-dot.uel {
-            background: #f97316;
-            box-shadow: 0 0 6px rgba(249, 115, 22, 0.8);
-        }
-
-        .legenda-dot.z4 {
-            background: #ef4444;
-            box-shadow: 0 0 6px rgba(239, 68, 68, 0.8);
-        }
-
-        .legenda-dot.neutro {
-            background: #64748b;
+        .painel-tabela::-webkit-scrollbar-thumb:hover {
+            background: rgba(59, 130, 246, 0.9);
         }
 
         .nav-tipo-tabela {
@@ -1536,29 +1488,49 @@
             font-weight: 900;
         }
 
-        .pos-libertadores {
-            background: rgba(34, 197, 94, 0.22);
-            color: #4ade80 !important;
-            border: 1px solid rgba(34, 197, 94, 0.5);
+        /* CORES DE ALTO CONTRASTE */
+        .pos-ucl,
+        .pos-oitavos {
+            background: rgba(29, 78, 216, 0.38) !important;
+            color: #60a5fa !important;
+            border: 1px solid #3b82f6 !important;
         }
 
         .pos-pre-lib,
         .pos-playoff {
-            background: rgba(56, 189, 248, 0.22);
+            background: rgba(6, 182, 212, 0.22) !important;
             color: #38bdf8 !important;
-            border: 1px solid rgba(56, 189, 248, 0.5);
+            border: 1px solid rgba(56, 189, 248, 0.6) !important;
+        }
+
+        .pos-uel {
+            background: rgba(249, 115, 22, 0.22) !important;
+            color: #fb923c !important;
+            border: 1px solid rgba(249, 115, 22, 0.6) !important;
+        }
+
+        .pos-conference {
+            background: rgba(34, 197, 94, 0.25) !important;
+            color: #4ade80 !important;
+            border: 1px solid rgba(74, 222, 128, 0.7) !important;
+        }
+
+        .pos-libertadores {
+            background: rgba(34, 197, 94, 0.25) !important;
+            color: #4ade80 !important;
+            border: 1px solid rgba(74, 222, 128, 0.7) !important;
         }
 
         .pos-sula {
-            background: rgba(245, 158, 11, 0.22);
-            color: #fbbf24 !important;
-            border: 1px solid rgba(245, 158, 11, 0.5);
+            background: rgba(234, 179, 8, 0.22) !important;
+            color: #facc15 !important;
+            border: 1px solid rgba(234, 179, 8, 0.6) !important;
         }
 
         .pos-rebaixamento {
-            background: rgba(239, 68, 68, 0.22);
+            background: rgba(239, 68, 68, 0.22) !important;
             color: #f87171 !important;
-            border: 1px solid rgba(239, 68, 68, 0.5);
+            border: 1px solid rgba(239, 68, 68, 0.6) !important;
         }
 
         .pos-neutra {
@@ -1633,28 +1605,44 @@
             display: inline-block;
         }
 
-        .legenda-dot.lib {
-            background: #4ade80;
-            box-shadow: 0 0 5px rgba(74, 222, 128, 0.5);
+        .legenda-dot.ucl {
+            background: #2563eb;
+            box-shadow: 0 0 6px rgba(37, 99, 235, 0.8);
         }
 
+        .legenda-dot.playoff,
         .legenda-dot.pre {
-            background: #38bdf8;
-            box-shadow: 0 0 5px rgba(56, 189, 248, 0.5);
+            background: #06b6d4;
+            box-shadow: 0 0 6px rgba(6, 182, 212, 0.8);
+        }
+
+        .legenda-dot.uel {
+            background: #f97316;
+            box-shadow: 0 0 6px rgba(249, 115, 22, 0.8);
+        }
+
+        .legenda-dot.conf {
+            background: #22c55e;
+            box-shadow: 0 0 6px rgba(34, 197, 94, 0.8);
+        }
+
+        .legenda-dot.lib {
+            background: #22c55e;
+            box-shadow: 0 0 6px rgba(34, 197, 94, 0.8);
         }
 
         .legenda-dot.sula {
-            background: #fbbf24;
-            box-shadow: 0 0 5px rgba(251, 191, 36, 0.5);
+            background: #eab308;
+            box-shadow: 0 0 6px rgba(234, 179, 8, 0.8);
         }
 
         .legenda-dot.z4 {
-            background: #f87171;
-            box-shadow: 0 0 5px rgba(248, 113, 113, 0.5);
+            background: #ef4444;
+            box-shadow: 0 0 6px rgba(239, 68, 68, 0.8);
         }
 
         .legenda-dot.neutro {
-            background: #94a3b8;
+            background: #64748b;
         }
 
         .container-matamata {
@@ -1673,10 +1661,10 @@
         .titulo-fase-mata {
             font-size: 0.72rem;
             font-weight: 800;
-            color: #fb923c;
+            color: #60a5fa;
             text-transform: uppercase;
             letter-spacing: 0.8px;
-            border-left: 3px solid #f97316;
+            border-left: 3px solid #3b82f6;
             padding-left: 6px;
         }
 
@@ -1738,15 +1726,37 @@
             text-align: right;
         }
 
+        .score-box-mata {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .score-pen-mata {
+            font-family: monospace;
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: #facc15; /* Amarelo/Dourado em destaque */
+        }
+        
         .card-confronto.jogo-atual .score-mata {
             color: #ffffff;
         }
 
         .status-rodape-mata {
-            font-size: 0.6rem;
+            font-size: 0.58rem;
             color: #94a3b8;
             text-align: right;
-            margin-top: 1px;
+            margin-top: 3px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-confronto.jogo-atual .status-rodape-mata {
+            color: #60a5fa;
         }
     </style>
 </head>
@@ -1846,7 +1856,8 @@
 
         window.subAbaTabela = 'grupos';
         window.indiceGrupoSelecionado = 0;
-        window.grupoIniciadoAutomatico = "";
+        window.usuarioEscolheuGrupo = false;
+        window.idJogoTabelaIniciado = "";
 
         btnTabela.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -1881,6 +1892,7 @@
             });
         }
 
+        // CLIQUE NO CARD (Se a tabela estiver aberta, apenas fecha sem abrir a escalação)
         document.getElementById('card-principal').addEventListener('click', (e) => {
             if (e.target.closest('.aba-btn') ||
                 e.target.closest('#btn-tabela') ||
@@ -1888,7 +1900,6 @@
                 e.target.closest('#painel-tabela') ||
                 e.target.closest('#painel-escalacoes')) return;
 
-            // Se a tabela estiver aberta, apenas fecha ela e não abre a escalação
             if (tabelaAberta) {
                 tabelaAberta = false;
                 painelTabela.classList.remove('aberto');
@@ -1934,6 +1945,7 @@
 
         window.trocarGrupo = function (idx) {
             window.indiceGrupoSelecionado = idx;
+            window.usuarioEscolheuGrupo = true;
             lastTabelaState = "";
             if (dadosPartidaAtual) aplicarNaTela([dadosPartidaAtual]);
         };
@@ -2094,7 +2106,6 @@
             let tf = `<img src="${j.foto || fallbackFoto}" class="jogador-foto" onerror="this.src='${fallbackFoto}'">`;
             let tr = `<span class="jogador-rating ${cC}">${j.rating}</span>`;
             let tn = (j.numero && j.numero !== '-') ? `<span class="jogador-numero">${j.numero}</span>` : `<span class="jogador-numero"></span>`;
-
             let flagHtml = j.nacionalidade ? `<img src="https://flagcdn.com/w40/${j.nacionalidade}.png" class="bandeira-jogador" onerror="this.style.display='none'">` : '';
 
             let clSubs = '';
@@ -2226,7 +2237,8 @@
                         alerta2MinQ2 = false;
                         alerta2MinQ4 = false;
                         lastTabelaState = "";
-                        window.grupoIniciadoAutomatico = "";
+                        window.idJogoTabelaIniciado = "";
+                        window.usuarioEscolheuGrupo = false;
 
                         const containerAlerta = document.getElementById('container-alerta-externo');
                         if (containerAlerta) containerAlerta.innerHTML = '';
@@ -2296,6 +2308,9 @@
                 if (jg.torneio) document.getElementById('txt-torneio').innerText = jg.torneio;
                 if (jg.estadio) document.getElementById('txt-estadio').innerText = jg.estadio;
 
+                // ==========================================
+                // ROTA DA F1
+                // ==========================================
                 if (jg.esporte === "f1") {
                     cnt.removeAttribute('title');
 
@@ -2688,6 +2703,7 @@
                         lastPainelState = currentPainelState;
                     }
 
+                    // RENDERIZAÇÃO DA TABELA / GRUPOS E MATA-MATA
                     let gruposLista = (jg.grupos && jg.grupos.length > 0) ? jg.grupos : [];
                     if (gruposLista.length === 0 && jg.tabela && jg.tabela.length > 0) {
                         gruposLista = [{ grupo: "Classificação", ativoPadrao: true, times: jg.tabela }];
@@ -2699,6 +2715,21 @@
                     if ((temGrupos || temMataMata) && jg.esporte === 'futebol') {
                         btnTabela.style.display = 'inline-flex';
                         if (btnEscalacao) btnEscalacao.style.display = 'inline-flex';
+
+                        let idJogoAtual = `${jg.timeCasa}_${jg.timeFora}_${jg.torneio}`;
+                        if (window.idJogoTabelaIniciado !== idJogoAtual) {
+                            window.idJogoTabelaIniciado = idJogoAtual;
+                            window.usuarioEscolheuGrupo = false;
+
+                            let tNome = (jg.torneio || "").toLowerCase();
+                            let isFaseMata = tNome.includes("knockout") || tNome.includes("playoff") || tNome.includes("eliminat") || tNome.includes("final") || tNome.includes("oitavas") || tNome.includes("quartas");
+
+                            if (temMataMata && (isFaseMata || !temGrupos)) {
+                                window.subAbaTabela = 'matamata';
+                            } else {
+                                window.subAbaTabela = 'grupos';
+                            }
+                        }
 
                         if (!temGrupos && temMataMata) window.subAbaTabela = 'matamata';
                         if (temGrupos && !temMataMata) window.subAbaTabela = 'grupos';
@@ -2715,12 +2746,14 @@
 
                         let conteudoFinalHtml = '';
 
+                        // 1. ABA DE GRUPOS / CLASSIFICAÇÃO
                         if (window.subAbaTabela === 'grupos' && temGrupos) {
-                            let chaveTorneio = jg.torneio || jg.timeCasa || 'padrao';
-                            if (window.grupoIniciadoAutomatico !== chaveTorneio) {
+                            let idJogoAtual = `${jg.timeCasa}_${jg.timeFora}_${jg.torneio}`;
+                            if (window.idJogoTabelaIniciado !== idJogoAtual) {
                                 let idxPadrao = gruposLista.findIndex(g => g.ativoPadrao);
                                 window.indiceGrupoSelecionado = (idxPadrao !== -1) ? idxPadrao : 0;
-                                window.grupoIniciadoAutomatico = chaveTorneio;
+                                window.idJogoTabelaIniciado = idJogoAtual;
+                                window.usuarioEscolheuGrupo = false;
                             }
 
                             if (window.indiceGrupoSelecionado >= gruposLista.length) {
@@ -2733,118 +2766,84 @@
                             let seletorGruposHtml = '';
                             if (gruposLista.length > 1) {
                                 seletorGruposHtml = `
-                                <div class="container-seletor-grupos">
-                                    <button class="btn-seta-scroll" onclick="event.stopPropagation(); document.getElementById('barra-grupos').scrollLeft -= 140;">‹</button>
-                                    <div class="seletor-grupos-bar" id="barra-grupos">` +
+                                    <div class="container-seletor-grupos">
+                                        <button class="btn-seta-scroll" onclick="event.stopPropagation(); document.getElementById('barra-grupos').scrollLeft -= 140;">‹</button>
+                                        <div class="seletor-grupos-bar" id="barra-grupos">` +
                                     gruposLista.map((g, idx) => {
                                         let cl = (idx === window.indiceGrupoSelecionado) ? 'ativo' : '';
                                         return `<button class="btn-grupo-pill ${cl}" onclick="event.stopPropagation(); window.trocarGrupo(${idx})">${g.grupo}</button>`;
                                     }).join('') +
                                     `</div>
-                                    <button class="btn-seta-scroll" onclick="event.stopPropagation(); document.getElementById('barra-grupos').scrollLeft += 140;">›</button>
-                                </div>`;
+                                        <button class="btn-seta-scroll" onclick="event.stopPropagation(); document.getElementById('barra-grupos').scrollLeft += 140;">›</button>
+                                    </div>`;
                             }
 
-                            // Verifica se a API do Sofascore enviou promoção oficial para algum time deste grupo
-                            let temPromoNoGrupo = (grupoAtual.times || []).some(t => t.promocao && t.promocao.trim() !== "");
+                            // IDENTIFICAÇÃO DINÂMICA DA COR BASE DO TORNEIO
+                            const COR_TORNEIO = (() => {
+                                const tor = (jg.torneio || "").toLowerCase();
+                                if (tor.includes("europa")) return 'pos-uel';
+                                if (tor.includes("conference")) return 'pos-conference';
+                                if (tor.includes("libertadores")) return 'pos-libertadores';
+                                return 'pos-ucl';
+                            })();
+
+                            const MAPA_DOTS = {
+                                'pos-ucl': 'ucl',
+                                'pos-uel': 'uel',
+                                'pos-conference': 'conf',
+                                'pos-libertadores': 'lib',
+                                'pos-playoff': 'playoff',
+                                'pos-pre-lib': 'pre',
+                                'pos-sula': 'sula',
+                                'pos-rebaixamento': 'z4'
+                            };
 
                             function obterZonaClass(pos, promocao) {
-                                let p = (promocao || "").trim().toLowerCase();
-                                let tor = (dadosPartidaAtual?.torneio || "").toLowerCase();
+                                const p = (promocao || "").trim().toLowerCase();
+                                const tor = (jg.torneio || "").toLowerCase();
+                                const isTorneioEuropeu = tor.includes("champions") || tor.includes("europa") || tor.includes("conference") || tor.includes("uefa");
+                                const isCopa = isTorneioEuropeu || tor.includes("libertadores") || tor.includes("sudamericana") || tor.includes("copa");
 
-                                // 1. Se a API já definiu promoções no grupo e este time NÃO tem nenhuma, ele fica neutro (eliminado)
-                                if (temPromoNoGrupo && !p) {
+                                // Se não tem texto de vaga enviado pela API
+                                if (!p) {
+                                    if (totalTimes <= 4 && pos <= 2) return COR_TORNEIO;
                                     return 'pos-neutra';
                                 }
 
-                                let isTorneioEuropeu = tor.includes("champions") || tor.includes("europa") || tor.includes("conference") || tor.includes("uefa");
-                                let isCopaOuContinental = isTorneioEuropeu || tor.includes("libertadores") || tor.includes("sudamericana") || tor.includes("copa");
-
-                                // 2. Rebaixamento (apenas ligas de pontos corridos)
-                                if (!isCopaOuContinental) {
-                                    if (p.includes("relegation") || p.includes("rebaixamento") || p.includes("descenso") || p.includes("z-4") || p.includes("z4")) {
-                                        return 'pos-rebaixamento';
-                                    }
+                                // Rebaixamento (somente em ligas de pontos corridos)
+                                if (!isCopa && /relegat|rebaixa|descens|z-?4/.test(p)) {
+                                    return 'pos-rebaixamento';
                                 }
 
-                                // 3. Fases de Liga da UEFA (36 times)
-                                if (tor.includes("champions")) {
-                                    if (pos <= 8 || p.includes("round of 16") || p.includes("oitavas")) return 'pos-ucl';
-                                    if (pos <= 24 || p.includes("playoff") || p.includes("qualif")) return 'pos-playoff';
-                                    return 'pos-neutra';
+                                // Copas/torneios específicos
+                                if (/conference|uecl/.test(p)) return 'pos-conference';
+                                if (/europa league|\buel\b/.test(p)) return 'pos-uel';
+                                if (/sudamericana|sul-americana/.test(p)) return 'pos-sula';
+                                if (/libertadores/.test(p)) return 'pos-libertadores';
+                                if (/champions/.test(p)) return 'pos-ucl';
+
+                                // Fases de qualificação / repescagem da UEFA (9º ao 24º)
+                                if (/qualif|knockout|pre|pré/.test(p) || (p.includes("playoff") && pos > 8)) {
+                                    return 'pos-playoff';
                                 }
 
-                                if (tor.includes("europa")) {
-                                    if (pos <= 8 || p.includes("round of 16") || p.includes("oitavas")) return 'pos-uel';
-                                    if (pos <= 24 || p.includes("playoff") || p.includes("qualif")) return 'pos-playoff';
-                                    return 'pos-neutra';
-                                }
-
-                                if (tor.includes("conference")) {
-                                    if (pos <= 8 || p.includes("round of 16") || p.includes("oitavas")) return 'pos-conference';
-                                    if (pos <= 24 || p.includes("playoff") || p.includes("qualif")) return 'pos-playoff';
-                                    return 'pos-neutra';
-                                }
-
-                                // 4. Copa Libertadores (Feminina e Masculina)
-                                if (tor.includes("libertadores")) {
-                                    // Na Masculina, se o 3º colocado for para a Sul-Americana
-                                    if (p.includes("sudamericana") || p.includes("sul-americana")) return 'pos-sula';
-
-                                    // Vaga para o mata-mata (verde Libertadores)
-                                    if (p.includes("playoff") || p.includes("next round") || p.includes("oitavas") || p.includes("quartas") || p.includes("advance") || p.includes("promotion")) {
-                                        return 'pos-libertadores';
-                                    }
-
-                                    // Em grupos de 4 times, passam apenas os 2 primeiros
-                                    if (totalTimes <= 4) {
-                                        return pos <= 2 ? 'pos-libertadores' : 'pos-neutra';
-                                    }
-                                }
-
-                                // 5. Textos explícitos vindos do Sofascore para outros torneios
-                                if (p.includes("conference") || p.includes("uecl")) return 'pos-conference';
-                                if (p.includes("europa league") || p.includes("uel")) return 'pos-uel';
-                                if (p.includes("sudamericana") || p.includes("sul-americana")) return 'pos-sula';
-                                if (p.includes("champions league") && !p.includes("qualif")) return 'pos-ucl';
-                                if (p.includes("libertadores")) return 'pos-libertadores';
-
-                                // 6. Grupos curtos gerais (ex: 4 times na Copa do Mundo / Olimpíadas)
+                                // Em grupos de 4 times (Libertadores, Mundiais) apenas os 2 primeiros passam
                                 if (totalTimes <= 4) {
-                                    // Se vier marcado com playoff/next round, avança; caso contrário, apenas os 2 primeiros
-                                    if (p.includes("playoff") || p.includes("next round") || p.includes("promotion") || p.includes("qualif")) {
-                                        return 'pos-libertadores';
-                                    }
-                                    return pos <= 2 ? 'pos-libertadores' : 'pos-neutra';
+                                    return (pos <= 2) ? COR_TORNEIO : 'pos-neutra';
                                 }
 
-                                // 7. Ligas nacionais de pontos corridos (Brasileirão, Premier League, etc.)
-                                if (!isCopaOuContinental) {
-                                    if (p.includes("qualif") || p.includes("play-off") || p.includes("playoff") || p.includes("pré")) return 'pos-playoff';
-                                    if (pos <= 4) return 'pos-ucl';
-                                    if (pos <= 6) return 'pos-sula';
-                                    if (totalTimes > 8 && pos > totalTimes - 4) return 'pos-rebaixamento';
-                                }
-
-                                return 'pos-neutra';
+                                return COR_TORNEIO;
                             }
 
-                            // Montagem da legenda ignorando linhas que ficaram neutras
                             let promocoesUnicas = [];
                             (grupoAtual.times || []).forEach(t => {
                                 if (t.promocao && !promocoesUnicas.some(x => x.texto === t.promocao)) {
-                                    let corClasse = obterZonaClass(t.pos, t.promocao);
+                                    const corClasse = obterZonaClass(t.pos, t.promocao);
                                     if (corClasse !== 'pos-neutra') {
-                                        let dotClasse = 'neutro';
-                                        if (corClasse === 'pos-ucl') dotClasse = 'ucl';
-                                        else if (corClasse === 'pos-libertadores') dotClasse = 'lib';
-                                        else if (corClasse === 'pos-playoff' || corClasse === 'pos-pre-lib') dotClasse = 'playoff';
-                                        else if (corClasse === 'pos-uel') dotClasse = 'uel';
-                                        else if (corClasse === 'pos-conference') dotClasse = 'conf';
-                                        else if (corClasse === 'pos-sula') dotClasse = 'sula';
-                                        else if (corClasse === 'pos-rebaixamento') dotClasse = 'z4';
-
-                                        promocoesUnicas.push({ texto: t.promocao, dot: dotClasse });
+                                        promocoesUnicas.push({
+                                            texto: t.promocao,
+                                            dot: MAPA_DOTS[corClasse] || 'neutro'
+                                        });
                                     }
                                 }
                             });
@@ -2892,22 +2891,32 @@
                                 </table>
                                 ${legendaHtml}
                             `;
-                        } else if (window.subAbaTabela === 'matamata' && temMataMata) {
+                        }
+                        // 2. ABA DE MATA-MATA
+                        else if (window.subAbaTabela === 'matamata' && temMataMata) {
                             let fasesHtml = jg.matamata.map(f => {
                                 let cardsJogos = f.jogos.map(m => {
                                     let clAtual = m.isJogoAtual ? 'jogo-atual' : '';
                                     let l1 = m.logo1 ? `<img src="${m.logo1}" class="logo-time-mata" onerror="this.style.display='none'">` : '';
                                     let l2 = m.logo2 ? `<img src="${m.logo2}" class="logo-time-mata" onerror="this.style.display='none'">` : '';
+                                    let pen1Html = (m.pen1 !== undefined && m.pen1 !== null) ? `<span class="score-pen-mata">(${m.pen1})</span>` : '';
+                                    let pen2Html = (m.pen2 !== undefined && m.pen2 !== null) ? `<span class="score-pen-mata">(${m.pen2})</span>` : '';
 
                                     return `
                                         <div class="card-confronto ${clAtual}">
                                             <div class="linha-time-mata">
                                                 <div class="info-time-mata">${l1}<span>${m.time1}</span></div>
-                                                <span class="score-mata">${m.placar1}</span>
+                                                <div class="score-box-mata">
+                                                    <span class="score-mata">${m.placar1}</span>
+                                                    ${pen1Html}
+                                                </div>
                                             </div>
                                             <div class="linha-time-mata">
                                                 <div class="info-time-mata">${l2}<span>${m.time2}</span></div>
-                                                <span class="score-mata">${m.placar2}</span>
+                                                <div class="score-box-mata">
+                                                    <span class="score-mata">${m.placar2}</span>
+                                                    ${pen2Html}
+                                                </div>
                                             </div>
                                             ${m.status ? `<div class="status-rodape-mata">${m.status}</div>` : ''}
                                         </div>
@@ -2925,6 +2934,7 @@
                             conteudoFinalHtml = `<div class="container-matamata">${fasesHtml}</div>`;
                         }
 
+                        // TRAVA DE ESTADO COM PRESERVAÇÃO DE SCROLL DOS GRUPOS
                         let currentTabelaState = JSON.stringify({
                             sub: window.subAbaTabela,
                             grpIdx: window.indiceGrupoSelecionado,
@@ -2934,15 +2944,36 @@
                         });
 
                         if (currentTabelaState !== lastTabelaState) {
+                            const barraAntiga = document.getElementById('barra-grupos');
+                            const scrollSalvo = barraAntiga ? barraAntiga.scrollLeft : null;
+
                             document.getElementById('conteudo-tabela').innerHTML = navTipoHtml + conteudoFinalHtml;
                             lastTabelaState = currentTabelaState;
+
+                            if (window.subAbaTabela === 'grupos') {
+                                const barraNova = document.getElementById('barra-grupos');
+                                if (barraNova) {
+                                    if (scrollSalvo !== null) barraNova.scrollLeft = scrollSalvo;
+                                    const btnAtivo = barraNova.querySelector('.btn-grupo-pill.ativo');
+                                    if (btnAtivo) btnAtivo.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                                }
+                            } else if (window.subAbaTabela === 'matamata') {
+                                // Rola automaticamente a tabela até o confronto da transmissão (ex: Quartas/Semi/Final)
+                                const cardJogoAtual = document.querySelector('.card-confronto.jogo-atual');
+                                if (cardJogoAtual) {
+                                    cardJogoAtual.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                }
+                            }
                         }
+
                     } else {
                         btnTabela.style.display = 'none';
                         if (btnEscalacao) btnEscalacao.style.display = 'none';
                     }
                 }
-            } catch (e) { }
+            } catch (e) {
+                console.error("Erro ao aplicar dados na tela:", e);
+            }
         }
 
         const mediaShowcase = document.getElementById('media-showcase');
