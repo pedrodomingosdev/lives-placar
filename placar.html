@@ -27,7 +27,6 @@
             user-select: none;
         }
 
-        /* NOTIFICAÇÃO COMPACTA DE OUTROS JOGOS / TECLA 'O' */
         #container-alerta-externo {
             min-height: 40px;
             display: flex;
@@ -52,7 +51,6 @@
             width: max-content;
         }
 
-        /* TEMA BASQUETEBOL PARA A NOTIFICAÇÃO */
         .notificacao-gol-externo.basquete {
             background: linear-gradient(135deg, rgba(18, 11, 7, 0.98), rgba(46, 22, 9, 0.98));
             border: 1.5px solid #f97316;
@@ -171,7 +169,6 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* TEMAS */
         .container.futebol {
             width: 640px;
             border-bottom: 4px solid #2563eb;
@@ -230,7 +227,6 @@
             color: #60a5fa;
         }
 
-        /* CONTAINER FÓRMULA 1 ESTILO TRANSMISSÃO DE TV */
         .container.f1 {
             width: 790px;
             background: linear-gradient(160deg, rgba(8, 11, 22, 0.98), rgba(15, 20, 36, 0.96));
@@ -249,15 +245,16 @@
         .scroll-f1::-webkit-scrollbar {
             width: 4px;
         }
+
         .scroll-f1::-webkit-scrollbar-track {
             background: rgba(255, 255, 255, 0.02);
         }
+
         .scroll-f1::-webkit-scrollbar-thumb {
             background: rgba(225, 6, 0, 0.6);
             border-radius: 4px;
         }
 
-        /* BARRA DE MENU COM O SEPARADOR PIPE "|" */
         .f1-menu-bar {
             display: flex;
             align-items: center;
@@ -265,11 +262,13 @@
             gap: 10px;
             margin-bottom: 6px;
         }
+
         .f1-botoes-grupo {
             display: flex;
             align-items: center;
             gap: 6px;
         }
+
         .f1-divisor-pipe {
             font-size: 1.1rem;
             font-weight: 300;
@@ -278,7 +277,6 @@
             user-select: none;
         }
 
-        /* CABEÇALHO E LINHAS DA TABELA */
         .tabela-f1-cabecalho {
             display: flex;
             align-items: center;
@@ -303,16 +301,17 @@
             position: relative;
             transition: background 0.15s ease;
         }
+
         .linha-f1:nth-child(even) {
             background: rgba(255, 255, 255, 0.012);
         }
 
-        /* PILOTO QUE ABANDONOU (DNF, NC, DNS, DSQ) */
         .linha-f1.piloto-out {
             opacity: 0.42;
             background: rgba(0, 0, 0, 0.45) !important;
             filter: grayscale(40%);
         }
+
         .linha-f1.piloto-out .badge-pos-f1 {
             color: #ef4444;
             background: rgba(239, 68, 68, 0.15);
@@ -327,7 +326,6 @@
             min-width: 0;
         }
 
-        /* CONTAINER DA FOTO DO PILOTO (ZOOM NO ROSTO) */
         .foto-container-f1 {
             width: 28px;
             height: 28px;
@@ -341,15 +339,15 @@
             background: #111526;
             border: 1.5px solid rgba(255, 255, 255, 0.2);
         }
+
         .foto-piloto-f1 {
             width: 100%;
             height: 100%;
             object-fit: cover;
             object-position: center 6% !important;
-            transform: scale(1.22); /* Amplia para enquadrar os olhos e capacete */
+            transform: scale(1.22);
         }
 
-        /* BADGE COM LOGO OFICIAL DA EQUIPE */
         .badge-logo-equipe {
             width: 22px;
             height: 22px;
@@ -363,6 +361,7 @@
             box-sizing: border-box;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
+
         .logo-equipe-img {
             width: 100%;
             height: 100%;
@@ -394,17 +393,6 @@
             box-shadow: 0 2px 10px rgba(225, 6, 0, 0.5) !important;
         }
 
-
-        .stripe-equipe {
-            width: 4px;
-            height: 16px;
-            border-radius: 2px;
-            margin-right: 6px;
-            flex-shrink: 0;
-            display: inline-block;
-        }
-
-        /* ESTRUTURA GERAL */
         .branding-bar {
             display: flex;
             justify-content: space-between;
@@ -421,8 +409,8 @@
         }
 
         .canal-logo {
-            height: 34px;
-            max-width: 90px;
+            height: 26px;
+            max-width: 80px;
             object-fit: contain;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
         }
@@ -478,7 +466,7 @@
         .time-box {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             flex: 1;
             min-width: 0;
         }
@@ -507,7 +495,7 @@
         }
 
         .time-nome {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 900;
             white-space: nowrap;
             overflow: hidden;
@@ -517,20 +505,20 @@
         }
 
         .time-formacao {
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             color: #94a3b8;
             font-weight: 700;
             margin-top: 1px;
         }
 
         .time-logo {
-            width: 44px;
-            height: 44px;
+            width: 34px;
+            height: 34px;
             object-fit: contain;
             background-color: white;
             border-radius: 50%;
-            padding: 4px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            padding: 3px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
             flex-shrink: 0;
         }
 
@@ -540,27 +528,27 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            margin: 0 15px;
+            margin: 0 12px;
             flex-shrink: 0;
-            min-width: 160px;
-            max-width: 260px;
+            min-width: 150px;
+            max-width: 240px;
         }
 
         .numeros {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            padding: 6px 18px;
+            gap: 10px;
+            padding: 5px 16px;
             border-radius: 8px;
-            font-size: 2.1rem;
+            font-size: 2rem;
             font-weight: 900;
             letter-spacing: -1px;
         }
 
         .status-jogo {
             text-align: center;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 1.5px;
@@ -571,7 +559,6 @@
             width: 100%;
         }
 
-        /* PAINÉIS INFERIORES E BOTOES DE RESERVA */
         .painel-escalacoes {
             max-height: 0;
             opacity: 0;
@@ -591,18 +578,19 @@
         .abas-painel {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 12px;
+            gap: 8px;
+            margin-bottom: 10px;
         }
 
+        /* BOTÕES DE ESCALAÇÃO COMPACTOS */
         .aba-btn {
             background: rgba(255, 255, 255, 0.05);
             color: #94a3b8;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 5px 16px;
-            border-radius: 20px;
+            padding: 3px 12px;
+            border-radius: 14px;
             font-family: inherit;
-            font-size: 0.72rem;
+            font-size: 0.65rem;
             font-weight: 800;
             text-transform: uppercase;
             cursor: pointer;
@@ -613,11 +601,10 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
-        .aba-btn.ativa-f1 {
-            background: #e10600;
-            color: white;
-            border-color: #e10600;
-            box-shadow: 0 2px 10px rgba(225, 6, 0, 0.4);
+        .aba-btn.ativa {
+            background: #2563eb;
+            color: #fff;
+            border-color: #3b82f6;
         }
 
         .container-views {
@@ -709,7 +696,6 @@
             border: 1px solid rgba(239, 68, 68, 0.2);
         }
 
-        /* FORMATO RESERVA MAIS COMPACTO */
         .jogador-item.reserva-item {
             padding: 2px 6px;
             background: rgba(255, 255, 255, 0.015);
@@ -947,7 +933,6 @@
             background-color: #ef4444;
         }
 
-        /* NFL LÍDERES */
         .nfl-lideres-container {
             display: flex;
             flex-direction: column;
@@ -1122,7 +1107,6 @@
             line-height: 1.1;
         }
 
-        /* CAMADA DE ANIMAÇÕES */
         .tela-anim {
             position: absolute;
             top: 0;
@@ -1195,7 +1179,6 @@
             font-size: 2rem;
         }
 
-        /* PAINEL DE MÍDIA */
         #media-showcase {
             position: absolute;
             display: none;
@@ -1241,7 +1224,6 @@
             border-radius: 3px;
         }
 
-        /* BOTÃO DE PICTURE-IN-PICTURE (Oculto no OBS) */
         #btn-pip {
             display: none;
             position: fixed;
@@ -1272,14 +1254,499 @@
             transform: translateY(-1px);
         }
 
-        @keyframes piscarAnim {
-            0% {
-                box-shadow: inset 0 0 0px rgba(255, 255, 255, 0);
-            }
+        /* BOTÕES DE CABEÇALHO ESCALAÇÃO E TABELA REDUZIDOS */
+        .btn-tabela-topo {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #cbd5e1;
+            font-family: inherit;
+            font-size: 0.58rem;
+            font-weight: 800;
+            padding: 2.5px 8px;
+            border-radius: 12px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+        }
 
-            100% {
-                box-shadow: inset 0 0 60px rgba(255, 255, 255, 0.9);
-            }
+        .btn-tabela-topo:hover {
+            background: rgba(37, 99, 235, 0.3);
+            border-color: #3b82f6;
+            color: #ffffff;
+        }
+
+        .btn-tabela-topo.ativa {
+            background: #2563eb;
+            border-color: #60a5fa;
+            color: #ffffff;
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+        }
+
+        /* TRANSIÇÃO IDÊNTICA À ESCALAÇÃO */
+        .painel-tabela {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.45s ease-in-out;
+            margin-top: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .painel-tabela.aberto {
+            max-height: 520px;
+            opacity: 1;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            overflow-y: auto;
+        }
+
+        /* --- CORES DE CLASSIFICAÇÃO COM ELEVADO CONTRASTE --- */
+
+        /* Champions League / Oitavos (1º ao 8º): Azul forte / elétrico */
+        .pos-ucl,
+        .pos-oitavos {
+            background: rgba(29, 78, 216, 0.4) !important;
+            color: #60a5fa !important;
+            border: 1px solid #3b82f6 !important;
+        }
+
+        /* Play-offs / Fase Preliminar (9º ao 24º): Ciano vivo */
+        .pos-pre-lib,
+        .pos-playoff {
+            background: rgba(6, 182, 212, 0.22) !important;
+            color: #38bdf8 !important;
+            border: 1px solid rgba(56, 189, 248, 0.6) !important;
+        }
+
+        /* Europa League: Laranja */
+        .pos-uel {
+            background: rgba(249, 115, 22, 0.22) !important;
+            color: #fb923c !important;
+            border: 1px solid rgba(249, 115, 22, 0.6) !important;
+        }
+
+        /* Conference League: Verde oficial */
+        .pos-conference {
+            background: rgba(34, 197, 94, 0.25) !important;
+            color: #4ade80 !important;
+            border: 1px solid rgba(74, 222, 128, 0.7) !important;
+        }
+
+        /* Rebaixamento / Eliminação: Vermelho */
+        .pos-rebaixamento {
+            background: rgba(239, 68, 68, 0.22) !important;
+            color: #f87171 !important;
+            border: 1px solid rgba(239, 68, 68, 0.6) !important;
+        }
+
+        .pos-neutra {
+            color: #94a3b8;
+            border: 1px solid transparent;
+        }
+
+        .legenda-dot.ucl,
+        .legenda-dot.oitavos {
+            background: #2563eb;
+            box-shadow: 0 0 6px rgba(37, 99, 235, 0.8);
+        }
+
+        .legenda-dot.conf {
+            background: #22c55e;
+            box-shadow: 0 0 6px rgba(34, 197, 94, 0.8);
+        }
+
+        .legenda-dot.pre,
+        .legenda-dot.playoff {
+            background: #06b6d4;
+            box-shadow: 0 0 6px rgba(6, 182, 212, 0.8);
+        }
+
+        .legenda-dot.uel {
+            background: #f97316;
+            box-shadow: 0 0 6px rgba(249, 115, 22, 0.8);
+        }
+
+        .legenda-dot.z4 {
+            background: #ef4444;
+            box-shadow: 0 0 6px rgba(239, 68, 68, 0.8);
+        }
+
+        .legenda-dot.neutro {
+            background: #64748b;
+        }
+
+        .nav-tipo-tabela {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-tipo-tab {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #94a3b8;
+            font-size: 0.62rem;
+            font-weight: 800;
+            padding: 2.5px 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+        .btn-tipo-tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .btn-tipo-tab.ativo {
+            background: #2563eb;
+            border-color: #60a5fa;
+            color: #ffffff;
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
+        }
+
+        .container-seletor-grupos {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            width: 100%;
+            margin-bottom: 8px;
+        }
+
+        .btn-seta-scroll {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #cbd5e1;
+            font-size: 0.75rem;
+            font-weight: 900;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            user-select: none;
+        }
+
+        .btn-seta-scroll:hover {
+            background: #2563eb;
+            color: #fff;
+        }
+
+        .seletor-grupos-bar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 5px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 2px 0;
+            flex: 1;
+        }
+
+        .seletor-grupos-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .btn-grupo-pill {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            font-size: 0.58rem;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 8px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .btn-grupo-pill:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+
+        .btn-grupo-pill.ativo {
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #60a5fa;
+        }
+
+        .tabela-classificacao {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.72rem;
+            text-align: center;
+        }
+
+        .tabela-classificacao thead th {
+            color: #94a3b8;
+            font-weight: 800;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            padding: 6px 4px;
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
+            letter-spacing: 0.5px;
+        }
+
+        .tabela-classificacao tbody tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            transition: background 0.15s;
+        }
+
+        .tabela-classificacao tbody tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.015);
+        }
+
+        .tabela-classificacao tbody tr.time-destaque-jogo {
+            background: rgba(37, 99, 235, 0.28) !important;
+            font-weight: 800;
+            outline: 1px solid rgba(59, 130, 246, 0.5);
+        }
+
+        .tabela-classificacao td {
+            padding: 5px 4px;
+            vertical-align: middle;
+        }
+
+        .col-tab-pos {
+            width: 30px;
+            font-weight: 900;
+            text-align: center;
+        }
+
+        .pos-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 19px;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 900;
+        }
+
+        .pos-libertadores {
+            background: rgba(34, 197, 94, 0.22);
+            color: #4ade80 !important;
+            border: 1px solid rgba(34, 197, 94, 0.5);
+        }
+
+        .pos-pre-lib,
+        .pos-playoff {
+            background: rgba(56, 189, 248, 0.22);
+            color: #38bdf8 !important;
+            border: 1px solid rgba(56, 189, 248, 0.5);
+        }
+
+        .pos-sula {
+            background: rgba(245, 158, 11, 0.22);
+            color: #fbbf24 !important;
+            border: 1px solid rgba(245, 158, 11, 0.5);
+        }
+
+        .pos-rebaixamento {
+            background: rgba(239, 68, 68, 0.22);
+            color: #f87171 !important;
+            border: 1px solid rgba(239, 68, 68, 0.5);
+        }
+
+        .pos-neutra {
+            color: #94a3b8;
+            border: 1px solid transparent;
+        }
+
+        .col-tab-time {
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding-left: 6px !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 180px;
+        }
+
+        .tab-logo-time {
+            width: 14px;
+            height: 14px;
+            object-fit: contain;
+            border-radius: 50%;
+            background: white;
+            padding: 1px;
+            flex-shrink: 0;
+        }
+
+        .tab-num {
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #cbd5e1;
+        }
+
+        .tab-pts {
+            font-family: monospace;
+            font-weight: 900;
+            font-size: 0.82rem;
+            color: #60a5fa;
+            width: 38px;
+        }
+
+        .time-destaque-jogo .tab-pts {
+            color: #ffffff;
+        }
+
+        .legenda-tabela {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 8px 6px 4px 6px;
+            font-size: 0.62rem;
+            font-weight: 700;
+            color: #94a3b8;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 6px;
+        }
+
+        .legenda-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .legenda-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .legenda-dot.lib {
+            background: #4ade80;
+            box-shadow: 0 0 5px rgba(74, 222, 128, 0.5);
+        }
+
+        .legenda-dot.pre {
+            background: #38bdf8;
+            box-shadow: 0 0 5px rgba(56, 189, 248, 0.5);
+        }
+
+        .legenda-dot.sula {
+            background: #fbbf24;
+            box-shadow: 0 0 5px rgba(251, 191, 36, 0.5);
+        }
+
+        .legenda-dot.z4 {
+            background: #f87171;
+            box-shadow: 0 0 5px rgba(248, 113, 113, 0.5);
+        }
+
+        .legenda-dot.neutro {
+            background: #94a3b8;
+        }
+
+        .container-matamata {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .bloco-fase {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .titulo-fase-mata {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #fb923c;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            border-left: 3px solid #f97316;
+            padding-left: 6px;
+        }
+
+        .grid-jogos-mata {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+        }
+
+        .card-confronto {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 6px;
+            padding: 5px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .card-confronto.jogo-atual {
+            background: rgba(37, 99, 235, 0.25) !important;
+            border: 1.5px solid #3b82f6 !important;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.35);
+        }
+
+        .linha-time-mata {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+
+        .info-time-mata {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .logo-time-mata {
+            width: 14px;
+            height: 14px;
+            object-fit: contain;
+            border-radius: 50%;
+            background: white;
+            padding: 1px;
+            flex-shrink: 0;
+        }
+
+        .score-mata {
+            font-family: monospace;
+            font-weight: 900;
+            font-size: 0.8rem;
+            color: #60a5fa;
+            min-width: 16px;
+            text-align: right;
+        }
+
+        .card-confronto.jogo-atual .score-mata {
+            color: #ffffff;
+        }
+
+        .status-rodape-mata {
+            font-size: 0.6rem;
+            color: #94a3b8;
+            text-align: right;
+            margin-top: 1px;
         }
     </style>
 </head>
@@ -1310,7 +1777,21 @@
                     <span id="txt-estadio" class="txt-estadio"></span>
                 </div>
             </div>
-            <div class="badge-live-stream"><span class="dot-live-stream"></span>LIVE</div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <button id="btn-escalacao" class="btn-tabela-topo" style="display: none;" title="Ver Escalação">
+                    <span>ESCALAÇÃO</span>
+                </button>
+                <button id="btn-tabela" class="btn-tabela-topo" style="display: none;" title="Ver Classificação">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                    <span>TABELA</span>
+                </button>
+                <div class="badge-live-stream"><span class="dot-live-stream"></span>LIVE</div>
+            </div>
         </div>
 
         <div id="placar-dinamico">
@@ -1323,6 +1804,10 @@
                 <button id="btn-reservas" class="aba-btn">Reservas</button>
             </div>
             <div id="container-conteudo"></div>
+        </div>
+
+        <div id="painel-tabela" class="painel-tabela">
+            <div id="conteudo-tabela"></div>
         </div>
     </div>
 
@@ -1352,23 +1837,114 @@
 
         let lastPlacarState = "";
         let lastPainelState = "";
-        let abaAtualF1 = "Qualificação"; // Botão por defeito na F1
+        let lastTabelaState = "";
+
+        let tabelaAberta = false;
+        const btnTabela = document.getElementById('btn-tabela');
+        const btnEscalacao = document.getElementById('btn-escalacao');
+        const painelTabela = document.getElementById('painel-tabela');
+
+        window.subAbaTabela = 'grupos';
+        window.indiceGrupoSelecionado = 0;
+        window.grupoIniciadoAutomatico = "";
+
+        btnTabela.addEventListener('click', (e) => {
+            e.stopPropagation();
+            tabelaAberta = !tabelaAberta;
+            if (tabelaAberta) {
+                painelTabela.classList.add('aberto');
+                btnTabela.classList.add('ativa');
+                painelAberto = false;
+                document.getElementById('painel-escalacoes').classList.remove('aberto');
+                if (btnEscalacao) btnEscalacao.classList.remove('ativa');
+            } else {
+                painelTabela.classList.remove('aberto');
+                btnTabela.classList.remove('ativa');
+            }
+        });
+
+        if (btnEscalacao) {
+            btnEscalacao.addEventListener('click', (e) => {
+                e.stopPropagation();
+                painelAberto = !painelAberto;
+                const painelEsc = document.getElementById('painel-escalacoes');
+                if (painelAberto) {
+                    painelEsc.classList.add('aberto');
+                    btnEscalacao.classList.add('ativa');
+                    tabelaAberta = false;
+                    painelTabela.classList.remove('aberto');
+                    btnTabela.classList.remove('ativa');
+                } else {
+                    painelEsc.classList.remove('aberto');
+                    btnEscalacao.classList.remove('ativa');
+                }
+            });
+        }
 
         document.getElementById('card-principal').addEventListener('click', (e) => {
-            if (e.target.closest('.aba-btn')) return;
+            if (e.target.closest('.aba-btn') ||
+                e.target.closest('#btn-tabela') ||
+                e.target.closest('#btn-escalacao') ||
+                e.target.closest('#painel-tabela') ||
+                e.target.closest('#painel-escalacoes')) return;
+
+            // Se a tabela estiver aberta, apenas fecha ela e não abre a escalação
+            if (tabelaAberta) {
+                tabelaAberta = false;
+                painelTabela.classList.remove('aberto');
+                btnTabela.classList.remove('ativa');
+                return;
+            }
+
             const painel = document.getElementById('painel-escalacoes');
             if (painel.style.display === 'none') return;
 
             painelAberto = !painelAberto;
             if (painelAberto) {
                 painel.classList.add('aberto');
+                if (btnEscalacao) btnEscalacao.classList.add('ativa');
             } else {
                 painel.classList.remove('aberto');
+                if (btnEscalacao) btnEscalacao.classList.remove('ativa');
                 painel.classList.remove('modo-reservas');
                 document.getElementById('btn-titulares').classList.add('ativa');
                 document.getElementById('btn-reservas').classList.remove('ativa');
             }
         });
+
+        document.getElementById('btn-titulares').addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('painel-escalacoes').classList.remove('modo-reservas');
+            document.getElementById('btn-titulares').classList.add('ativa');
+            document.getElementById('btn-reservas').classList.remove('ativa');
+        });
+
+        document.getElementById('btn-reservas').addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('painel-escalacoes').classList.add('modo-reservas');
+            document.getElementById('btn-reservas').classList.add('ativa');
+            document.getElementById('btn-titulares').classList.remove('ativa');
+        });
+
+        window.trocarSubAba = function (tipo) {
+            window.subAbaTabela = tipo;
+            lastTabelaState = "";
+            if (dadosPartidaAtual) aplicarNaTela([dadosPartidaAtual]);
+        };
+
+        window.trocarGrupo = function (idx) {
+            window.indiceGrupoSelecionado = idx;
+            lastTabelaState = "";
+            if (dadosPartidaAtual) aplicarNaTela([dadosPartidaAtual]);
+        };
+
+        document.addEventListener('wheel', (e) => {
+            const bar = document.querySelector('.seletor-grupos-bar');
+            if (bar && bar.contains(e.target)) {
+                e.preventDefault();
+                bar.scrollLeft += e.deltaY;
+            }
+        }, { passive: false });
 
         window.addEventListener('keydown', (e) => {
             const tecla = e.key.toLowerCase();
@@ -1586,7 +2162,6 @@
             const fallbackFoto = "https://pbs.twimg.com/profile_images/1858822306186878976/qPsDCLmQ_400x400.jpg";
             let tf = `<img src="${j.foto || fallbackFoto}" class="jogador-foto" onerror="this.src='${fallbackFoto}'">`;
             let tr = `<span class="jogador-rating ${cC}">${j.rating}</span>`;
-
             let flagHtml = j.nacionalidade ? `<img src="https://flagcdn.com/w40/${j.nacionalidade}.png" class="bandeira-jogador" onerror="this.style.display='none'">` : '';
 
             return `<div class="jogador-item">
@@ -1620,7 +2195,7 @@
                 valAway = away.stat || "-";
             }
 
-            let pHomeHtml = `<div class="nfl-player home"><div class="nfl-player-info"><div class="nfl-player-name-line"><span class="nfl-pname" style="opacity:0.4;">Nenhum</span></div></div><div class="nfl-player-photo empty"></div></div>`;
+            let pHomeHtml = `<div class="nfl-player home"><div class="nfl-player-info"><div class="nfl-player-name-line">${home.posicao ? `<span class="nfl-player-pos">${home.posicao}</span>` : ''}<span class="nfl-pname">${home.nome}</span></div>${home.detalhe ? `<span class="nfl-player-stat-detail">${home.detalhe}</span>` : ''}</div><div class="nfl-player-photo empty"></div></div>`;
             let valHome = "--";
             if (home) {
                 let fHome = home.foto ? `<img src="${home.foto}" class="nfl-player-photo" onerror="this.style.display='none'">` : `<div class="nfl-player-photo empty"></div>`;
@@ -1650,6 +2225,8 @@
                         relogioRodando = false;
                         alerta2MinQ2 = false;
                         alerta2MinQ4 = false;
+                        lastTabelaState = "";
+                        window.grupoIniciadoAutomatico = "";
 
                         const containerAlerta = document.getElementById('container-alerta-externo');
                         if (containerAlerta) containerAlerta.innerHTML = '';
@@ -1686,7 +2263,7 @@
 
                 let delaySegundos;
                 if (esp === 'f1') {
-                    delaySegundos = 0; // Sem atraso na Fórmula 1
+                    delaySegundos = 0;
                 } else if (snapshot.isTrocaJogo) {
                     delaySegundos = ATRASO_SEGUNDOS_TROCA;
                 } else {
@@ -1719,20 +2296,16 @@
                 if (jg.torneio) document.getElementById('txt-torneio').innerText = jg.torneio;
                 if (jg.estadio) document.getElementById('txt-estadio').innerText = jg.estadio;
 
-                // ==========================================
-                // ROTA DA FÓRMULA 1 (TV BROADCAST OFICIAL)
-                // ==========================================
                 if (jg.esporte === "f1") {
                     cnt.removeAttribute('title');
-                    
+
                     let abaAtiva = jg.abaAtiva || "Corrida";
                     let subTreino = jg.subTreino || "Treino 1";
                     let currentPlacarState = JSON.stringify({ sessao: abaAtiva, sub: subTreino, dados: jg.classificacaoF1 });
-                    
+
                     if (currentPlacarState !== lastPlacarState) {
                         const isTreinoAtivo = (abaAtiva === 'Treino' || abaAtiva.startsWith('Treino '));
-                        
-                        // BARRA DE MENU COM O PIPELINE "|"
+
                         const abasHtml = `
                             <div class="f1-menu-bar">
                                 <div class="f1-botoes-grupo">
@@ -1749,7 +2322,6 @@
                             </div>
                         `;
 
-                        // Barra com os 3 Treinos Livres
                         let subTreinoHtml = '';
                         if (isTreinoAtivo) {
                             subTreinoHtml = `
@@ -1761,7 +2333,6 @@
                             `;
                         }
 
-                        // CABEÇALHOS ESPECÍFICOS PARA CADA TIPO DE TABELA
                         let cabecalhoHtml = '';
                         if (abaAtiva === 'Equipes') {
                             cabecalhoHtml = `
@@ -1819,13 +2390,11 @@
                                 </div>`;
                             }
 
-                            // BADGE DO LOGO DA EQUIPE COM A COR OFICIAL DE FUNDO
                             let logoBadgeHtml = p.logoEquipe ? `
                                 <span class="badge-logo-equipe" style="background-color: ${p.corEquipe || 'rgba(255,255,255,0.08)'};">
                                     <img src="${p.logoEquipe}" class="logo-equipe-img" onerror="this.style.display='none'">
                                 </span>` : '';
 
-                            // RENDERIZAÇÃO: CAMPEONATO DE CONSTRUTORES (EQUIPES)
                             if (p.isEquipes) {
                                 return `<div class="linha-f1">
                                     <div class="col-f1-piloto">
@@ -1839,7 +2408,6 @@
                                 </div>`;
                             }
 
-                            // RENDERIZAÇÃO: PILOTOS OU SESSÕES DO GP
                             let fotoContainerHtml = p.foto ? `
                                 <div class="foto-container-f1">
                                     <img src="${p.foto}" class="foto-piloto-f1" onerror="this.style.display='none'">
@@ -1898,37 +2466,34 @@
 
                         document.getElementById('placar-dinamico').innerHTML = abasHtml + subTreinoHtml + cabecalhoHtml + `<div class="scroll-f1">${linhas}</div>`;
                         document.getElementById('painel-escalacoes').style.display = 'none';
-                        
+
                         document.querySelectorAll('.aba-f1').forEach(btn => {
                             btn.addEventListener('click', (e) => {
                                 e.stopPropagation();
                                 let sessaoEscolhida = e.target.getAttribute('data-sessao');
                                 document.querySelectorAll('.aba-f1').forEach(b => b.classList.remove('ativa-f1'));
                                 e.target.classList.add('ativa-f1');
-                                
+
                                 if (sessaoEscolhida.startsWith('Treino')) {
                                     let btnTreinoPrincipal = document.querySelector('.aba-f1[data-sessao="Treino 1"]:not([style])');
-                                    if(btnTreinoPrincipal) btnTreinoPrincipal.classList.add('ativa-f1');
+                                    if (btnTreinoPrincipal) btnTreinoPrincipal.classList.add('ativa-f1');
                                 }
 
-                                fetch('/trocar_sessao_f1', { method: 'POST', body: sessaoEscolhida }).catch(()=>{});
+                                fetch('/trocar_sessao_f1', { method: 'POST', body: sessaoEscolhida }).catch(() => { });
                                 setTimeout(buscarDadosServidor, 350);
                                 setTimeout(buscarDadosServidor, 700);
                             });
                         });
-                        
+
                         lastPlacarState = currentPlacarState;
                     }
-                    
+
                     document.getElementById('txt-estadio').innerText = jg.tempo;
-                    return; 
+                    return;
                 } else {
                     document.getElementById('painel-escalacoes').style.display = 'block';
                 }
 
-                // ==========================================
-                // LÓGICA ORIGINAL DE FUTEBOL/NFL/BASQUETE
-                // ==========================================
                 if (jg.outros_jogos && jg.esporte === "futebol") {
                     verificarGolsOutrosJogos(jg.outros_jogos, jg.timeCasa, jg.timeFora);
                 }
@@ -2022,7 +2587,7 @@
 
                     if (jg.temPenaltis) {
                         let isHomeLeft = !inverterLados;
-                        const renderSeq = (seq) => seq.map(acerto => acerto ? `<span style="color: #4ade80; font-size: 1.2rem; filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.5)); line-height: 0.8;">●</span>` : `<span style="color: #ef4444; font-size: 1.2rem; font-weight: bold; filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.5)); line-height: 0.8;">x</span>`).join('');
+                        const renderSeq = (seq) => seq.map(acerto => acerto ? `<span style="color: #4ade80; font-size: 1.2rem; filter: drop-shadow(0 0 2px rgba(74, 222, 128, 0.5)); line-height: 0.8;">●</span>` : `<span style="color: #ef4444; font-size: 1.2rem; font-weight: bold; filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.5)); line-height: 0.8;">x</span>`).join('');
                         let htmlSeqEsq = isHomeLeft ? renderSeq(jg.seqPenCasa) : renderSeq(jg.seqPenFora);
                         let htmlSeqDir = isHomeLeft ? renderSeq(jg.seqPenFora) : renderSeq(jg.seqPenCasa);
                         let pEsq = isHomeLeft ? jg.scorePenCasa : jg.scorePenFora;
@@ -2089,23 +2654,20 @@
                             let headerDir = `<span>CASA</span><div class="stats-wrapper"><div class="titulos-stats"><span class="stat-box">PTS</span><span class="stat-box">REB</span><span class="stat-box">AST</span></div><div class="rating-slot"></div></div>`;
                             let listEsq = "", listDir = "";
                             let srtPts = (a, b) => (parseInt(b.pts) || 0) - (parseInt(a.pts) || 0);
-                            if (jg.escalacaoFora) {
-                                listEsq = [...jg.escalacaoFora].sort(srtPts).map(htmlBasq).join('');
-                            }
-                            if (jg.escalacaoCasa) {
-                                listDir = [...jg.escalacaoCasa].sort(srtPts).map(htmlBasq).join('');
-                            }
+                            if (jg.escalacaoFora) listEsq = [...jg.escalacaoFora].sort(srtPts).map(htmlBasq).join('');
+                            if (jg.escalacaoCasa) listDir = [...jg.escalacaoCasa].sort(srtPts).map(htmlBasq).join('');
+
                             painelConteudo.innerHTML = `
                             <div class="escalacao-grid">
                                 <div class="coluna-escalacao casa"><div class="titulo-escalacao">${headerEsq}</div><div>${listEsq}</div></div>
                                 <div class="coluna-escalacao fora"><div class="titulo-escalacao">${headerDir}</div><div>${listDir}</div></div>
                             </div>`;
                         } else {
-                            let titCasa = jg.escalacaoCasa.filter(j => !j.reserva).map(j => htmlFut(j, false)).join('');
-                            let resCasa = jg.escalacaoCasa.filter(j => j.reserva).map(j => htmlFut(j, true)).join('');
+                            let titCasa = (jg.escalacaoCasa || []).filter(j => !j.reserva).map(j => htmlFut(j, false)).join('');
+                            let resCasa = (jg.escalacaoCasa || []).filter(j => j.reserva).map(j => htmlFut(j, true)).join('');
 
-                            let titFora = jg.escalacaoFora.filter(j => !j.reserva).map(j => htmlFut(j, false)).join('');
-                            let resFora = jg.escalacaoFora.filter(j => j.reserva).map(j => htmlFut(j, true)).join('');
+                            let titFora = (jg.escalacaoFora || []).filter(j => !j.reserva).map(j => htmlFut(j, false)).join('');
+                            let resFora = (jg.escalacaoFora || []).filter(j => j.reserva).map(j => htmlFut(j, true)).join('');
 
                             painelConteudo.innerHTML = `
                             <div class="container-views">
@@ -2124,6 +2686,260 @@
                             </div>`;
                         }
                         lastPainelState = currentPainelState;
+                    }
+
+                    let gruposLista = (jg.grupos && jg.grupos.length > 0) ? jg.grupos : [];
+                    if (gruposLista.length === 0 && jg.tabela && jg.tabela.length > 0) {
+                        gruposLista = [{ grupo: "Classificação", ativoPadrao: true, times: jg.tabela }];
+                    }
+
+                    let temGrupos = gruposLista.length > 0;
+                    let temMataMata = jg.matamata && jg.matamata.length > 0;
+
+                    if ((temGrupos || temMataMata) && jg.esporte === 'futebol') {
+                        btnTabela.style.display = 'inline-flex';
+                        if (btnEscalacao) btnEscalacao.style.display = 'inline-flex';
+
+                        if (!temGrupos && temMataMata) window.subAbaTabela = 'matamata';
+                        if (temGrupos && !temMataMata) window.subAbaTabela = 'grupos';
+
+                        let navTipoHtml = '';
+                        if (temGrupos && temMataMata) {
+                            navTipoHtml = `
+                                <div class="nav-tipo-tabela">
+                                    <button class="btn-tipo-tab ${window.subAbaTabela === 'grupos' ? 'ativo' : ''}" onclick="event.stopPropagation(); window.trocarSubAba('grupos')">Classificação / Grupos</button>
+                                    <button class="btn-tipo-tab ${window.subAbaTabela === 'matamata' ? 'ativo' : ''}" onclick="event.stopPropagation(); window.trocarSubAba('matamata')">Mata-Mata</button>
+                                </div>
+                            `;
+                        }
+
+                        let conteudoFinalHtml = '';
+
+                        if (window.subAbaTabela === 'grupos' && temGrupos) {
+                            let chaveTorneio = jg.torneio || jg.timeCasa || 'padrao';
+                            if (window.grupoIniciadoAutomatico !== chaveTorneio) {
+                                let idxPadrao = gruposLista.findIndex(g => g.ativoPadrao);
+                                window.indiceGrupoSelecionado = (idxPadrao !== -1) ? idxPadrao : 0;
+                                window.grupoIniciadoAutomatico = chaveTorneio;
+                            }
+
+                            if (window.indiceGrupoSelecionado >= gruposLista.length) {
+                                window.indiceGrupoSelecionado = 0;
+                            }
+
+                            let grupoAtual = gruposLista[window.indiceGrupoSelecionado] || gruposLista[0];
+                            let totalTimes = (grupoAtual.times || []).length;
+
+                            let seletorGruposHtml = '';
+                            if (gruposLista.length > 1) {
+                                seletorGruposHtml = `
+                                <div class="container-seletor-grupos">
+                                    <button class="btn-seta-scroll" onclick="event.stopPropagation(); document.getElementById('barra-grupos').scrollLeft -= 140;">‹</button>
+                                    <div class="seletor-grupos-bar" id="barra-grupos">` +
+                                    gruposLista.map((g, idx) => {
+                                        let cl = (idx === window.indiceGrupoSelecionado) ? 'ativo' : '';
+                                        return `<button class="btn-grupo-pill ${cl}" onclick="event.stopPropagation(); window.trocarGrupo(${idx})">${g.grupo}</button>`;
+                                    }).join('') +
+                                    `</div>
+                                    <button class="btn-seta-scroll" onclick="event.stopPropagation(); document.getElementById('barra-grupos').scrollLeft += 140;">›</button>
+                                </div>`;
+                            }
+
+                            // Verifica se a API do Sofascore enviou promoção oficial para algum time deste grupo
+                            let temPromoNoGrupo = (grupoAtual.times || []).some(t => t.promocao && t.promocao.trim() !== "");
+
+                            function obterZonaClass(pos, promocao) {
+                                let p = (promocao || "").trim().toLowerCase();
+                                let tor = (dadosPartidaAtual?.torneio || "").toLowerCase();
+
+                                // 1. Se a API já definiu promoções no grupo e este time NÃO tem nenhuma, ele fica neutro (eliminado)
+                                if (temPromoNoGrupo && !p) {
+                                    return 'pos-neutra';
+                                }
+
+                                let isTorneioEuropeu = tor.includes("champions") || tor.includes("europa") || tor.includes("conference") || tor.includes("uefa");
+                                let isCopaOuContinental = isTorneioEuropeu || tor.includes("libertadores") || tor.includes("sudamericana") || tor.includes("copa");
+
+                                // 2. Rebaixamento (apenas ligas de pontos corridos)
+                                if (!isCopaOuContinental) {
+                                    if (p.includes("relegation") || p.includes("rebaixamento") || p.includes("descenso") || p.includes("z-4") || p.includes("z4")) {
+                                        return 'pos-rebaixamento';
+                                    }
+                                }
+
+                                // 3. Fases de Liga da UEFA (36 times)
+                                if (tor.includes("champions")) {
+                                    if (pos <= 8 || p.includes("round of 16") || p.includes("oitavas")) return 'pos-ucl';
+                                    if (pos <= 24 || p.includes("playoff") || p.includes("qualif")) return 'pos-playoff';
+                                    return 'pos-neutra';
+                                }
+
+                                if (tor.includes("europa")) {
+                                    if (pos <= 8 || p.includes("round of 16") || p.includes("oitavas")) return 'pos-uel';
+                                    if (pos <= 24 || p.includes("playoff") || p.includes("qualif")) return 'pos-playoff';
+                                    return 'pos-neutra';
+                                }
+
+                                if (tor.includes("conference")) {
+                                    if (pos <= 8 || p.includes("round of 16") || p.includes("oitavas")) return 'pos-conference';
+                                    if (pos <= 24 || p.includes("playoff") || p.includes("qualif")) return 'pos-playoff';
+                                    return 'pos-neutra';
+                                }
+
+                                // 4. Copa Libertadores (Feminina e Masculina)
+                                if (tor.includes("libertadores")) {
+                                    // Na Masculina, se o 3º colocado for para a Sul-Americana
+                                    if (p.includes("sudamericana") || p.includes("sul-americana")) return 'pos-sula';
+
+                                    // Vaga para o mata-mata (verde Libertadores)
+                                    if (p.includes("playoff") || p.includes("next round") || p.includes("oitavas") || p.includes("quartas") || p.includes("advance") || p.includes("promotion")) {
+                                        return 'pos-libertadores';
+                                    }
+
+                                    // Em grupos de 4 times, passam apenas os 2 primeiros
+                                    if (totalTimes <= 4) {
+                                        return pos <= 2 ? 'pos-libertadores' : 'pos-neutra';
+                                    }
+                                }
+
+                                // 5. Textos explícitos vindos do Sofascore para outros torneios
+                                if (p.includes("conference") || p.includes("uecl")) return 'pos-conference';
+                                if (p.includes("europa league") || p.includes("uel")) return 'pos-uel';
+                                if (p.includes("sudamericana") || p.includes("sul-americana")) return 'pos-sula';
+                                if (p.includes("champions league") && !p.includes("qualif")) return 'pos-ucl';
+                                if (p.includes("libertadores")) return 'pos-libertadores';
+
+                                // 6. Grupos curtos gerais (ex: 4 times na Copa do Mundo / Olimpíadas)
+                                if (totalTimes <= 4) {
+                                    // Se vier marcado com playoff/next round, avança; caso contrário, apenas os 2 primeiros
+                                    if (p.includes("playoff") || p.includes("next round") || p.includes("promotion") || p.includes("qualif")) {
+                                        return 'pos-libertadores';
+                                    }
+                                    return pos <= 2 ? 'pos-libertadores' : 'pos-neutra';
+                                }
+
+                                // 7. Ligas nacionais de pontos corridos (Brasileirão, Premier League, etc.)
+                                if (!isCopaOuContinental) {
+                                    if (p.includes("qualif") || p.includes("play-off") || p.includes("playoff") || p.includes("pré")) return 'pos-playoff';
+                                    if (pos <= 4) return 'pos-ucl';
+                                    if (pos <= 6) return 'pos-sula';
+                                    if (totalTimes > 8 && pos > totalTimes - 4) return 'pos-rebaixamento';
+                                }
+
+                                return 'pos-neutra';
+                            }
+
+                            // Montagem da legenda ignorando linhas que ficaram neutras
+                            let promocoesUnicas = [];
+                            (grupoAtual.times || []).forEach(t => {
+                                if (t.promocao && !promocoesUnicas.some(x => x.texto === t.promocao)) {
+                                    let corClasse = obterZonaClass(t.pos, t.promocao);
+                                    if (corClasse !== 'pos-neutra') {
+                                        let dotClasse = 'neutro';
+                                        if (corClasse === 'pos-ucl') dotClasse = 'ucl';
+                                        else if (corClasse === 'pos-libertadores') dotClasse = 'lib';
+                                        else if (corClasse === 'pos-playoff' || corClasse === 'pos-pre-lib') dotClasse = 'playoff';
+                                        else if (corClasse === 'pos-uel') dotClasse = 'uel';
+                                        else if (corClasse === 'pos-conference') dotClasse = 'conf';
+                                        else if (corClasse === 'pos-sula') dotClasse = 'sula';
+                                        else if (corClasse === 'pos-rebaixamento') dotClasse = 'z4';
+
+                                        promocoesUnicas.push({ texto: t.promocao, dot: dotClasse });
+                                    }
+                                }
+                            });
+
+                            let legendaHtml = '';
+                            if (promocoesUnicas.length > 0) {
+                                legendaHtml = `<div class="legenda-tabela">${promocoesUnicas.map(item => `<span class="legenda-item"><span class="legenda-dot ${item.dot}"></span>${item.texto}</span>`).join('')}</div>`;
+                            }
+
+                            let rowsHtml = (grupoAtual.times || []).map(t => {
+                                let clDestaque = (t.isCasa || t.isFora) ? 'time-destaque-jogo' : '';
+                                let clZona = obterZonaClass(t.pos, t.promocao);
+                                let logoHtml = t.logo ? `<img src="${t.logo}" class="tab-logo-time" onerror="this.style.display='none'">` : '';
+
+                                return `
+                                    <tr class="${clDestaque}">
+                                        <td class="col-tab-pos"><span class="pos-badge ${clZona}">${t.pos}</span></td>
+                                        <td class="col-tab-time">${logoHtml}<span>${t.nome}</span></td>
+                                        <td class="tab-num">${t.jogos}</td>
+                                        <td class="tab-num">${t.v}</td>
+                                        <td class="tab-num">${t.e}</td>
+                                        <td class="tab-num">${t.d}</td>
+                                        <td class="tab-num">${t.sg}</td>
+                                        <td class="tab-pts">${t.pts}</td>
+                                    </tr>
+                                `;
+                            }).join('');
+
+                            conteudoFinalHtml = `
+                                ${seletorGruposHtml}
+                                <table class="tabela-classificacao">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-tab-pos">#</th>
+                                            <th style="text-align: left; padding-left: 6px;">CLUBE</th>
+                                            <th title="Jogos">J</th>
+                                            <th title="Vitórias">V</th>
+                                            <th title="Empates">E</th>
+                                            <th title="Derrotas">D</th>
+                                            <th title="Saldo de Gols">SG</th>
+                                            <th class="tab-pts" title="Pontos">PTS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>${rowsHtml}</tbody>
+                                </table>
+                                ${legendaHtml}
+                            `;
+                        } else if (window.subAbaTabela === 'matamata' && temMataMata) {
+                            let fasesHtml = jg.matamata.map(f => {
+                                let cardsJogos = f.jogos.map(m => {
+                                    let clAtual = m.isJogoAtual ? 'jogo-atual' : '';
+                                    let l1 = m.logo1 ? `<img src="${m.logo1}" class="logo-time-mata" onerror="this.style.display='none'">` : '';
+                                    let l2 = m.logo2 ? `<img src="${m.logo2}" class="logo-time-mata" onerror="this.style.display='none'">` : '';
+
+                                    return `
+                                        <div class="card-confronto ${clAtual}">
+                                            <div class="linha-time-mata">
+                                                <div class="info-time-mata">${l1}<span>${m.time1}</span></div>
+                                                <span class="score-mata">${m.placar1}</span>
+                                            </div>
+                                            <div class="linha-time-mata">
+                                                <div class="info-time-mata">${l2}<span>${m.time2}</span></div>
+                                                <span class="score-mata">${m.placar2}</span>
+                                            </div>
+                                            ${m.status ? `<div class="status-rodape-mata">${m.status}</div>` : ''}
+                                        </div>
+                                    `;
+                                }).join('');
+
+                                return `
+                                    <div class="bloco-fase">
+                                        <div class="titulo-fase-mata">${f.fase}</div>
+                                        <div class="grid-jogos-mata">${cardsJogos}</div>
+                                    </div>
+                                `;
+                            }).join('');
+
+                            conteudoFinalHtml = `<div class="container-matamata">${fasesHtml}</div>`;
+                        }
+
+                        let currentTabelaState = JSON.stringify({
+                            sub: window.subAbaTabela,
+                            grpIdx: window.indiceGrupoSelecionado,
+                            grupos: jg.grupos,
+                            tabela: jg.tabela,
+                            matamata: jg.matamata
+                        });
+
+                        if (currentTabelaState !== lastTabelaState) {
+                            document.getElementById('conteudo-tabela').innerHTML = navTipoHtml + conteudoFinalHtml;
+                            lastTabelaState = currentTabelaState;
+                        }
+                    } else {
+                        btnTabela.style.display = 'none';
+                        if (btnEscalacao) btnEscalacao.style.display = 'none';
                     }
                 }
             } catch (e) { }

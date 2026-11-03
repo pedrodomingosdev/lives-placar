@@ -18,6 +18,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 comando_f1_pendente = None
+
 # ==============================================================================
 # CONFIGURAÇÃO DO LINK DA PARTIDA E TORNEIO
 # ==============================================================================
@@ -26,7 +27,6 @@ URL_DO_JOGO = ""
 # ==============================================================================
 # SISTEMA DE CACHE LOCAL VIA CHROME
 # ==============================================================================
-
 CACHE_IMG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cache_img")
 os.makedirs(CACHE_IMG_DIR, exist_ok=True)
 
@@ -62,6 +62,26 @@ def cachear_todas_imagens(driver_instance, dados_lista):
         for k in ["logoCasa", "logoFora"]:
             if item.get(k): 
                 urls_para_descarregar.add(item[k])
+                
+        # Logos da tabela simples
+        for t in item.get("tabela", []):
+            if isinstance(t, dict) and t.get("logo"):
+                urls_para_descarregar.add(t["logo"])
+
+        # Logos de todos os grupos
+        for grp in item.get("grupos", []):
+            if isinstance(grp, dict):
+                for t in grp.get("times", []):
+                    if isinstance(t, dict) and t.get("logo"):
+                        urls_para_descarregar.add(t["logo"])
+
+        # Logos dos confrontos de mata-mata
+        for fase in item.get("matamata", []):
+            if isinstance(fase, dict):
+                for m in fase.get("jogos", []):
+                    if isinstance(m, dict):
+                        if m.get("logo1"): urls_para_descarregar.add(m["logo1"])
+                        if m.get("logo2"): urls_para_descarregar.add(m["logo2"])
 
         for esc in [item.get("escalacaoCasa", []), item.get("escalacaoFora", [])]:
             if isinstance(esc, list):
@@ -158,6 +178,23 @@ def cachear_todas_imagens(driver_instance, dados_lista):
         for k in ["logoCasa", "logoFora"]:
             if item.get(k) in mapa_cache:
                 item[k] = mapa_cache[item[k]]
+                
+        for t in item.get("tabela", []):
+            if isinstance(t, dict) and t.get("logo") in mapa_cache:
+                t["logo"] = mapa_cache[t["logo"]]
+
+        for grp in item.get("grupos", []):
+            if isinstance(grp, dict):
+                for t in grp.get("times", []):
+                    if isinstance(t, dict) and t.get("logo") in mapa_cache:
+                        t["logo"] = mapa_cache[t["logo"]]
+
+        for fase in item.get("matamata", []):
+            if isinstance(fase, dict):
+                for m in fase.get("jogos", []):
+                    if isinstance(m, dict):
+                        if m.get("logo1") in mapa_cache: m["logo1"] = mapa_cache[m["logo1"]]
+                        if m.get("logo2") in mapa_cache: m["logo2"] = mapa_cache[m["logo2"]]
 
         for esc in [item.get("escalacaoCasa", []), item.get("escalacaoFora", [])]:
             if isinstance(esc, list):
@@ -574,7 +611,7 @@ def atualizar_placar():
             return "nfl"
         return "futebol"
     
-# 2. ROTA DA FÓRMULA 1 (SESSÕES DO GP + CAMPEONATOS MUNDIAIS)
+    # 2. ROTA DA FÓRMULA 1 (SESSÕES DO GP + CAMPEONATOS MUNDIAIS)
     if "formula1.com" in url_atual:
         global comando_f1_pendente, f1_url_cache
         if comando_f1_pendente:
@@ -645,9 +682,9 @@ def atualizar_placar():
         let classificacao = [];
         let linhas = table.querySelectorAll('tbody tr');
 
-        // MAPA OFICIAL DE NACIONALIDADES POR CÓDIGO DO SITE DA F1 (ex: GBR -> gb-eng)
+        // MAPA OFICIAL DE NACIONALIDADES POR CÓDIGO DA F1 (GBR -> gb)
         const mapaCodigosNac = {
-            "gbr": "gb-eng", "ita": "it", "mon": "mc", "ned": "nl", "fra": "fr", "aus": "au",
+            "gbr": "gb", "ita": "it", "mon": "mc", "ned": "nl", "fra": "fr", "aus": "au",
             "esp": "es", "tha": "th", "jpn": "jp", "ger": "de", "bra": "br", "arg": "ar",
             "fin": "fi", "can": "ca", "mex": "mx", "nzl": "nz", "chn": "cn", "den": "dk"
         };
@@ -712,7 +749,7 @@ def atualizar_placar():
                 } else {
                     let n = nomePiloto.toLowerCase();
                     if(n.includes("verstappen")) nac = "nl";
-                    else if(n.includes("norris") || n.includes("hamilton") || n.includes("russell") || n.includes("bearman") || n.includes("lindblad") || n.includes("vesti")) nac = "gb-eng";
+                    else if(n.includes("norris") || n.includes("hamilton") || n.includes("russell") || n.includes("bearman") || n.includes("lindblad") || n.includes("vesti")) nac = "gb";
                     else if(n.includes("leclerc")) nac = "mc";
                     else if(n.includes("sainz") || n.includes("alonso")) nac = "es";
                     else if(n.includes("piastri") || n.includes("doohan")) nac = "au";
@@ -821,7 +858,6 @@ def atualizar_placar():
             }
 
             const todos = document.querySelectorAll('span, div, p');
-
             for (let el of todos) {
                 let txt = (el.textContent || "").trim();
                 let mCompleto = txt.match(/(?:Q([1-4])|OT)\s*\(([0-1]?[0-9]:[0-5][0-9])\)/i);
@@ -832,66 +868,59 @@ def atualizar_placar():
                     return `${minSeg} - ${qTxt}`;
                 }
             }
-
-            for (let el of todos) {
-                let txt = (el.textContent || "").trim();
-                let mP = txt.match(/\(([0-1]?[0-9]:[0-5][0-9])\)/);
-                if (mP) {
-                    let rect = el.getBoundingClientRect();
-                    if (rect.top >= 0 && rect.top <= 450 && rect.width > 0 && rect.height > 0) {
-                        let minSeg = mP[1];
-                        if (minSeg.length === 4) minSeg = "0" + minSeg;
-                        return minSeg;
-                    }
-                }
-            }
         } catch(e) {}
         return "";
     }
 
-    function extrairCampanhaBasqueteDOM() {
-        let fora = "";
-        let casa = "";
-        try {
-            const regex = /^(\d{1,2}-\d{1,2})$/;
-            const elements = document.querySelectorAll('span, div, p');
-            const encontrados = [];
-            for (let el of elements) {
-                if (el.children.length === 0) {
-                    let txt = el.textContent.trim();
-                    if (regex.test(txt)) {
-                        let rect = el.getBoundingClientRect();
-                        if (rect.top >= 0 && rect.top <= 400 && rect.width > 0) {
-                            encontrados.push({ txt: txt, x: rect.left });
-                        }
-                    }
+    async function obterDadosCompletos() {
+        let [rEvento, rLineups, rIncidents] = await Promise.all([
+            fetch(`/api/v1/event/${eventId}`).then(r => r.json()).catch(() => ({})),
+            fetch(`/api/v1/event/${eventId}/lineups`).then(r => r.json()).catch(() => ({})),
+            fetch(`/api/v1/event/${eventId}/incidents`).then(r => r.json()).catch(() => ({}))
+        ]);
+
+        let ev = rEvento?.event || {};
+        let uId = ev?.tournament?.uniqueTournament?.id;
+        let sId = ev?.season?.id;
+        let rStandings = {};
+        let rCuptrees = {};
+
+        if (uId && !sId) {
+            try {
+                let rSeasons = await fetch(`/api/v1/unique-tournament/${uId}/seasons`).then(r => r.json());
+                if (rSeasons?.seasons?.length > 0) sId = rSeasons.seasons[0].id;
+            } catch(e) {}
+        }
+
+        if (uId && sId) {
+            try {
+                let [resSt, resCup] = await Promise.all([
+                    fetch(`/api/v1/unique-tournament/${uId}/season/${sId}/standings/total`).then(r => r.ok ? r.json() : {}).catch(() => ({})),
+                    fetch(`/api/v1/unique-tournament/${uId}/season/${sId}/cuptrees`).then(r => r.ok ? r.json() : {}).catch(() => ({}))
+                ]);
+                rStandings = resSt || {};
+                rCuptrees = resCup || {};
+                if (!rCuptrees || Object.keys(rCuptrees).length === 0) {
+                    try {
+                        let r2 = await fetch(`/api/v1/unique-tournament/${uId}/season/${sId}/cuptree`).then(r => r.ok ? r.json() : {}).catch(() => ({}));
+                        if (r2 && Object.keys(r2).length > 0) rCuptrees = r2;
+                    } catch(e) {}
                 }
-            }
-            encontrados.sort((a, b) => a.x - b.x);
-            if (encontrados.length >= 2) {
-                fora = encontrados[0].txt;
-                casa = encontrados[1].txt;
-            } else if (encontrados.length === 1) {
-                if (encontrados[0].x < window.innerWidth / 2) fora = encontrados[0].txt;
-                else casa = encontrados[0].txt;
-            }
-        } catch(e) {}
-        return { casa, fora };
+            } catch(e) {}
+        }
+
+        return {
+            evento: rEvento || {},
+            lineups: rLineups || {},
+            incidents: rIncidents || {},
+            standings: rStandings || {},
+            cuptrees: rCuptrees || {},
+            relogioDom: extrairRelogioDOM(),
+            campanhaBasquete: {}
+        };
     }
 
-    Promise.all([
-        fetch(`/api/v1/event/${eventId}`).then(r => r.json()).catch(() => ({})),
-        fetch(`/api/v1/event/${eventId}/lineups`).then(r => r.json()).catch(() => ({})),
-        fetch(`/api/v1/event/${eventId}/incidents`).then(r => r.json()).catch(() => ({}))
-    ]).then(results => {
-        done({
-            evento: results[0] || {},
-            lineups: results[1] || {},
-            incidents: results[2] || {},
-            relogioDom: extrairRelogioDOM(),
-            campanhaBasquete: extrairCampanhaBasqueteDOM()
-        });
-    }).catch(() => done(null));
+    obterDadosCompletos().then(res => done(res)).catch(() => done(null));
     """
     
     try:
@@ -900,6 +929,8 @@ def atualizar_placar():
         if isinstance(dados, dict):
             evento_data = dados.get("evento", {}).get("event", {})
             lineups_data = dados.get("lineups", {})
+            standings_data = dados.get("standings", {})
+            cuptrees_data = dados.get("cuptrees", {})
             incidents_data = dados.get("incidents", {}).get("incidents", [])
             relogio_dom = dados.get("relogioDom", "")
             campanha_basquete = dados.get("campanhaBasquete", {})
@@ -908,6 +939,8 @@ def atualizar_placar():
             lineups_data = dados[1] if isinstance(dados[1], dict) else {}
             incidents_data = dados[2].get("incidents", []) if isinstance(dados[2], dict) else []
             relogio_dom = dados[3] if len(dados) > 3 and isinstance(dados[3], str) else ""
+            standings_data = {}
+            cuptrees_data = {}
             campanha_basquete = {}
         else: return esporte
 
@@ -1024,6 +1057,112 @@ def atualizar_placar():
         id_do_campeonato = evento_data.get("tournament", {}).get("uniqueTournament", {}).get("id")
         outros_jogos = extrair_outros_jogos_sofascore(esporte, match_id, id_do_campeonato)
         
+        # 1. PROCESSAR TODOS OS GRUPOS / CLASSIFICAÇÃO
+        tabelas_grupos = []
+        tabela_classificacao = []
+        if esporte == "futebol" and standings_data:
+            standings_list = standings_data.get("standings", [])
+            for grp in standings_list:
+                nome_grp = grp.get("name") or grp.get("groupName") or "Classificação"
+                linhas_grp = []
+                for r in grp.get("rows", []):
+                    tm = r.get("team", {})
+                    t_id = tm.get("id")
+                    diff = r.get("scoreDiffFormatted")
+                    if diff is None:
+                        diff = r.get("scoresFor", 0) - r.get("scoresAgainst", 0)
+                        diff = f"+{diff}" if diff > 0 else str(diff)
+
+                    linhas_grp.append({
+                        "pos": r.get("position"),
+                        "id": t_id,
+                        "nome": tm.get("shortName") or tm.get("name", ""),
+                        "promocao": r.get("promotion", {}).get("text", ""),
+                        "logo": f"https://api.sofascore.app/api/v1/team/{t_id}/image" if t_id else "",
+                        "jogos": r.get("matches", 0),
+                        "v": r.get("wins", 0),
+                        "e": r.get("draws", 0),
+                        "d": r.get("losses", 0),
+                        "sg": str(diff),
+                        "pts": r.get("points", 0),
+                        "isCasa": str(t_id) == str(id_casa),
+                        "isFora": str(t_id) == str(id_fora)
+                    })
+                
+                tem_time_jogo = any(t["isCasa"] or t["isFora"] for t in linhas_grp)
+                tabelas_grupos.append({
+                    "grupo": nome_grp,
+                    "ativoPadrao": tem_time_jogo,
+                    "times": linhas_grp
+                })
+
+            # Tabela simples de fallback (grupo do jogo atual)
+            grupo_principal = next((g for g in tabelas_grupos if g["ativoPadrao"]), None)
+            if not grupo_principal and tabelas_grupos:
+                grupo_principal = tabelas_grupos[0]
+            if grupo_principal:
+                tabela_classificacao = grupo_principal["times"]
+
+        # 2. PROCESSAR O MATA-MATA (CHAVEAMENTO RESILIENTE)
+        matamata_fases = []
+        if esporte == "futebol" and cuptrees_data:
+            arvores = []
+            if isinstance(cuptrees_data, dict):
+                arvores = cuptrees_data.get("cupTrees") or cuptrees_data.get("cupTree") or cuptrees_data.get("rounds") or []
+            elif isinstance(cuptrees_data, list):
+                arvores = cuptrees_data
+
+            if isinstance(arvores, dict):
+                arvores = [arvores]
+
+            rounds = []
+            if arvores and isinstance(arvores, list):
+                for arv in arvores:
+                    if isinstance(arv, dict) and "rounds" in arv:
+                        rounds.extend(arv.get("rounds", []))
+                    elif isinstance(arv, dict):
+                        rounds.append(arv)
+
+            for rnd in rounds:
+                if not isinstance(rnd, dict): continue
+                nome_fase = rnd.get("description") or rnd.get("name") or "Eliminatória"
+                confrontos = []
+                blocos = rnd.get("blocks") or rnd.get("events") or rnd.get("matches") or []
+
+                for blk in blocos:
+                    if not isinstance(blk, dict): continue
+                    eventos = blk.get("events") or blk.get("matches") or []
+                    if not eventos and blk.get("event"): eventos = [blk.get("event")]
+                    if not eventos and blk.get("match"): eventos = [blk.get("match")]
+                    if not eventos and (blk.get("homeTeam") or blk.get("team1")):
+                        eventos = [blk]
+
+                    for ev in eventos:
+                        if not isinstance(ev, dict): continue
+                        h_tm = ev.get("homeTeam") or ev.get("team1") or {}
+                        a_tm = ev.get("awayTeam") or ev.get("team2") or {}
+                        h_id = h_tm.get("id")
+                        a_id = a_tm.get("id")
+                        h_sc = ev.get("homeScore", {}).get("display", ev.get("homeScore", {}).get("current", "-"))
+                        a_sc = ev.get("awayScore", {}).get("display", ev.get("awayScore", {}).get("current", "-"))
+                        status_ev = ev.get("status", {}).get("description", "")
+
+                        confrontos.append({
+                            "time1": h_tm.get("shortName") or h_tm.get("name", "A definir"),
+                            "logo1": f"https://api.sofascore.app/api/v1/team/{h_id}/image" if h_id else "",
+                            "placar1": str(h_sc) if h_sc is not None else "-",
+                            "time2": a_tm.get("shortName") or a_tm.get("name", "A definir"),
+                            "logo2": f"https://api.sofascore.app/api/v1/team/{a_id}/image" if a_id else "",
+                            "placar2": str(a_sc) if a_sc is not None else "-",
+                            "status": status_ev,
+                            "isJogoAtual": (str(h_id) in [str(id_casa), str(id_fora)]) or (str(a_id) in [str(id_casa), str(id_fora)])
+                        })
+
+                if confrontos:
+                    matamata_fases.append({
+                        "fase": nome_fase,
+                        "jogos": confrontos
+                    })
         jogo = [{
             "esporte": esporte, "timeCasa": time_casa, "logoCasa": logo_casa, "formacaoCasa": formacao_casa,
             "escalacaoCasa": esc_casa, "placarCasa": placar_casa, "timeFora": time_fora, "logoFora": logo_fora,
@@ -1031,7 +1170,10 @@ def atualizar_placar():
             "temPenaltis": tem_penaltis, "scorePenCasa": score_pen_casa, "scorePenFora": score_pen_fora,
             "seqPenCasa": penaltis_seq_casa, "seqPenFora": penaltis_seq_fora,
             "tempo": ultimo_tempo_valido, "estadio": estadio, "torneio": torneio,
-            "outros_jogos": outros_jogos
+            "outros_jogos": outros_jogos,
+            "tabela": tabela_classificacao,
+            "grupos": tabelas_grupos,
+            "matamata": matamata_fases
         }]
             
         jogo_final = cachear_todas_imagens(driver, jogo)
