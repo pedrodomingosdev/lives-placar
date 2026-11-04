@@ -1914,3 +1914,642 @@
             border-radius: 3px;
             text-transform: uppercase;
         }
+
+        /* ==============================================================
+   REPLICAÇÃO CBS SPORTS NFL (COMPLETA COM DROPDOWN E CORES)
+   ============================================================== */
+        .cbs-nfl-box {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            color: #0f172a;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 10px 12px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* 1. PLACAR POR QUARTOS */
+        .cbs-linescore-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.78rem;
+        }
+
+        .cbs-linescore-table th {
+            font-weight: 700;
+            color: #64748b;
+            padding: 2px 5px;
+            text-align: center;
+            font-size: 0.70rem;
+        }
+
+        .cbs-linescore-table td {
+            padding: 2px 5px;
+            text-align: center;
+            font-family: monospace;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .cbs-team-cell {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-align: left !important;
+        }
+
+        .cbs-team-cell img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .cbs-team-nome {
+            font-weight: 900;
+            font-size: 0.82rem;
+            color: #0f172a;
+        }
+
+        .cbs-team-record {
+            font-size: 0.65rem;
+            color: #64748b;
+            font-weight: 600;
+            margin-left: 2px;
+        }
+
+        .cbs-total-pts {
+            font-size: 0.90rem;
+            font-weight: 900;
+            color: #0f172a !important;
+        }
+
+        .cbs-venue-bar {
+            font-size: 0.65rem;
+            color: #64748b;
+            font-weight: 700;
+            background: #f1f5f9;
+            padding: 3px 6px;
+            border-radius: 4px;
+            margin-top: -2px;
+        }
+
+        /* 2. BARRAS COMPARATIVAS */
+        .cbs-stats-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 4px 0;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .cbs-bar-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .cbs-bar-num {
+            font-family: monospace;
+            font-weight: 900;
+            font-size: 0.82rem;
+            width: 32px;
+        }
+
+        .cbs-bar-num.left {
+            text-align: right;
+        }
+
+        .cbs-bar-num.right {
+            text-align: left;
+        }
+
+        .cbs-bar-label {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: #64748b;
+            width: 80px;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .cbs-track {
+            flex: 1;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cbs-fill {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.4s ease;
+        }
+
+        .cbs-fill.left {
+            right: 0;
+        }
+
+        .cbs-fill.right {
+            left: 0;
+        }
+
+        /* 3. MENU DROPDOWN IDÊNTICO À CBS */
+        .cbs-dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .cbs-btn-dropdown {
+            background: transparent;
+            border: none;
+            color: #0055d4;
+            font-size: 0.70rem;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: background 0.15s;
+        }
+
+        .cbs-btn-dropdown:hover {
+            background: rgba(0, 85, 212, 0.08);
+        }
+
+        .cbs-menu-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #0055d4;
+            border-radius: 4px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+            z-index: 1000;
+            min-width: 130px;
+            padding: 4px 0;
+            margin-top: 2px;
+        }
+
+        .cbs-menu-dropdown.aberto {
+            display: block;
+        }
+
+        .cbs-menu-item {
+            color: #ffffff;
+            font-size: 0.65rem;
+            font-weight: 900;
+            letter-spacing: 0.6px;
+            padding: 6px 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background 0.15s;
+            user-select: none;
+        }
+
+        .cbs-menu-item:hover {
+            background: #003da5;
+        }
+
+        .cbs-menu-item.ativo {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* 4. ÁREA DE TABELAS COM SCROLL COMPACTO */
+        .cbs-offense-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .cbs-offense-col {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .cbs-col-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 2px;
+            border-bottom: 1.5px solid #cbd5e1;
+            position: relative;
+        }
+
+        .cbs-col-header .team-info {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 900;
+            font-size: 0.80rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .cbs-col-header .team-info img {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+        }
+
+        /* ROLAGEM COMPACTA PARA NÃO ESTICAR O PLACAR */
+        .cbs-tables-scroll {
+            max-height: 240px;
+            overflow-y: auto;
+            padding-right: 2px;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 #f8fafc;
+        }
+
+        .cbs-tables-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .cbs-tables-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .cbs-table-player {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.68rem;
+            margin-bottom: 6px;
+        }
+
+        .cbs-table-player th {
+            font-size: 0.60rem;
+            color: #64748b;
+            font-weight: 800;
+            padding: 2px 2px;
+            text-transform: uppercase;
+        }
+
+        .cbs-table-player td {
+            padding: 2px 2px;
+            font-family: monospace;
+            font-size: 0.68rem;
+            color: #1e293b;
+            text-align: right;
+        }
+
+        .cbs-table-player td.p-name {
+            text-align: left;
+            font-family: inherit;
+            font-weight: 800;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 85px;
+        }
+
+        /* FOTO DO JOGADOR NA TABELA DA NFL */
+        .cbs-player-cell {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 105px;
+        }
+
+        .cbs-player-photo {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #e2e8f0;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+
+        .cbs-player-photo-empty {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            flex-shrink: 0;
+        }
+
+        /* LÍDERES DA TEMPORADA (CARD NO PRÉ-JOGO) */
+        .cbs-lideres-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 6px;
+            border-bottom: 1.5px solid #e2e8f0;
+        }
+
+        .cbs-lideres-title {
+            font-size: 0.82rem;
+            font-weight: 900;
+            color: #0f172a;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .cbs-lideres-venue {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        .cbs-lideres-teams-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 4px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .cbs-lideres-team {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            color: #0f172a;
+        }
+
+        .cbs-lideres-team img {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+        }
+
+        .cbs-lideres-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-height: 310px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        .cbs-lider-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 4px;
+            border-bottom: 1px solid #f1f5f9;
+            gap: 8px;
+        }
+
+        .cbs-lider-row:last-child {
+            border-bottom: none;
+        }
+
+        .cbs-lider-player {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .cbs-lider-player.home {
+            justify-content: flex-end;
+        }
+
+        .cbs-lider-info {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .cbs-lider-name-pos {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.80rem;
+            font-weight: 800;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .cbs-pname {
+            color: #0f172a;
+        }
+
+        .cbs-ppos {
+            font-size: 0.65rem;
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        .cbs-pdetail {
+            font-size: 0.65rem;
+            color: #64748b;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 1px;
+        }
+
+        .cbs-lider-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-width: 150px;
+            flex-shrink: 0;
+        }
+
+        .cbs-lider-val {
+            font-size: 1.10rem;
+            font-weight: 900;
+            font-family: monospace;
+            min-width: 42px;
+        }
+
+        .cbs-lider-val.away {
+            text-align: right;
+        }
+
+        .cbs-lider-val.home {
+            text-align: left;
+        }
+
+        .cbs-lider-label {
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            text-align: center;
+            min-width: 76px;
+            line-height: 1.1;
+        }
+
+        /* ==============================================================
+   TEMA OFICIAL NFL PARA A TABELA E PLAYOFFS (NAVY, RED & ICE BLUE)
+   ============================================================== */
+
+        /* 1. Botões do Topo (TABELA e BOX SCORE) ativos */
+        .container.nfl .btn-tabela-topo.ativa,
+        .container.nfl .btn-tabela-topo:hover {
+            background: #013369 !important;
+            border-color: #0284c7 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 12px rgba(2, 132, 199, 0.45) !important;
+        }
+
+        /* 2. Botões de navegação (CLASSIFICAÇÃO / GRUPOS e PLAYOFFS) */
+        .container.nfl .btn-tipo-tab.ativo {
+            background: #013369 !important;
+            border-color: #0284c7 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 12px rgba(2, 132, 199, 0.4) !important;
+        }
+
+        .container.nfl .btn-tipo-tab:hover {
+            background: rgba(2, 132, 199, 0.25) !important;
+            border-color: rgba(2, 132, 199, 0.6) !important;
+            color: #ffffff !important;
+        }
+
+        /* 3. Seletor de Conferências e Divisões */
+        .container.nfl .btn-grupo-pill.ativo {
+            background: #013369 !important;
+            border-color: #0284c7 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 10px rgba(2, 132, 199, 0.4) !important;
+        }
+
+        .container.nfl .btn-seta-scroll:hover {
+            background: #013369 !important;
+            border-color: #0284c7 !important;
+        }
+
+        /* 4. Coluna PCT (Aproveitamento) em Azul Gelo */
+        .container.nfl .tab-pts {
+            color: #38bdf8 !important;
+            font-weight: 900 !important;
+        }
+
+        /* 5. Linha das equipas da transmissão em destaque */
+        .container.nfl .tabela-classificacao tbody tr.time-destaque-jogo {
+            background: rgba(1, 51, 105, 0.35) !important;
+            outline: 1.5px solid #0284c7 !important;
+            border-left: 3.5px solid #d50a0a !important;
+            /* Detalhe Vermelho Oficial NFL */
+        }
+
+        /* ==============================================================
+   CORES DA TABELA NFL: FOLGA (AZUL GELO) E WILD CARD (VERMELHO)
+   ============================================================== */
+
+        /* Seed #1: Folga na 1ª Rodada (Azul Gelo Elétrico) */
+        .container.nfl .pos-ucl {
+            background: rgba(2, 132, 199, 0.35) !important;
+            color: #38bdf8 !important;
+            border: 1.5px solid #0284c7 !important;
+            box-shadow: 0 0 8px rgba(2, 132, 199, 0.4) !important;
+        }
+
+        /* Seeds #2 a #7: Vagas de Wild Card (VERMELHO OFICIAL NFL) */
+        .container.nfl .pos-uel {
+            background: rgba(220, 38, 38, 0.22) !important;
+            color: #fca5a5 !important;
+            border: 1.5px solid #ef4444 !important;
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.35) !important;
+        }
+
+        /* Legenda do Rodapé: Bolinha do Wild Card em Vermelho */
+        .container.nfl .legenda-dot.uel {
+            background-color: #ef4444 !important;
+            box-shadow: 0 0 6px #ef4444 !important;
+        }
+
+        /* Bolinha da Folga em Azul Gelo */
+        .container.nfl .legenda-dot.ucl {
+            background-color: #38bdf8 !important;
+            box-shadow: 0 0 6px #38bdf8 !important;
+        }
+
+        /* Etiqueta WILD CARD nos cards de mata-mata em vermelho */
+        .badge-nfl-playoff.wild-card {
+            font-size: 0.52rem;
+            font-weight: 900;
+            letter-spacing: 0.6px;
+            background: rgba(220, 38, 38, 0.2) !important;
+            color: #f87171 !important;
+            border: 1px solid rgba(239, 68, 68, 0.5) !important;
+            padding: 1px 4px;
+            border-radius: 3px;
+            text-transform: uppercase;
+        }
+
+        .container.nfl .legenda-dot.uel {
+            background-color: #3b82f6 !important;
+            box-shadow: 0 0 6px #3b82f6 !important;
+        }
+
+        /* 8. Confrontos e Chaveamento dos Playoffs da NFL */
+        .container.nfl .titulo-fase-mata {
+            color: #38bdf8 !important;
+            border-left: 3px solid #0284c7 !important;
+        }
+
+        .container.nfl .score-mata {
+            color: #38bdf8 !important;
+            font-weight: 900;
+        }
+
+        .container.nfl .card-confronto.jogo-atual {
+            background: rgba(1, 51, 105, 0.35) !important;
+            border: 1.5px solid #0284c7 !important;
+            box-shadow: 0 0 12px rgba(2, 132, 199, 0.4) !important;
+        }
+
+        .badge-nfl-playoff {
+            font-size: 0.52rem;
+            font-weight: 900;
+            letter-spacing: 0.6px;
+            background: rgba(2, 132, 199, 0.2);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            padding: 1px 4px;
+            border-radius: 3px;
+            text-transform: uppercase;
+        }
+
+        /* BADGES DE 3º LUGAR E FINAL NO FUTEBOL */
+        .badge-futebol-mata {
+            font-size: 0.52rem;
+            font-weight: 900;
+            letter-spacing: 0.6px;
+            padding: 1px 5px;
+            border-radius: 3px;
+            text-transform: uppercase;
+        }
+
+        .badge-futebol-mata.bronze {
+            background: rgba(217, 119, 6, 0.18) !important;
+            color: #fbbf24 !important;
+            border: 1px solid rgba(245, 158, 11, 0.45) !important;
+        }
+
+        .badge-futebol-mata.final {
+            background: rgba(234, 179, 8, 0.22) !important;
+            color: #facc15 !important;
+            border: 1px solid rgba(250, 204, 21, 0.6) !important;
+            box-shadow: 0 0 8px rgba(250, 204, 21, 0.25) !important;
+        }

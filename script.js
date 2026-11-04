@@ -37,6 +37,38 @@ window.indiceGrupoSelecionado = 0;
 window.usuarioEscolheuGrupo = false;
 window.idJogoTabelaIniciado = "";
 
+window.nflAbaAway = 'offense';
+window.nflAbaHome = 'offense';
+
+window.trocarAbaNfl = function (e, lado, aba) {
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    if (lado === 'away') window.nflAbaAway = aba;
+    else window.nflAbaHome = aba;
+
+    // Fecha o menu suspenso azul após a escolha
+    document.querySelectorAll('.cbs-menu-dropdown').forEach(m => m.classList.remove('aberto'));
+
+    lastPainelState = "";
+    if (dadosPartidaAtual) aplicarNaTela([dadosPartidaAtual]);
+};
+
+window.toggleDropdownNfl = function (e, idMenu) {
+    e.stopPropagation();
+    document.querySelectorAll('.cbs-menu-dropdown').forEach(m => {
+        if (m.id !== idMenu) m.classList.remove('aberto');
+    });
+    const menu = document.getElementById(idMenu);
+    if (menu) menu.classList.toggle('aberto');
+};
+
+document.addEventListener('click', () => {
+    document.querySelectorAll('.cbs-menu-dropdown').forEach(m => m.classList.remove('aberto'));
+});
+
 btnTabela.addEventListener('click', (e) => {
     e.stopPropagation();
     tabelaAberta = !tabelaAberta;
@@ -46,6 +78,10 @@ btnTabela.addEventListener('click', (e) => {
         painelAberto = false;
         document.getElementById('painel-escalacoes').classList.remove('aberto');
         if (btnEscalacao) btnEscalacao.classList.remove('ativa');
+
+        // FORÇA ATUALIZAÇÃO IMEDIATA DO PAINEL E DAS ABAS
+        lastTabelaState = "";
+        if (dadosPartidaAtual) aplicarNaTela([dadosPartidaAtual]);
     } else {
         painelTabela.classList.remove('aberto');
         btnTabela.classList.remove('ativa');
@@ -69,7 +105,6 @@ if (btnEscalacao) {
         }
     });
 }
-
 
 // CLIQUE NO CARD (Se a tabela estiver aberta, apenas fecha sem abrir a escalação)
 document.getElementById('card-principal').addEventListener('click', (e) => {
@@ -301,24 +336,13 @@ function htmlFut(j, isReserva = false) {
     if (j.amarelo) bg += `<span class="badge-cartao amarelo"></span>`;
     if (j.vermelho) bg += `<span class="badge-cartao vermelho"></span>`;
 
-    // ==============================================================
-    // 1. CASO O JOGADOR TENHA SIDO EXPULSO (PRESERVA GOLS E ASSISTS)
-    // ==============================================================
     if (j.vermelho) {
         clSubs = 'expulso';
-
         let tagGol = '';
         let tagAssist = '';
-
         subInfo = `<span class="info-sub">${tagGol}${tagAssist}<span style="color: #f87171; font-weight: 800;">🟥 Expulso</span></span>`;
-
-        // Mantém também o badge visual de gol ao lado do cartão vermelho
         if (j.gols_count > 1) bg += `<span class="badge-evento">⚽x${j.gols_count}</span>`;
         else if (j.gol) bg += `<span class="badge-evento">⚽</span>`;
-
-        // ==============================================================
-        // 2. TITULARES QUE NÃO FORAM EXPULSOS
-        // ==============================================================
     } else if (!isReserva) {
         if (j.saiu) {
             clSubs = j.lesao ? 'saiu-lesao' : 'saiu-normal';
@@ -337,10 +361,6 @@ function htmlFut(j, isReserva = false) {
             if (j.gols_count > 1) bg += `<span class="badge-evento">⚽x${j.gols_count}</span>`;
             else if (j.gol) bg += `<span class="badge-evento">⚽</span>`;
         }
-
-        // ==============================================================
-        // 3. RESERVAS
-        // ==============================================================
     } else {
         if (j.gols_count > 1) bg += `<span class="badge-evento">⚽x${j.gols_count}</span>`;
         else if (j.gol) bg += `<span class="badge-evento">⚽</span>`;
@@ -398,29 +418,6 @@ function htmlBasq(j) {
                     <div class="rating-slot">${tr}</div>
                 </div>
             </div>`;
-}
-
-function renderNflLider(ldr) {
-    const cat = ldr.categoria || "";
-    const away = ldr.away, home = ldr.home;
-
-    let pAwayHtml = `<div class="nfl-player away"><div class="nfl-player-photo empty"></div><div class="nfl-player-info"><div class="nfl-player-name-line"><span class="nfl-pname" style="opacity:0.4;">Nenhum</span></div></div></div>`;
-    let valAway = "--";
-    if (away) {
-        let fAway = away.foto ? `<img src="${away.foto}" class="nfl-player-photo" onerror="this.style.display='none'">` : `<div class="nfl-player-photo empty"></div>`;
-        pAwayHtml = `<div class="nfl-player away">${fAway}<div class="nfl-player-info"><div class="nfl-player-name-line"><span class="nfl-pname">${away.nome}</span>${away.posicao ? `<span class="nfl-player-pos">${away.posicao}</span>` : ''}</div>${away.detalhe ? `<span class="nfl-player-stat-detail">${away.detalhe}</span>` : ''}</div></div>`;
-        valAway = away.stat || "-";
-    }
-
-    let pHomeHtml = `<div class="nfl-player home"><div class="nfl-player-info"><div class="nfl-player-name-line">${home.posicao ? `<span class="nfl-player-pos">${home.posicao}</span>` : ''}<span class="nfl-pname">${home.nome}</span></div>${home.detalhe ? `<span class="nfl-player-stat-detail">${home.detalhe}</span>` : ''}</div><div class="nfl-player-photo empty"></div></div>`;
-    let valHome = "--";
-    if (home) {
-        let fHome = home.foto ? `<img src="${home.foto}" class="nfl-player-photo" onerror="this.style.display='none'">` : `<div class="nfl-player-photo empty"></div>`;
-        pHomeHtml = `<div class="nfl-player home"><div class="nfl-player-info"><div class="nfl-player-name-line">${home.posicao ? `<span class="nfl-player-pos">${home.posicao}</span>` : ''}<span class="nfl-pname">${home.nome}</span></div>${home.detalhe ? `<span class="nfl-player-stat-detail">${home.detalhe}</span>` : ''}</div>${fHome}</div>`;
-        valHome = home.stat || "-";
-    }
-
-    return `<div class="nfl-row">${pAwayHtml}<div class="nfl-stat-center"><span class="nfl-stat-val away">${valAway}</span><span class="nfl-stat-label">${cat}</span><span class="nfl-stat-val home">${valHome}</span></div>${pHomeHtml}</div>`;
 }
 
 async function buscarDadosServidor() {
@@ -721,7 +718,7 @@ function aplicarNaTela(d) {
             verificarGolsOutrosJogos(jg.outros_jogos, jg.timeCasa, jg.timeFora);
         }
 
-        // 1. CHECAGEM DE GOLS / PONTOS (SEU IF ORIGINAL INTACTO)
+        // 1. CHECAGEM DE GOLS / PONTOS
         let aC = parseInt(jg.placarCasa), aF = parseInt(jg.placarFora);
         if (!isNaN(aC) && !isNaN(aF)) {
             if (placarSalvoCasa === null) { placarSalvoCasa = aC; localStorage.setItem('placarCasa', aC); }
@@ -742,7 +739,7 @@ function aplicarNaTela(d) {
             localStorage.setItem('placarCasa', aC); localStorage.setItem('placarFora', aF);
         }
 
-        // 2. CHECAGEM DE CARTÃO VERMELHO (INDEPENDENTE DO PLACAR)
+        // 2. CHECAGEM DE CARTÃO VERMELHO
         if (jg.esporte === "futebol") {
             let totalVermelhosCasa = (jg.escalacaoCasa || []).filter(j => j.vermelho).length;
             let totalVermelhosFora = (jg.escalacaoFora || []).filter(j => j.vermelho).length;
@@ -884,20 +881,280 @@ function aplicarNaTela(d) {
                 }
             }
 
-            let currentPainelState = JSON.stringify({ esp: jg.esporte, c: jg.escalacaoCasa, f: jg.escalacaoFora, n: jg.lideres_nfl });
+            let currentPainelState = JSON.stringify({
+                esp: jg.esporte,
+                pre: jg.isPreJogo,
+                lideres: jg.lideres_nfl,
+                cbs: jg.cbs_nfl,
+                abaA: window.nflAbaAway,
+                abaH: window.nflAbaHome
+            });
 
             if (currentPainelState !== lastPainelState) {
                 document.getElementById('abas-painel').style.display = (jg.esporte === 'futebol') ? 'flex' : 'none';
 
                 if (jg.esporte === "nfl") {
-                    const titulo = jg.titulo_destaques || "LÍDERES DO JOGO";
-                    const rows = (jg.lideres_nfl || []).map(renderNflLider).join('');
-                    painelConteudo.innerHTML = `
-                            <div class="nfl-lideres-container">
-                                <div class="nfl-lideres-header"><span class="nfl-lideres-titulo">${titulo}</span></div>
-                                <div class="nfl-teams-bar"><div class="nfl-team-badge away"><img src="${jg.logoFora}"><span>${jg.abbrevFora || jg.timeFora}</span></div><div class="nfl-team-badge home"><span>${jg.abbrevCasa || jg.timeCasa}</span><img src="${jg.logoCasa}"></div></div>
-                                ${rows}
-                            </div>`;
+
+                    // FUNÇÃO PARA RENDERIZAR FOTO OU FALLBACK DE CADA ATLETA
+                    const renderFotoAtleta = (url) => {
+                        const fallback = "https://a.espncdn.com/combiner/i?img=/i/headshots/nophoto.png&w=60&h=60";
+                        if (url && typeof url === "string" && url.trim() !== "") {
+                            return `<img src="${url}" class="cbs-player-photo" onerror="this.src='${fallback}'">`;
+                        }
+                        return `<div class="cbs-player-photo-empty"></div>`;
+                    };
+
+                    // 1. MODO PRÉ-JOGO: EXIBE SEMPRE OS LÍDERES DA TEMPORADA
+                    if (jg.isPreJogo || jg.tempo === "EM BREVE") {
+                        if (jg.lideres_nfl && jg.lideres_nfl.length > 0) {
+                            const cbs = jg.cbs_nfl || {};
+                            const linhasLideres = jg.lideres_nfl.map(ldr => {
+                                const away = ldr.away || {};
+                                const home = ldr.home || {};
+
+                                return `
+                                    <div class="cbs-lider-row">
+                                        <div class="cbs-lider-player away">
+                                            ${renderFotoAtleta(away.foto)}
+                                            <div class="cbs-lider-info">
+                                                <div class="cbs-lider-name-pos">
+                                                    <span class="cbs-pname">${away.nome || 'Nenhum'}</span>
+                                                    ${away.posicao ? `<span class="cbs-ppos">${away.posicao}</span>` : ''}
+                                                </div>
+                                                ${away.detalhe ? `<span class="cbs-pdetail">${away.detalhe}</span>` : ''}
+                                            </div>
+                                        </div>
+
+                                        <div class="cbs-lider-center">
+                                            <span class="cbs-lider-val away" style="color: ${cbs.corAway || '#0085ca'};">${away.stat || '-'}</span>
+                                            <span class="cbs-lider-label">${ldr.categoria}</span>
+                                            <span class="cbs-lider-val home" style="color: ${cbs.corHome || '#203731'};">${home.stat || '-'}</span>
+                                        </div>
+
+                                        <div class="cbs-lider-player home">
+                                            <div class="cbs-lider-info" style="text-align: right;">
+                                                <div class="cbs-lider-name-pos" style="justify-content: flex-end;">
+                                                    ${home.posicao ? `<span class="cbs-ppos">${home.posicao}</span>` : ''}
+                                                    <span class="cbs-pname">${home.nome || 'Nenhum'}</span>
+                                                </div>
+                                                ${home.detalhe ? `<span class="cbs-pdetail">${home.detalhe}</span>` : ''}
+                                            </div>
+                                            ${renderFotoAtleta(home.foto)}
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('');
+
+                            painelConteudo.innerHTML = `
+                                <div class="cbs-nfl-box">
+                                    <div class="cbs-lideres-header">
+                                        <span class="cbs-lideres-title">${jg.titulo_destaques || 'LÍDERES DA TEMPORADA'}</span>
+                                        ${cbs.venue ? `<span class="cbs-lideres-venue">${cbs.venue}</span>` : ''}
+                                    </div>
+                                    <div class="cbs-lideres-teams-bar">
+                                        <div class="cbs-lideres-team away">
+                                            <img src="${jg.logoFora}" onerror="this.style.display='none'">
+                                            <span>${jg.abbrevFora || jg.timeFora}</span>
+                                        </div>
+                                        <div class="cbs-lideres-team home">
+                                            <span>${jg.abbrevCasa || jg.timeCasa}</span>
+                                            <img src="${jg.logoCasa}" onerror="this.style.display='none'">
+                                        </div>
+                                    </div>
+                                    <div class="cbs-lideres-list">
+                                        ${linhasLideres}
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            painelConteudo.innerHTML = `
+                                <div class="cbs-nfl-box" style="text-align:center; padding: 25px 10px; color:#64748b; font-weight:800; font-size:0.8rem;">
+                                    A carregar Líderes da Temporada...
+                                </div>
+                            `;
+                        }
+
+                        // 2. MODO AO VIVO OU FINALIZADO: EXIBE BOX SCORE DA CBS
+                    } else if (jg.cbs_nfl) {
+                        const cbs = jg.cbs_nfl;
+                        const aw = cbs.away, hm = cbs.home;
+
+                        const maxQ = Math.max(aw.quartos.length, hm.quartos.length, 4);
+                        let qHeaders = '';
+                        for (let i = 1; i <= maxQ; i++) {
+                            qHeaders += `<th>${i <= 4 ? i : 'OT'}</th>`;
+                        }
+
+                        const renderQuartosTd = (arr) => {
+                            let tds = '';
+                            for (let i = 0; i < maxQ; i++) {
+                                tds += `<td>${arr[i] !== undefined ? arr[i] : '-'}</td>`;
+                            }
+                            return tds;
+                        };
+
+                        const maxEscalaJardas = Math.max(
+                            ...cbs.barras.map(b => Math.max(b.away || 0, b.home || 0)),
+                            480
+                        );
+
+                        const barrasHtml = cbs.barras.map(b => {
+                            const vAway = Math.max(0, b.away || 0);
+                            const vHome = Math.max(0, b.home || 0);
+                            const pctAway = vAway > 0 ? Math.min(100, Math.round((vAway / maxEscalaJardas) * 100)) : 0;
+                            const pctHome = vHome > 0 ? Math.min(100, Math.round((vHome / maxEscalaJardas) * 100)) : 0;
+
+                            return `
+                                <div class="cbs-bar-row">
+                                    <div class="cbs-track"><div class="cbs-fill left" style="width: ${pctAway}%; background: ${cbs.corAway || '#0085ca'};"></div></div>
+                                    <span class="cbs-bar-num left">${b.away}</span>
+                                    <span class="cbs-bar-label">${b.label}</span>
+                                    <span class="cbs-bar-num right">${b.home}</span>
+                                    <div class="cbs-track"><div class="cbs-fill right" style="width: ${pctHome}%; background: ${cbs.corHome || '#203731'};"></div></div>
+                                </div>
+                            `;
+                        }).join('');
+
+                        const renderOffense = (off) => {
+                            if (!off) return '<div style="font-size:0.7rem; color:#64748b; padding:10px;">Sem dados</div>';
+                            let passHtml = (off.passing && off.passing.length > 0) ? `
+                                <table class="cbs-table-player">
+                                    <thead><tr><th style="text-align: left;">PASSING</th><th>CP/ATT</th><th>YDS</th><th>TD</th><th>INT</th><th>FPTS</th></tr></thead>
+                                    <tbody>${off.passing.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}<span>${p.nome}</span></div></td><td>${p.cp_att}</td><td>${p.yds}</td><td>${p.td}</td><td>${p.int}</td><td>${p.fpts}</td></tr>`).join('')}</tbody>
+                                </table>` : '';
+
+                            let rushHtml = (off.rushing && off.rushing.length > 0) ? `
+                                <table class="cbs-table-player">
+                                    <thead><tr><th style="text-align: left;">RUSHING</th><th>ATT</th><th>YDS</th><th>TD</th><th>LG</th><th>FPTS</th></tr></thead>
+                                    <tbody>${off.rushing.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}<span>${p.nome}</span></div></td><td>${p.att}</td><td>${p.yds}</td><td>${p.td}</td><td>${p.long}</td><td>${p.fpts}</td></tr>`).join('')}</tbody>
+                                </table>` : '';
+
+                            let recHtml = (off.receiving && off.receiving.length > 0) ? `
+                                <table class="cbs-table-player">
+                                    <thead><tr><th style="text-align: left;">RECEIVING</th><th>TAR</th><th>REC</th><th>YDS</th><th>TD</th><th>LG</th><th>FPTS</th></tr></thead>
+                                    <tbody>${off.receiving.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}<span>${p.nome}</span></div></td><td>${p.tar}</td><td>${p.rec}</td><td>${p.yds}</td><td>${p.td}</td><td>${p.long}</td><td>${p.fpts}</td></tr>`).join('')}</tbody>
+                                </table>` : '';
+
+                            return passHtml + rushHtml + recHtml;
+                        };
+
+                        const renderDefense = (def) => {
+                            if (!def || def.length === 0) return '<div style="font-size:0.7rem; color:#64748b; padding:10px;">Sem dados de defesa</div>';
+                            return `
+                                <table class="cbs-table-player">
+                                    <thead><tr><th style="text-align: left;">DEFENSE</th><th>T-A</th><th>SACK</th><th>INT</th><th>FF</th></tr></thead>
+                                    <tbody>${def.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}<span>${p.nome}</span></div></td><td>${p.t_a}</td><td>${p.sack}</td><td>${p.int}</td><td>${p.ff}</td></tr>`).join('')}</tbody>
+                                </table>
+                            `;
+                        };
+
+                        const renderSpecialTeams = (st) => {
+                            if (!st) return '<div style="font-size:0.7rem; color:#64748b; padding:10px;">Sem dados</div>';
+                            let kickHtml = (st.kicking && st.kicking.length > 0) ? `
+                                <table class="cbs-table-player">
+                                    <thead><tr><th style="text-align: left;">KICKING</th><th>FG</th><th>LG</th><th>XP</th><th>PTS</th></tr></thead>
+                                    <tbody>${st.kicking.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}<span>${p.nome}</span></div></td><td>${p.fg}</td><td>${p.lg}</td><td>${p.xp}</td><td>${p.pts}</td></tr>`).join('')}</tbody>
+                                </table>` : '';
+
+                            let puntHtml = (st.punting && st.punting.length > 0) ? `
+                                <table class="cbs-table-player">
+                                    <thead><tr><th style="text-align: left;">PUNTING</th><th>NO</th><th>AVG</th><th>IN20</th><th>LG</th></tr></thead>
+                                    <tbody>${st.punting.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}<span>${p.nome}</span></div></td><td>${p.no}</td><td>${p.avg}</td><td>${p.in20}</td><td>${p.lg}</td></tr>`).join('')}</tbody>
+                                </table>` : '';
+
+                            let krHtml = (st.kickReturns && st.kickReturns.length > 0) ? `
+                                <table class="cbs-table-player">
+                                    <thead><tr><th style="text-align: left;">KICKOFF RETURNS</th><th>NO</th><th>AVG</th><th>LG</th><th>TD</th></tr></thead>
+                                    <tbody>${st.kickReturns.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}<span>${p.nome}</span></div></td><td>${p.no}</td><td>${p.avg}</td><td>${p.lg}</td><td>${p.td}</td></tr>`).join('')}</tbody>
+                                </table>` : '';
+
+                            let prHtml = (st.puntReturns && st.puntReturns.length > 0) ? `
+                                <table class="cbs-table-player">
+                                    <thead><tr><th style="text-align: left;">PUNT RETURNS</th><th>NO</th><th>AVG</th><th>LG</th><th>TD</th></tr></thead>
+                                    <tbody>${st.puntReturns.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}<span>${p.nome}</span></div></td><td>${p.no}</td><td>${p.avg}</td><td>${p.lg}</td><td>${p.td}</td></tr>`).join('')}</tbody>
+                                </table>` : '';
+
+                            return kickHtml + puntHtml + krHtml + prHtml;
+                        };
+
+                        const montarColunaTime = (lado, tmInfo, stObj) => {
+                            const abaAtiva = (lado === 'away') ? window.nflAbaAway : window.nflAbaHome;
+                            const idMenu = `menu-cbs-${lado}`;
+                            const labelAba = (abaAtiva === 'defense') ? 'DEFENSE' : ((abaAtiva === 'specialTeams') ? 'SPECIAL TEAMS' : 'OFFENSE');
+
+                            let conteudoTabela = '';
+                            if (abaAtiva === 'defense') conteudoTabela = renderDefense(stObj.defense);
+                            else if (abaAtiva === 'specialTeams') conteudoTabela = renderSpecialTeams(stObj.specialTeams);
+                            else conteudoTabela = renderOffense(stObj.offense);
+
+                            return `
+                                <div class="cbs-offense-col">
+                                    <div class="cbs-col-header">
+                                        <div class="team-info"><img src="${tmInfo.logo}"><span>${tmInfo.nome}</span></div>
+                                        <div class="cbs-dropdown-container">
+                                            <button class="cbs-btn-dropdown" onclick="window.toggleDropdownNfl(event, '${idMenu}')">
+                                                <span>${labelAba}</span>
+                                                <span style="font-size: 0.55rem;">▾</span>
+                                            </button>
+                                            <div class="cbs-menu-dropdown" id="${idMenu}">
+                                                <div class="cbs-menu-item ${abaAtiva === 'offense' ? 'ativo' : ''}" onclick="event.stopPropagation(); window.trocarAbaNfl(event, '${lado}', 'offense')">OFFENSE</div>
+                                                <div class="cbs-menu-item ${abaAtiva === 'defense' ? 'ativo' : ''}" onclick="event.stopPropagation(); window.trocarAbaNfl(event, '${lado}', 'defense')">DEFENSE</div>
+                                                <div class="cbs-menu-item ${abaAtiva === 'specialTeams' ? 'ativo' : ''}" onclick="event.stopPropagation(); window.trocarAbaNfl(event, '${lado}', 'specialTeams')">SPECIAL TEAMS</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cbs-tables-scroll">
+                                        ${conteudoTabela}
+                                    </div>
+                                </div>
+                            `;
+                        };
+
+                        painelConteudo.innerHTML = `
+                            <div class="cbs-nfl-box">
+                                <table class="cbs-linescore-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: left;">EQUIPA</th>
+                                            ${qHeaders}
+                                            <th>T</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="cbs-team-cell">
+                                                <img src="${aw.logo}" onerror="this.style.display='none'">
+                                                <span class="cbs-team-nome">${aw.nome}</span>
+                                                ${aw.record ? `<span class="cbs-team-record">${aw.record}</span>` : ''}
+                                            </td>
+                                            ${renderQuartosTd(aw.quartos)}
+                                            <td class="cbs-total-pts">${aw.total}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="cbs-team-cell">
+                                                <img src="${hm.logo}" onerror="this.style.display='none'">
+                                                <span class="cbs-team-nome">${hm.nome}</span>
+                                                ${hm.record ? `<span class="cbs-team-record">${hm.record}</span>` : ''}
+                                            </td>
+                                            ${renderQuartosTd(hm.quartos)}
+                                            <td class="cbs-total-pts">${hm.total}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                ${cbs.venue ? `<div class="cbs-venue-bar">${cbs.venue}</div>` : ''}
+
+                                <div class="cbs-stats-bars">
+                                    ${barrasHtml}
+                                </div>
+
+                                <div class="cbs-offense-grid">
+                                    ${montarColunaTime('away', aw, cbs.away_stats)}
+                                    ${montarColunaTime('home', hm, cbs.home_stats)}
+                                </div>
+                            </div>
+                        `;
+                    }
                 } else if (jg.esporte === "basquete") {
                     let headerEsq = `<span>FORA</span><div class="stats-wrapper"><div class="titulos-stats"><span class="stat-box">PTS</span><span class="stat-box">REB</span><span class="stat-box">AST</span></div><div class="rating-slot"></div></div>`;
                     let headerDir = `<span>CASA</span><div class="stats-wrapper"><div class="titulos-stats"><span class="stat-box">PTS</span><span class="stat-box">REB</span><span class="stat-box">AST</span></div><div class="rating-slot"></div></div>`;
@@ -943,10 +1200,20 @@ function aplicarNaTela(d) {
                 gruposLista = [{ grupo: "Classificação", ativoPadrao: true, times: jg.tabela }];
             }
 
+            if (jg.esporte === 'basquete') {
+                const apenasConfs = gruposLista.filter(g => {
+                    const n = (g.grupo || '').toLowerCase();
+                    return n.includes('conferen') || n.includes('conferên');
+                });
+                if (apenasConfs.length > 0) {
+                    gruposLista = apenasConfs;
+                }
+            }
+
             let temGrupos = gruposLista.length > 0;
             let temMataMata = jg.matamata && jg.matamata.length > 0;
 
-            if ((temGrupos || temMataMata) && (jg.esporte === 'futebol' || jg.esporte === 'basquete')) {
+            if ((temGrupos || temMataMata) && (jg.esporte === 'futebol' || jg.esporte === 'basquete' || jg.esporte === 'nfl')) {
                 btnTabela.style.display = 'inline-flex';
                 if (btnEscalacao) btnEscalacao.style.display = 'inline-flex';
 
@@ -970,7 +1237,7 @@ function aplicarNaTela(d) {
 
                 let navTipoHtml = '';
                 if (temGrupos && temMataMata) {
-                    const labelEliminatorias = (jg.esporte === 'basquete') ? 'Playoffs' : 'Mata-Mata';
+                    const labelEliminatorias = (jg.esporte === 'basquete' || jg.esporte === 'nfl') ? 'Playoffs' : 'Mata-Mata';
                     navTipoHtml = `
         <div class="nav-tipo-tabela">
             <button class="btn-tipo-tab ${window.subAbaTabela === 'grupos' ? 'ativo' : ''}" onclick="event.stopPropagation(); window.trocarSubAba('grupos')">Classificação / Grupos</button>
@@ -1006,7 +1273,30 @@ function aplicarNaTela(d) {
                                         <div class="seletor-grupos-bar" id="barra-grupos">` +
                             gruposLista.map((g, idx) => {
                                 let cl = (idx === window.indiceGrupoSelecionado) ? 'ativo' : '';
-                                return `<button class="btn-grupo-pill ${cl}" onclick="event.stopPropagation(); window.trocarGrupo(${idx})">${g.grupo}</button>`;
+
+                                let nomeCurto = g.grupo;
+                                if (jg.esporte === 'nfl') {
+                                    nomeCurto = g.grupo
+                                        .replace(/National Football League/gi, '')
+                                        .replace(/American Football Conference/gi, 'AFC')
+                                        .replace(/National Football Conference/gi, 'NFC')
+                                        .replace(/American Conference/gi, 'AFC')
+                                        .replace(/National Conference/gi, 'NFC')
+                                        .replace(/\bEast\b/gi, 'Leste')
+                                        .replace(/\bNorth\b/gi, 'Norte')
+                                        .replace(/\bSouth\b/gi, 'Sul')
+                                        .replace(/\bWest\b/gi, 'Oeste')
+                                        .replace(/AFC\s+AFC/gi, 'AFC')
+                                        .replace(/NFC\s+NFC/gi, 'NFC')
+                                        .trim();
+                                } else if (jg.esporte === 'basquete') {
+                                    nomeCurto = g.grupo
+                                        .replace(/Conference/gi, 'Conf.')
+                                        .replace(/Conferência/gi, 'Conf.')
+                                        .trim();
+                                }
+
+                                return `<button class="btn-grupo-pill ${cl}" onclick="event.stopPropagation(); window.trocarGrupo(${idx})">${nomeCurto}</button>`;
                             }).join('') +
                             `</div>
                                         <button class="btn-seta-scroll" onclick="event.stopPropagation(); document.getElementById('barra-grupos').scrollLeft += 140;">›</button>
@@ -1043,12 +1333,24 @@ function aplicarNaTela(d) {
                         if (jg.esporte === 'basquete') {
                             if (p.includes("play-in") || p.includes("play in")) return 'pos-playoff';
                             if (p.includes("playoff") || p.includes("quarter") || p.includes("oitavas")) return 'pos-uel';
-                            // Fallback padrão NBA (1º ao 6º direto, 7º ao 10º Play-in)
                             if (!p && totalTimes >= 10) {
                                 if (pos <= 6) return 'pos-uel';
                                 if (pos <= 10) return 'pos-playoff';
                             }
                             return (pos <= 8) ? 'pos-uel' : 'pos-neutra';
+                        }
+
+                        // Suporte à NFL (Tabelas gerais e divisões)
+                        if (jg.esporte === 'nfl') {
+                            const isGeral = (grupoAtual && grupoAtual.grupo) ? grupoAtual.grupo.toLowerCase().includes('geral') : false;
+
+                            if (isGeral) {
+                                if (pos === 1) return 'pos-ucl';  // Seed #1: Folga (Azul)
+                                if (pos <= 7) return 'pos-uel';  // Seeds #2 a #7: Wild Card (Vermelho)
+                                return 'pos-neutra';
+                            }
+                            // Nas divisões individuais, o campeão vai aos Playoffs (Azul)
+                            return (pos === 1) ? 'pos-ucl' : 'pos-neutra';
                         }
 
                         if (!p) {
@@ -1096,6 +1398,7 @@ function aplicarNaTela(d) {
                     }
 
                     const isBasq = (jg.esporte === 'basquete');
+                    const isNfl = (jg.esporte === 'nfl');
                     const temPct = (grupoAtual.times || []).some(t => Boolean(t.pct));
 
                     let rowsHtml = (grupoAtual.times || []).map(t => {
@@ -1110,62 +1413,95 @@ function aplicarNaTela(d) {
                             varHtml = `<span class="var-pos var-desceu" title="Desceu ${Math.abs(t.variacao)} posições">▼${Math.abs(t.variacao)}</span>`;
                         }
 
-                        // Colunas específicas: basquete não tem empates e exibe PCT / Diferença
-                        let colunasStatsHtml = isBasq ? `
-                                    <td class="tab-num">${t.jogos}</td>
-                                    <td class="tab-num">${t.v}</td>
-                                    <td class="tab-num">${t.d}</td>
-                                    <td class="tab-num">${t.sg}</td>
-                                    <td class="tab-pts">${temPct ? t.pct : t.pts}</td>
-                                ` : `
-                                    <td class="tab-num">${t.jogos}</td>
-                                    <td class="tab-num">${t.v}</td>
-                                    <td class="tab-num">${t.e}</td>
-                                    <td class="tab-num">${t.d}</td>
-                                    <td class="tab-num">${t.sg}</td>
-                                    <td class="tab-pts">${t.pts}</td>
-                                `;
+                        let colunasStatsHtml = '';
+                        if (isNfl) {
+                            colunasStatsHtml = `
+                                <td class="tab-num">${t.jogos}</td>
+                                <td class="tab-num">${t.v}</td>
+                                <td class="tab-num">${t.d}</td>
+                                <td class="tab-num">${t.e}</td>
+                                <td class="tab-num">${t.sg}</td>
+                                <td class="tab-pts">${t.pct}</td>
+                            `;
+                        } else if (isBasq) {
+                            colunasStatsHtml = `
+                                <td class="tab-num">${t.jogos}</td>
+                                <td class="tab-num">${t.v}</td>
+                                <td class="tab-num">${t.d}</td>
+                                <td class="tab-num">${t.sg}</td>
+                                <td class="tab-pts">${temPct ? t.pct : t.pts}</td>
+                            `;
+                        } else {
+                            colunasStatsHtml = `
+                                <td class="tab-num">${t.jogos}</td>
+                                <td class="tab-num">${t.v}</td>
+                                <td class="tab-num">${t.e}</td>
+                                <td class="tab-num">${t.d}</td>
+                                <td class="tab-num">${t.sg}</td>
+                                <td class="tab-pts">${t.pts}</td>
+                            `;
+                        }
 
                         return `
-                                    <tr class="${clDestaque}">
-                                        <td class="col-tab-pos">
-                                            <div class="pos-container">
-                                                <span class="pos-badge ${clZona}">${t.pos}</span>
-                                                ${varHtml}
-                                            </div>
-                                        </td>
-                                        <td class="col-tab-time">${logoHtml}<span>${t.nome}</span></td>
-                                        ${colunasStatsHtml}
-                                    </tr>
-                                `;
+                            <tr class="${clDestaque}">
+                                <td class="col-tab-pos">
+                                    <div class="pos-container">
+                                        <span class="pos-badge ${clZona}">${t.pos}</span>
+                                        ${varHtml}
+                                    </div>
+                                </td>
+                                <td class="col-tab-time">${logoHtml}<span>${t.nome}</span></td>
+                                ${colunasStatsHtml}
+                            </tr>
+                        `;
                     }).join('');
 
-                    let theadHtml = isBasq ? `
-                                <thead>
-                                    <tr>
-                                        <th class="col-tab-pos">#</th>
-                                        <th style="text-align: left; padding-left: 6px;">EQUIPA</th>
-                                        <th title="Jogos">J</th>
-                                        <th title="Vitórias">V</th>
-                                        <th title="Derrotas">D</th>
-                                        <th title="Diferença de Pontos">+/-</th>
-                                        <th class="tab-pts" title="${temPct ? 'Aproveitamento' : 'Pontos'}">${temPct ? 'PCT' : 'PTS'}</th>
-                                    </tr>
-                                </thead>
-                            ` : `
-                                <thead>
-                                    <tr>
-                                        <th class="col-tab-pos">#</th>
-                                        <th style="text-align: left; padding-left: 6px;">CLUBE</th>
-                                        <th title="Jogos">J</th>
-                                        <th title="Vitórias">V</th>
-                                        <th title="Empates">E</th>
-                                        <th title="Derrotas">D</th>
-                                        <th title="Saldo de Gols">SG</th>
-                                        <th class="tab-pts" title="Pontos">PTS</th>
-                                    </tr>
-                                </thead>
-                            `;
+                    let theadHtml = '';
+                    if (isNfl) {
+                        theadHtml = `
+                            <thead>
+                                <tr>
+                                    <th class="col-tab-pos">#</th>
+                                    <th style="text-align: left; padding-left: 6px;">FRANQUIA</th>
+                                    <th title="Jogos">J</th>
+                                    <th title="Vitórias">V</th>
+                                    <th title="Derrotas">D</th>
+                                    <th title="Empates">E</th>
+                                    <th title="Diferencial de Pontos">+/-</th>
+                                    <th class="tab-pts" title="Aproveitamento">PCT</th>
+                                </tr>
+                            </thead>
+                        `;
+                    } else if (isBasq) {
+                        theadHtml = `
+                            <thead>
+                                <tr>
+                                    <th class="col-tab-pos">#</th>
+                                    <th style="text-align: left; padding-left: 6px;">EQUIPE</th>
+                                    <th title="Jogos">J</th>
+                                    <th title="Vitórias">V</th>
+                                    <th title="Derrotas">D</th>
+                                    <th title="Diferença de Pontos">+/-</th>
+                                    <th class="tab-pts" title="${temPct ? 'Aproveitamento' : 'Pontos'}">${temPct ? 'PCT' : 'PTS'}</th>
+                                </tr>
+                            </thead>
+                        `;
+                    } else {
+                        theadHtml = `
+                            <thead>
+                                <tr>
+                                    <th class="col-tab-pos">#</th>
+                                    <th style="text-align: left; padding-left: 6px;">CLUBE</th>
+                                    <th title="Jogos">J</th>
+                                    <th title="Vitórias">V</th>
+                                    <th title="Empates">E</th>
+                                    <th title="Derrotas">D</th>
+                                    <th title="Saldo de Gols">SG</th>
+                                    <th class="tab-pts" title="Pontos">PTS</th>
+                                </tr>
+                            </thead>
+                        `;
+                    }
 
                     conteudoFinalHtml = `
                                 ${seletorGruposHtml}
@@ -1185,35 +1521,62 @@ function aplicarNaTela(d) {
                             let l2 = m.logo2 ? `<img src="${m.logo2}" class="logo-time-mata" onerror="this.style.display='none'">` : '';
                             let pen1Html = (m.pen1 !== undefined && m.pen1 !== null) ? `<span class="score-pen-mata">(${m.pen1})</span>` : '';
                             let pen2Html = (m.pen2 !== undefined && m.pen2 !== null) ? `<span class="score-pen-mata">(${m.pen2})</span>` : '';
+                            // Destaca o nome do time da transmissão dentro do card
+                            const nCasa = (jg.timeCasa || '').toLowerCase();
+                            const nFora = (jg.timeFora || '').toLowerCase();
+                            const t1Low = (m.time1 || '').toLowerCase();
+                            const t2Low = (m.time2 || '').toLowerCase();
+
+                            const isTime1Destaque = (nCasa && t1Low.includes(nCasa)) || (nFora && t1Low.includes(nFora));
+                            const isTime2Destaque = (nCasa && t2Low.includes(nCasa)) || (nFora && t2Low.includes(nFora));
 
                             const isBasq = (jg.esporte === 'basquete');
+                            const isNfl = (jg.esporte === 'nfl');
 
-                            // Identificação textual de série no rodapé
                             let statusTexto = m.status || '';
-                            if (isBasq && m.placar1 !== '-' && m.placar2 !== '-') {
-                                if (!statusTexto.toLowerCase().includes('série')) {
-                                    statusTexto = `${statusTexto}`;
+                            let badgeTag = '';
+
+                            if (isBasq) {
+                                badgeTag = '<span class="badge-serie-tag">SÉRIE</span>';
+                            } else if (isNfl) {
+                                const stLow = (m.status || "").toLowerCase() + " " + (f.fase || "").toLowerCase();
+                                if (stLow.includes("super bowl")) {
+                                    badgeTag = '<span class="badge-nfl-playoff" style="color:#fbbf24; border-color:rgba(251,191,36,0.5); background:rgba(251,191,36,0.15);">SUPER BOWL</span>';
+                                } else if (stLow.includes("conferência") || stLow.includes("championship")) {
+                                    badgeTag = '<span class="badge-nfl-playoff" style="color:#38bdf8; border-color:#0284c7;">FINAL CONF</span>';
+                                } else if (stLow.includes("divisional")) {
+                                    badgeTag = '<span class="badge-nfl-playoff" style="color:#60a5fa; border-color:#3b82f6;">DIVISIONAL</span>';
+                                } else {
+                                    badgeTag = '<span class="badge-nfl-playoff wild-card">WILD CARD</span>';
+                                }
+                            } else {
+                                // FUTEBOL: Badges dedicados de 3º Lugar e Final
+                                const fLow = (f.fase || '').toLowerCase();
+                                if (fLow.includes('3º') || fLow.includes('terceiro') || fLow.includes('3rd') || fLow.includes('bronze')) {
+                                    badgeTag = '<span class="badge-futebol-mata bronze">3º LUGAR</span>';
+                                } else if (fLow.includes('final') && !fLow.includes('semi') && !fLow.includes('quarta') && !fLow.includes('oitava')) {
+                                    badgeTag = '<span class="badge-futebol-mata final">FINAL</span>';
                                 }
                             }
 
                             return `
         <div class="card-confronto ${clAtual}">
             <div class="linha-time-mata">
-                <div class="info-time-mata">${l1}<span>${m.time1}</span></div>
+                <div class="info-time-mata" style="${isTime1Destaque ? 'font-weight: 900; color: #38bdf8;' : ''}">${l1}<span>${m.time1}</span></div>
                 <div class="score-box-mata">
                     <span class="score-mata" title="${isBasq ? 'Vitórias na série' : 'Gols'}">${m.placar1}</span>
                     ${pen1Html}
                 </div>
             </div>
             <div class="linha-time-mata">
-                <div class="info-time-mata">${l2}<span>${m.time2}</span></div>
+                <div class="info-time-mata" style="${isTime2Destaque ? 'font-weight: 900; color: #38bdf8;' : ''}">${l2}<span>${m.time2}</span></div>
                 <div class="score-box-mata">
                     <span class="score-mata" title="${isBasq ? 'Vitórias na série' : 'Gols'}">${m.placar2}</span>
                     ${pen2Html}
                 </div>
             </div>
-            <div style="display: flex; align-items: center; justify-content: ${isBasq ? 'space-between' : 'flex-end'}; margin-top: 3px;">
-                ${isBasq ? '<span class="badge-serie-tag">SÉRIE</span>' : ''}
+            <div style="display: flex; align-items: center; justify-content: ${badgeTag ? 'space-between' : 'flex-end'}; margin-top: 3px;">
+                ${badgeTag}
                 ${statusTexto ? `<div class="status-rodape-mata" style="margin-top: 0;">${statusTexto}</div>` : ''}
             </div>
         </div>
@@ -1221,11 +1584,11 @@ function aplicarNaTela(d) {
                         }).join('');
 
                         return `
-                                    <div class="bloco-fase">
-                                        <div class="titulo-fase-mata">${f.fase}</div>
-                                        <div class="grid-jogos-mata">${cardsJogos}</div>
-                                    </div>
-                                `;
+                            <div class="bloco-fase">
+                                <div class="titulo-fase-mata">${f.fase}</div>
+                                <div class="grid-jogos-mata">${cardsJogos}</div>
+                            </div>
+                        `;
                     }).join('');
 
                     conteudoFinalHtml = `<div class="container-matamata">${fasesHtml}</div>`;
@@ -1255,7 +1618,6 @@ function aplicarNaTela(d) {
                             if (btnAtivo) btnAtivo.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                         }
                     } else if (window.subAbaTabela === 'matamata') {
-                        // Rola automaticamente a tabela até o confronto da transmissão (ex: Quartas/Semi/Final)
                         const cardJogoAtual = document.querySelector('.card-confronto.jogo-atual');
                         if (cardJogoAtual) {
                             cardJogoAtual.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1269,10 +1631,20 @@ function aplicarNaTela(d) {
             }
 
             if (btnEscalacao) {
-                const txtBtn = (jg.esporte === 'basquete') ? 'BOX SCORE' : 'ESCALAÇÃO';
-                const spanBtn = btnEscalacao.querySelector('span');
-                if (spanBtn) spanBtn.innerText = txtBtn;
-                btnEscalacao.title = (jg.esporte === 'basquete') ? 'Ver Box Score' : 'Ver Escalação';
+                if (jg.esporte === 'nfl') {
+                    btnEscalacao.style.display = 'inline-flex';
+                    const spanBtn = btnEscalacao.querySelector('span');
+                    if (spanBtn) spanBtn.innerText = jg.isPreJogo ? 'LÍDERES' : 'BOX SCORE';
+                    btnEscalacao.title = jg.isPreJogo ? 'Ver Líderes da Temporada' : 'Ver Box Score';
+                } else if (jg.esporte === 'basquete') {
+                    btnEscalacao.style.display = 'inline-flex';
+                    const spanBtn = btnEscalacao.querySelector('span');
+                    if (spanBtn) spanBtn.innerText = 'BOX SCORE';
+                } else {
+                    btnEscalacao.style.display = 'inline-flex';
+                    const spanBtn = btnEscalacao.querySelector('span');
+                    if (spanBtn) spanBtn.innerText = 'ESCALAÇÃO';
+                }
             }
         }
     } catch (e) {
@@ -1435,3 +1807,5 @@ setInterval(() => {
         }
     });
 })();
+
+
