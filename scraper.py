@@ -300,6 +300,7 @@ f1_url_cache = ""
 # ==============================================================================
 # 3. EXTRAÇÃO DE DADOS DA NFL VIA API DA ESPN
 # ==============================================================================
+posicoes_iniciais_times = {}
 def extrair_dados_espn_nfl():
     try:
         url_atual = driver.current_url
@@ -1143,10 +1144,10 @@ def atualizar_placar():
         id_do_campeonato = evento_data.get("tournament", {}).get("uniqueTournament", {}).get("id")
         outros_jogos = extrair_outros_jogos_sofascore(esporte, match_id, id_do_campeonato)
         
-        # 1. PROCESSAR TODOS OS GRUPOS / CLASSIFICAÇÃO
+      # 1. PROCESSAR TODOS OS GRUPOS / CLASSIFICAÇÃO (FUTEBOL E BASQUETE)
         tabelas_grupos = []
         tabela_classificacao = []
-        if esporte == "futebol" and standings_data:
+        if (esporte in ["futebol", "basquete"]) and standings_data:
             standings_list = standings_data.get("standings", [])
             for grp in standings_list:
                 if not isinstance(grp, dict): continue
@@ -1164,8 +1165,31 @@ def atualizar_placar():
                     promo_obj = r.get("promotion")
                     promo_txt = promo_obj.get("text", "") if isinstance(promo_obj, dict) else str(promo_obj or "")
 
+                    pos_atual = r.get("position")
+                    
+                    # Registo de variação de posições (Abordagem 1)
+                    chave_time = f"{match_id}_{nome_grp}_{t_id}"
+                    if chave_time not in posicoes_iniciais_times and pos_atual is not None:
+                        posicoes_iniciais_times[chave_time] = pos_atual
+
+                    pos_base = posicoes_iniciais_times.get(chave_time, pos_atual)
+                    variacao = 0
+                    if pos_base is not None and pos_atual is not None:
+                        variacao = pos_base - pos_atual
+
+                    # Aproveitamento / Percentagem de vitórias no basquetebol (ex: 0.650 -> .650)
+                    pct_raw = r.get("percentage")
+                    pct_str = ""
+                    if pct_raw is not None:
+                        try:
+                            f_pct = float(pct_raw)
+                            pct_str = f"{f_pct:.3f}".lstrip("0") if f_pct <= 1.0 else f"{f_pct:.1f}%"
+                        except Exception:
+                            pct_str = str(pct_raw)
+
                     linhas_grp.append({
-                        "pos": r.get("position"),
+                        "pos": pos_atual,
+                        "variacao": variacao,
                         "id": t_id,
                         "nome": tm.get("shortName") or tm.get("name", ""),
                         "promocao": promo_txt,
@@ -1176,6 +1200,7 @@ def atualizar_placar():
                         "d": r.get("losses", 0),
                         "sg": str(diff),
                         "pts": r.get("points", 0),
+                        "pct": pct_str,
                         "isCasa": str(t_id) == str(id_casa),
                         "isFora": str(t_id) == str(id_fora)
                     })
@@ -1193,9 +1218,9 @@ def atualizar_placar():
             if grupo_principal:
                 tabela_classificacao = grupo_principal["times"]
 
-       # 2. PROCESSAR O MATA-MATA (COM SUPORTE COMPLETO A PENÁLTIS E IDA/VOLTA)
+      # 2. PROCESSAR O MATA-MATA (FUTEBOL E BASQUETE)
         matamata_fases = []
-        if esporte == "futebol" and cuptrees_data:
+        if (esporte in ["futebol", "basquete"]) and cuptrees_data:
             rounds_encontrados = []
 
             def buscar_rounds_recursivo(obj):
@@ -1245,7 +1270,7 @@ def atualizar_placar():
                 return str(st or "")
 
             def extrair_penaltis_evento(ev):
-                if not isinstance(ev, dict): return None, None
+                if not isinstance(ev, dict) or esporte == "basquete": return None, None
                 hs = ev.get("homeScore") if isinstance(ev.get("homeScore"), dict) else {}
                 aws = ev.get("awayScore") if isinstance(ev.get("awayScore"), dict) else {}
                 
@@ -1342,8 +1367,22 @@ def atualizar_placar():
                     p1_pen = pen_part_0
                     p2_pen = pen_part_1
 
-                    # CASO 1: Ida e Volta com array de scores em participants
-                    if scores_parts_0 and scores_parts_1 and len(scores_parts_0) >= 2 and len(scores_parts_1) >= 2:
+                    # BASQUETE: Pontuação é série (ex: 4 a 2 vitórias) ou jogo único
+                    if esporte == "basquete":
+                        sc1_b = None
+                        sc2_b = None
+                        if parts and len(parts) >= 2:
+                            sc1_b = extrair_num(parts[0].get("score") if isinstance(parts[0], dict) else None)
+                            sc2_b = extrair_num(parts[1].get("score") if isinstance(parts[1], dict) else None)
+                        
+                        if sc1_b is not None and sc2_b is not None:
+                            total_t1, total_t2 = sc1_b, sc2_b
+                            teve_jogo_resolvido = True
+                            if len(eventos_internos) > 0:
+                                pernas_textos.append(f"Série ({sc1_b}-{sc2_b})")
+
+                    # FUTEBOL: Ida e Volta com array de scores em participants
+                    elif scores_parts_0 and scores_parts_1 and len(scores_parts_0) >= 2 and len(scores_parts_1) >= 2:
                         s0_ida, s0_volta = scores_parts_0[0], scores_parts_0[1]
                         s1_ida, s1_volta = scores_parts_1[0], scores_parts_1[1]
 
@@ -1359,8 +1398,8 @@ def atualizar_placar():
                             total_t2 += s1_volta
                             teve_jogo_resolvido = True
 
-                    # CASO 2: Ida e Volta com eventos associados
-                    elif len(eventos_internos) >= 2:
+                    # FUTEBOL: Ida e Volta com eventos associados
+                    elif esporte == "futebol" and len(eventos_internos) >= 2:
                         for idx, ev in enumerate(eventos_internos[:2]):
                             rotulo = "Ida" if idx == 0 else "Volta"
                             ev_hid = str(ev.get("homeTeam", {}).get("id", ""))
@@ -1385,27 +1424,7 @@ def atualizar_placar():
                                 if st_desc and st_desc.lower() not in ["not started", "em breve"]:
                                     pernas_textos.append(f"{rotulo}: {st_desc}")
 
-                    # CASO 3: Jogo Único catalogado
-                    elif len(eventos_internos) == 1:
-                        ev = eventos_internos[0]
-                        ev_hid = str(ev.get("homeTeam", {}).get("id", ""))
-                        sc_h = extrair_num(ev.get("homeScore"))
-                        sc_a = extrair_num(ev.get("awayScore"))
-
-                        pen_h, pen_a = extrair_penaltis_evento(ev)
-                        if pen_h is not None and pen_a is not None:
-                            p1_pen = pen_h if ev_hid == h_id else pen_a
-                            p2_pen = pen_a if ev_hid == h_id else pen_h
-
-                        if sc_h is not None and sc_a is not None:
-                            total_t1 = sc_h if ev_hid == str(h_id) else sc_a
-                            total_t2 = sc_a if ev_hid == str(h_id) else sc_h
-                            teve_jogo_resolvido = True
-
-                        st_desc = obter_status_texto(ev)
-                        if st_desc: pernas_textos.append(st_desc)
-
-                    # CASO 4: Fallback amplo em participantes / bloco
+                    # Fallback amplo em participantes / bloco
                     if not teve_jogo_resolvido:
                         raw_h = None
                         raw_a = None
@@ -1426,15 +1445,6 @@ def atualizar_placar():
                                 if raw_h is None and blk.get(kh) is not None: raw_h = blk.get(kh)
                                 if raw_a is None and blk.get(ka) is not None: raw_a = blk.get(ka)
 
-                        if raw_h is None or raw_a is None:
-                            res_val = blk.get("result") or blk.get("score")
-                            if isinstance(res_val, str) and (":" in res_val or "-" in res_val):
-                                limpo = re.sub(r'\(.*?\)', '', res_val).strip()
-                                partes_res = re.split(r'[:\-]', limpo)
-                                if len(partes_res) == 2:
-                                    if raw_h is None: raw_h = partes_res[0].strip()
-                                    if raw_a is None: raw_a = partes_res[1].strip()
-
                         h_num = extrair_num(raw_h)
                         a_num = extrair_num(raw_a)
 
@@ -1449,32 +1459,6 @@ def atualizar_placar():
                         placar1_final = str(total_t1)
                         placar2_final = str(total_t2)
 
-                    # Tenta extrair penáltis no bloco via texto (ex: "(4) 1-1 (2)" ou "(p. 4-2)")
-                    if p1_pen is None or p2_pen is None:
-                        res_str = str(blk.get("result") or blk.get("score") or "")
-                        m_pen = re.search(r'\((?:pên|pen|p\.?)?\s*(\d+)\s*[-:]\s*(\d+)\)', res_str, re.IGNORECASE)
-                        if m_pen:
-                            p1_pen, p2_pen = int(m_pen.group(1)), int(m_pen.group(2))
-                        else:
-                            m_pen2 = re.search(r'\((\d+)\)\s*\d+\s*[-:]\s*\d+\s*\((\d+)\)', res_str)
-                            if m_pen2:
-                                p1_pen, p2_pen = int(m_pen2.group(1)), int(m_pen2.group(2))
-
-                    # Se for o jogo atual ao vivo, sincroniza os penáltis do direto
-                    if is_jogo_atual:
-                        if (placar1_final == "-" or placar2_final == "-") and placar_casa is not None and placar_casa != "-":
-                            if str(h_id) == str(id_casa) or (str(time_casa).lower() in nome1.lower()):
-                                placar1_final, placar2_final = str(placar_casa), str(placar_fora)
-                            else:
-                                placar1_final, placar2_final = str(placar_fora), str(placar_casa)
-                        
-                        if tem_penaltis:
-                            if str(h_id) == str(id_casa) or (str(time_casa).lower() in nome1.lower()):
-                                p1_pen, p2_pen = score_pen_casa, score_pen_fora
-                            else:
-                                p1_pen, p2_pen = score_pen_fora, score_pen_casa
-
-                    # Montagem do status e rodapé com penáltis
                     penaltis_str = f" (Pên: {p1_pen}-{p2_pen})" if (p1_pen is not None and p2_pen is not None) else ""
                     
                     if len(pernas_textos) > 0:
@@ -1484,9 +1468,6 @@ def atualizar_placar():
                         if not base_st:
                             base_st = "FIM" if (teve_jogo_resolvido and placar1_final != "-") else "EM BREVE"
                         status_final = (base_st + penaltis_str).strip()
-
-                    if is_jogo_atual and (not status_final or status_final == "EM BREVE"):
-                        status_final = ultimo_tempo_valido + penaltis_str
 
                     confrontos.append({
                         "time1": nome1,
@@ -1506,10 +1487,8 @@ def atualizar_placar():
                         "fase": nome_fase,
                         "jogos": confrontos
                     })
-
-            if matamata_fases:
-                nomes_fases = [f["fase"] for f in matamata_fases]
-                print(f"[MATA-MATA] Sucesso! {len(matamata_fases)} fase(s) com placares e penáltis carregada(s): {nomes_fases}")
+                    
+            
                 
         jogo = [{
             "esporte": esporte, "timeCasa": time_casa, "logoCasa": logo_casa, "formacaoCasa": formacao_casa,
