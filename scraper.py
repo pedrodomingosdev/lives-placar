@@ -1349,6 +1349,9 @@ def atualizar_placar():
                 sessao_ativa = "Sprint"
             
             if dados_tabela and len(dados_tabela) > 0:
+                # Verifica se a URL contém "brazil" ou "sao-paulo"
+                is_brazil = "brazil" in url_atual or "sao-paulo" in url_atual
+                
                 f1_obj = {
                     "esporte": "f1",
                     "torneio": titulo_pagina,
@@ -1356,7 +1359,8 @@ def atualizar_placar():
                     "estadio": "formula1.com",
                     "abaAtiva": sessao_ativa,
                     "subTreino": sub_treino,
-                    "classificacaoF1": dados_tabela
+                    "classificacaoF1": dados_tabela,
+                    "isBrazil": is_brazil
                 }
                 dados_com_cache = cachear_todas_imagens(driver, [f1_obj])
                 with open('dados.json', 'w', encoding='utf-8') as f: 

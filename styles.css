@@ -2553,3 +2553,138 @@
             border: 1px solid rgba(250, 204, 21, 0.6) !important;
             box-shadow: 0 0 8px rgba(250, 204, 21, 0.25) !important;
         }
+
+/* ==============================================================
+   PÓRTICO DE LARGADA DA F1 (CORREÇÃO DE DESFOQUE DO OBS/CHROME)
+   ============================================================== */
+.f1-lights-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(3, 7, 18, 0.82);
+    /* Inicia estritamente oculto para não bloquear nem desfocar o ecrã */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+/* O desfoque só existe enquanto a animação estiver ativa */
+.f1-lights-overlay.visivel {
+    display: flex !important;
+    opacity: 1 !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.f1-gantry-box {
+    background: linear-gradient(180deg, #111827 0%, #030712 100%);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-top: 3px solid #e10600;
+    border-radius: 14px;
+    padding: 24px 38px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(225, 6, 0, 0.3);
+    min-width: 520px;
+}
+
+.f1-gantry-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #94a3b8;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.f1-flag-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #009c3b;
+    box-shadow: 0 0 8px #009c3b;
+}
+
+.f1-lights-gantry {
+    display: flex;
+    gap: 16px;
+    background: #050811;
+    padding: 16px 22px;
+    border-radius: 10px;
+    border: 2px solid #1f2937;
+    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.8);
+}
+
+.f1-light-pod {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #0b0f19;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #1f2937;
+}
+
+.f1-led {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #250505;
+    border: 2px solid #150202;
+    transition: background 0.1s ease, box-shadow 0.1s ease;
+}
+
+.f1-light-pod.on .f1-led {
+    background: #ff1801;
+    border-color: #ff6b6b;
+    box-shadow: 0 0 16px #ff1801, 0 0 30px rgba(255, 24, 1, 0.85);
+}
+
+.f1-lights-banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+    transition: opacity 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.f1-lights-banner.mostrar {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.f1-banner-sub {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: #ffdf00;
+    text-shadow: 0 0 10px rgba(255, 223, 0, 0.4);
+    margin-bottom: 4px;
+}
+
+.f1-banner-main {
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+    text-align: center;
+}
+
+/* Lâmpadas LED acesas em VERDE na largada */
+.f1-light-pod.green .f1-led {
+    background: #00e676 !important;
+    border-color: #b9f6ca !important;
+    box-shadow: 0 0 18px #00e676, 0 0 35px rgba(0, 230, 118, 0.9) !important;
+}

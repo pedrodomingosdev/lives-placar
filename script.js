@@ -445,6 +445,9 @@ async function buscarDadosServidor() {
                 vermelhosSalvosCasa = null;
                 vermelhosSalvosFora = null;
 
+                window.f1LightsExecutada = false;
+                window.f1LightsEmExecucao = false;
+
                 const containerAlerta = document.getElementById('container-alerta-externo');
                 if (containerAlerta) containerAlerta.innerHTML = '';
 
@@ -510,14 +513,43 @@ function aplicarNaTela(d) {
         const painelConteudo = document.getElementById('container-conteudo');
 
         cnt.className = "container " + jg.esporte;
-        if (jg.torneio) document.getElementById('txt-torneio').innerText = jg.torneio;
-        if (jg.estadio) document.getElementById('txt-estadio').innerText = jg.estadio;
+        
+        if (jg.torneio) {
+            if (jg.esporte === 'f1' && jg.isBrazil) {
+                // Limpa o nome longo do patrocinador oficial e mantém um título limpo
+                let nomeGpLimpo = jg.torneio
+                    .replace(/FORMULA 1/gi, 'F1')
+                    .replace(/MSC CRUISES/gi, '')
+                    .replace(/LENOVO/gi, '')
+                    .replace(/HEINEKEN/gi, '')
+                    .replace(/ROLEX/gi, '')
+                    .replace(/\s+/g, ' ')
+                    .trim();
 
+                document.getElementById('txt-torneio').innerHTML = `
+                    <span style="white-space: nowrap;">${nomeGpLimpo}</span>
+                    <span style="white-space: nowrap; font-size: 0.62rem; color: #ffdf00; background: rgba(0, 156, 59, 0.28); padding: 2px 7px; border-radius: 4px; margin-left: 8px; border: 1px solid #009c3b; font-weight: 800; letter-spacing: 0.5px; vertical-align: middle;">
+                        🎙️ ALDO LUIZ
+                    </span>
+                `;
+            } else {
+                document.getElementById('txt-torneio').innerText = jg.torneio;
+            }
+        }
+        
+        if (jg.estadio) document.getElementById('txt-estadio').innerText = jg.estadio;
+        if (jg.estadio) document.getElementById('txt-estadio').innerText = jg.estadio;
         // ==========================================
         // ROTA DA F1
         // ==========================================
         if (jg.esporte === "f1") {
             cnt.removeAttribute('title');
+
+            // Dispara apenas UMA vez e só se não estiver em execução
+            if (jg.isBrazil && !window.f1LightsExecutada && !window.f1LightsEmExecucao) {
+                window.f1LightsExecutada = true;
+                setTimeout(iniciarSequenciaLightsOut, 800);
+            }
 
             let abaAtiva = jg.abaAtiva || "Corrida";
             let subTreino = jg.subTreino || "Treino 1";
@@ -1809,3 +1841,86 @@ setInterval(() => {
 })();
 
 
+// ==============================================================
+// ANIMAÇÃO DE LARGADA DA F1: 5 LUZES VERMELHAS ("LIGHTS OUT")
+// ==============================================================
+window.f1LightsExecutada = false;
+window.f1LightsEmExecucao = false;
+let f1LightsTimeouts = [];
+
+function iniciarSequenciaLightsOut() {
+    // TRAVA: Se a animação já estiver a correr no ecrã, não reinicia
+    if (window.f1LightsEmExecucao) return;
+    window.f1LightsEmExecucao = true;
+
+    // Cancela eventuais resíduos de temporizadores anteriores
+    f1LightsTimeouts.forEach(t => clearTimeout(t));
+    f1LightsTimeouts = [];
+
+    let overlay = document.getElementById('f1-lights-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'f1-lights-overlay';
+        overlay.className = 'f1-lights-overlay';
+        document.body.appendChild(overlay);
+    }
+
+    overlay.innerHTML = `
+        <div class="f1-gantry-box">
+            <div class="f1-gantry-header">
+                <span class="f1-flag-dot"></span>
+                <span>FORMULA 1 • GP DE SÃO PAULO</span>
+            </div>
+            <div class="f1-lights-gantry">
+                <div class="f1-light-pod" id="pod-1"><span class="f1-led"></span><span class="f1-led"></span></div>
+                <div class="f1-light-pod" id="pod-2"><span class="f1-led"></span><span class="f1-led"></span></div>
+                <div class="f1-light-pod" id="pod-3"><span class="f1-led"></span><span class="f1-led"></span></div>
+                <div class="f1-light-pod" id="pod-4"><span class="f1-led"></span><span class="f1-led"></span></div>
+                <div class="f1-light-pod" id="pod-5"><span class="f1-led"></span><span class="f1-led"></span></div>
+            </div>
+            <div class="f1-lights-banner" id="f1-banner-largada">
+                <span class="f1-banner-sub">INTERLAGOS • AUTÓDROMO JOSÉ CARLOS PACE</span>
+                <span class="f1-banner-main">LUZES APAGADAS! É COM VOCÊ, ALDO LUIZ! 🏁</span>
+            </div>
+        </div>
+    `;
+
+    overlay.classList.add('visivel');
+
+    // Sequência oficial FIA: 1 luz vermelha por segundo
+    const tempos = [1000, 2000, 3000, 4000, 5000];
+    tempos.forEach((t, i) => {
+        let tid = setTimeout(() => {
+            const pod = document.getElementById(`pod-${i + 1}`);
+            if (pod) pod.classList.add('on');
+        }, t);
+        f1LightsTimeouts.push(tid);
+    });
+
+    // Momento da largada: as vermelhas apagam-se e TODAS ACENDEM EM VERDE
+    let tidApaga = setTimeout(() => {
+        for (let i = 1; i <= 5; i++) {
+            const pod = document.getElementById(`pod-${i}`);
+            if (pod) {
+                pod.classList.remove('on');
+                pod.classList.add('green'); // <-- Transforma em verde instantaneamente
+            }
+        }
+        const banner = document.getElementById('f1-banner-largada');
+        if (banner) banner.classList.add('mostrar');
+    }, 6600);
+    f1LightsTimeouts.push(tidApaga);
+
+    // Encerra a animação e limpa as luzes verdes aos 11 segundos
+    let tidFecha = setTimeout(() => {
+        overlay.classList.remove('visivel');
+        let tidLimpeza = setTimeout(() => {
+            if (!overlay.classList.contains('visivel')) {
+                overlay.innerHTML = '';
+                window.f1LightsEmExecucao = false;
+            }
+        }, 500);
+        f1LightsTimeouts.push(tidLimpeza);
+    }, 11000);
+    f1LightsTimeouts.push(tidFecha);
+}
