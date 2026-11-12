@@ -173,6 +173,8 @@ document.addEventListener('wheel', (e) => {
 }, { passive: false });
 
 window.addEventListener('keydown', (e) => {
+    if (e.ctrlKey || e.altKey || e.metaKey) return;
+
     const tecla = e.key.toLowerCase();
     const modalidadeAtual = dadosPartidaAtual ? dadosPartidaAtual.esporte : 'futebol';
 
@@ -325,7 +327,12 @@ function htmlFut(j, isReserva = false) {
     let tf = `<img src="${j.foto || fallbackFoto}" class="jogador-foto" onerror="this.src='${fallbackFoto}'">`;
     let tr = `<span class="jogador-rating ${cC}">${j.rating}</span>`;
     let tn = (j.numero && j.numero !== '-') ? `<span class="jogador-numero">${j.numero}</span>` : `<span class="jogador-numero"></span>`;
-    let flagHtml = j.nacionalidade ? `<img src="https://flagcdn.com/w40/${j.nacionalidade}.png" class="bandeira-jogador" onerror="this.style.display='none'">` : '';
+    let flagHtml = '';
+    if (j.isSelecao && j.logoClube) {
+        flagHtml = `<img src="${j.logoClube}" class="clube-jogador-selecao" title="${j.nomeClube || ''}" onerror="this.style.display='none'">`;
+    } else if (j.nacionalidade) {
+        flagHtml = `<img src="https://flagcdn.com/w40/${j.nacionalidade}.png" class="bandeira-jogador" onerror="this.style.display='none'">`;
+    }
 
     let clSubs = '';
     let subInfo = '';
@@ -887,7 +894,9 @@ function aplicarNaTela(d) {
                 lideres: jg.lideres_nfl,
                 cbs: jg.cbs_nfl,
                 abaA: window.nflAbaAway,
-                abaH: window.nflAbaHome
+                abaH: window.nflAbaHome,
+                escC: jg.escalacaoCasa,
+                escF: jg.escalacaoFora
             });
 
             if (currentPainelState !== lastPainelState) {
@@ -1792,6 +1801,9 @@ setInterval(() => {
                 window.dispatchEvent(new KeyboardEvent('keydown', {
                     key: e.key,
                     code: e.code,
+                    ctrlKey: e.ctrlKey,
+                    altKey: e.altKey,
+                    metaKey: e.metaKey,
                     bubbles: true
                 }));
             });

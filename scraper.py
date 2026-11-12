@@ -83,11 +83,13 @@ def cachear_todas_imagens(driver_instance, dados_lista):
                         if m.get("logo1"): urls_para_descarregar.add(m["logo1"])
                         if m.get("logo2"): urls_para_descarregar.add(m["logo2"])
 
+        # Na coleta de URLs (por volta da linha 68):
         for esc in [item.get("escalacaoCasa", []), item.get("escalacaoFora", [])]:
             if isinstance(esc, list):
                 for p in esc:
-                    if isinstance(p, dict) and p.get("foto"):
-                        urls_para_descarregar.add(p["foto"])
+                    if isinstance(p, dict):
+                        if p.get("foto"): urls_para_descarregar.add(p["foto"])
+                        if p.get("logoClube"): urls_para_descarregar.add(p["logoClube"])
 
         for ldr in item.get("lideres_nfl", []):
             if isinstance(ldr, dict):
@@ -212,11 +214,13 @@ def cachear_todas_imagens(driver_instance, dados_lista):
                         if m.get("logo1") in mapa_cache: m["logo1"] = mapa_cache[m["logo1"]]
                         if m.get("logo2") in mapa_cache: m["logo2"] = mapa_cache[m["logo2"]]
 
+       # Na substituição pelo caminho do cache (por volta da linha 173):
         for esc in [item.get("escalacaoCasa", []), item.get("escalacaoFora", [])]:
             if isinstance(esc, list):
                 for p in esc:
-                    if isinstance(p, dict) and p.get("foto") in mapa_cache:
-                        p["foto"] = mapa_cache[p["foto"]]
+                    if isinstance(p, dict):
+                        if p.get("foto") in mapa_cache: p["foto"] = mapa_cache[p["foto"]]
+                        if p.get("logoClube") in mapa_cache: p["logoClube"] = mapa_cache[p["logoClube"]]
 
         for ldr in item.get("lideres_nfl", []):
             if isinstance(ldr, dict):
@@ -1549,12 +1553,68 @@ def atualizar_placar():
             };
         } catch(e) {}
 
+        // 3. Busca os clubes dos jogadores caso seja jogo de Seleção
+        let isSelecao = Boolean(ev?.homeTeam?.national || ev?.awayTeam?.national);
+        window._cacheClubeJogador = window._cacheClubeJogador || {};
+        let clubesJogadores = {};
+
+        if (isSelecao && rLineups) {
+            let todosJogadores = [
+                ...(rLineups?.home?.players || []),
+                ...(rLineups?.away?.players || [])
+            ];
+
+            let idsFaltando = [];
+            for (let item of todosJogadores) {
+                let pl = item?.player;
+                if (!pl || !pl.id) continue;
+                let pId = String(pl.id);
+
+                let tmLineup = pl.team || item.team;
+                if (tmLineup && tmLineup.id && !tmLineup.national) {
+                    window._cacheClubeJogador[pId] = {
+                        id: tmLineup.id,
+                        nome: tmLineup.shortName || tmLineup.name || ""
+                    };
+                }
+
+                if (window._cacheClubeJogador[pId] !== undefined) {
+                    if (window._cacheClubeJogador[pId]) {
+                        clubesJogadores[pId] = window._cacheClubeJogador[pId];
+                    }
+                } else {
+                    idsFaltando.push(pId);
+                }
+            }
+
+            if (idsFaltando.length > 0) {
+                let promessasClubes = idsFaltando.map(pId =>
+                    fetch(`/api/v1/player/${pId}`)
+                        .then(r => r.ok ? r.json() : null)
+                        .then(j => {
+                            let tm = j?.player?.team;
+                            if (tm && tm.id && !tm.national) {
+                                let info = { id: tm.id, nome: tm.shortName || tm.name || "" };
+                                window._cacheClubeJogador[pId] = info;
+                                clubesJogadores[pId] = info;
+                            } else {
+                                window._cacheClubeJogador[pId] = null;
+                            }
+                        })
+                        .catch(() => {})
+                );
+                await Promise.all(promessasClubes);
+            }
+        }
+
         return {
             evento: rEvento || {}, lineups: rLineups || {}, incidents: rIncidents || {},
             standings: rStandings || {}, cuptrees: rCuptrees || {}, relogioDom: extrairRelogioDOM(),
-            campanhaBasquete: {}
+            campanhaBasquete: {}, isSelecao: isSelecao, clubesJogadores: clubesJogadores
         };
     }
+    
+    
     
     obterDadosCompletos().then(res => done(res)).catch(() => done(null));
     """
@@ -1562,6 +1622,10 @@ def atualizar_placar():
     try:
         dados = driver.execute_async_script(script_api_partida, match_id)
         if not dados: return esporte
+        
+        is_selecao = False
+        clubes_jogadores = {}
+        
         if isinstance(dados, dict):
             evento_data = dados.get("evento", {}).get("event", {})
             lineups_data = dados.get("lineups", {})
@@ -1570,6 +1634,11 @@ def atualizar_placar():
             incidents_data = dados.get("incidents", {}).get("incidents", [])
             relogio_dom = dados.get("relogioDom", "")
             campanha_basquete = dados.get("campanhaBasquete", {})
+            
+            # Aqui capturamos as novas variáveis
+            is_selecao = bool(dados.get("isSelecao", False)) or bool(evento_data.get("homeTeam", {}).get("national")) or bool(evento_data.get("awayTeam", {}).get("national"))
+            clubes_jogadores = dados.get("clubesJogadores", {}) if isinstance(dados.get("clubesJogadores"), dict) else {}
+            
         elif isinstance(dados, list) and len(dados) >= 3:
             evento_data = dados[0].get("event", {}) if isinstance(dados[0], dict) else {}
             lineups_data = dados[1] if isinstance(dados[1], dict) else {}
@@ -1578,7 +1647,11 @@ def atualizar_placar():
             standings_data = {}
             cuptrees_data = {}
             campanha_basquete = {}
-        else: return esporte
+            
+            # Fallback caso os dados voltem em lista 
+            is_selecao = bool(evento_data.get("homeTeam", {}).get("national")) or bool(evento_data.get("awayTeam", {}).get("national"))
+        else: 
+            return esporte
 
         time_casa = evento_data.get("homeTeam", {}).get("shortName") or evento_data.get("homeTeam", {}).get("name", "Casa")
         id_casa = evento_data.get("homeTeam", {}).get("id", "")
@@ -1669,12 +1742,17 @@ def atualizar_placar():
                 correcoes_bandeiras = {"en": "gb-eng", "sx": "gb-sct", "sc": "gb-sct", "wa": "gb-wls", "wl": "gb-wls", "ni": "gb-nir"}
                 nacionalidade = correcoes_bandeiras.get(nacionalidade, nacionalidade)
                 rating = estatisticas.get("rating", "-")
+                clube_info = clubes_jogadores.get(str(p_id), {}) if (is_selecao and p_id) else {}
+                clube_id = clube_info.get("id", "") if isinstance(clube_info, dict) else ""
+                nome_clube = clube_info.get("nome", "") if isinstance(clube_info, dict) else ""
+                logo_clube = f"https://api.sofascore.app/api/v1/team/{clube_id}/image" if clube_id else ""
                 try: rating = f"{float(rating):.1f}"
                 except (ValueError, TypeError): pass
 
                 jogadores.append({
                     "numero": p.get("shirtNumber", "-"), "nome": player_info.get("shortName", player_info.get("name", "")),
                     "nacionalidade": nacionalidade, "capitao": p.get("captain", False),
+                    "isSelecao": is_selecao, "logoClube": logo_clube, "nomeClube": nome_clube,
                     "foto": f"https://api.sofascore.app/api/v1/player/{p_id}/image" if p_id else "",
                     "rating": rating, "gol": gols_marcados > 0, "gols_count": gols_marcados,
                     "gol_contra": gols_contra > 0, "gols_contra_count": gols_contra,
@@ -1840,13 +1918,6 @@ def atualizar_placar():
 
                 confrontos_principais = []
                 confrontos_3lugar = []
-                blocos = rnd.get("blocks") or rnd.get("events") or rnd.get("matches") or []
-
-                for blk in blocos:
-                    if not isinstance(blk, dict): continue
-
-
-                confrontos = []
                 blocos = rnd.get("blocks") or rnd.get("events") or rnd.get("matches") or []
 
                 for blk in blocos:

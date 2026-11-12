@@ -2553,3 +2553,12 @@
             border: 1px solid rgba(250, 204, 21, 0.6) !important;
             box-shadow: 0 0 8px rgba(250, 204, 21, 0.25) !important;
         }
+
+        .clube-jogador-selecao {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    margin-right: 5px;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.4));
+}
