@@ -2555,10 +2555,29 @@
         }
 
         .clube-jogador-selecao {
-    width: 16px;
-    height: 16px;
-    object-fit: contain;
-    margin-right: 5px;
-    flex-shrink: 0;
-    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.4));
-}
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+            margin-right: 5px;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.4));
+        }
+
+        .cbs-table-player td.p-name,
+        .cbs-player-cell {
+            max-width: 140px !important;
+            gap: 4px !important;
+        }
+
+        .cbs-player-cell span {
+            font-size: 0.72rem !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .cbs-table-player th,
+        .cbs-table-player td {
+            padding-left: 3px !important;
+            padding-right: 3px !important;
+        }

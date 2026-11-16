@@ -16,6 +16,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
+from concurrent.futures import ThreadPoolExecutor
+
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 comando_f1_pendente = None
 
@@ -340,6 +342,8 @@ f1_url_cache = ""
 # 3. EXTRAÇÃO DE DADOS DA NFL VIA API DA ESPN
 # ==============================================================================
 posicoes_iniciais_times = {}
+cache_nac_nfl = {}
+posicoes_iniciais_times = {}
 def extrair_dados_espn_nfl():
     try:
         url_atual = driver.current_url
@@ -384,8 +388,60 @@ def extrair_dados_espn_nfl():
                 );
                 playoffsData = await Promise.all(fetches);
             } catch(e) {}
+            
+            window._cacheNacNfl = window._cacheNacNfl || {};
+            let nacMap = {};
+            let idsAtletas = new Set();
 
-            return { cdn: cdnData, summary: sumData, standings: standData, playoffs: playoffsData };
+            // 1. Coleta IDs dos líderes (summary e cdn)
+            (sumData?.leaders || sumData?.boxscore?.leaders || []).forEach(grp => {
+                (grp.leaders || []).forEach(cat => {
+                    if (cat.athlete?.id) idsAtletas.add(String(cat.athlete.id));
+                    (cat.leaders || []).forEach(l => {
+                        if (l.athlete?.id) idsAtletas.add(String(l.athlete.id));
+                    });
+                });
+            });
+            (cdnData?.gmLdrs?.ldrs || []).forEach(ldr => {
+                ['away', 'home'].forEach(lado => {
+                    if (ldr.players?.[lado]?.id) idsAtletas.add(String(ldr.players[lado].id));
+                });
+            });
+
+            // 2. Coleta IDs do Box Score
+            (sumData?.boxscore?.players || []).forEach(tm => {
+                (tm.statistics || []).forEach(st => {
+                    (st.athletes || []).forEach(a => {
+                        if (a.athlete?.id) idsAtletas.add(String(a.athlete.id));
+                    });
+                });
+            });
+
+            // 3. Verifica o que já está no cache e busca apenas os inéditos
+            let faltando = [];
+            idsAtletas.forEach(id => {
+                if (window._cacheNacNfl[id] !== undefined) {
+                    if (window._cacheNacNfl[id]) nacMap[id] = window._cacheNacNfl[id];
+                } else {
+                    faltando.push(id);
+                }
+            });
+
+            if (faltando.length > 0) {
+                await Promise.all(faltando.map(id =>
+                    fetch(`https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/${id}`)
+                        .then(r => r.ok ? r.json() : null)
+                        .then(j => {
+                            let ath = j?.athlete || j;
+                            let pais = ath?.birthPlace?.country || ath?.citizenship || "";
+                            window._cacheNacNfl[id] = pais;
+                            if (pais) nacMap[id] = pais;
+                        })
+                        .catch(() => { window._cacheNacNfl[id] = ""; })
+                ));
+            }
+
+            return { cdn: cdnData, summary: sumData, standings: standData, playoffs: playoffsData, nacMap: nacMap };
         }
         obterDadosNFL().then(res => done(res)).catch(() => done(null));
         """
@@ -397,6 +453,93 @@ def extrair_dados_espn_nfl():
         data = resp.get('summary') or cdn_data
         stand_data = resp.get('standings') or {}
         playoffs_resp = resp.get('playoffs') or []
+        
+        nac_map_raw = resp.get('nacMap') or {}
+
+        mapa_paises_nfl = {
+            "usa": "us", "united states": "us", "estados unidos": "us", "u.s.": "us", "u.s.a.": "us",
+            "canada": "ca", "canadá": "ca", "can": "ca",
+            "brazil": "br", "brasil": "br", "bra": "br",
+            "australia": "au", "austrália": "au", "aus": "au",
+            "ireland": "ie", "irlanda": "ie", "irl": "ie",
+            "england": "gb-eng", "inglaterra": "gb-eng",
+            "united kingdom": "gb", "reino unido": "gb", "uk": "gb",
+            "scotland": "gb-sct", "escócia": "gb-sct",
+            "wales": "gb-wls", "país de gales": "gb-wls",
+            "germany": "de", "alemanha": "de", "ger": "de",
+            "nigeria": "ng", "nigéria": "ng", "ngr": "ng",
+            "ghana": "gh", "gana": "gh",
+            "cameroon": "cm", "camarões": "cm",
+            "south africa": "za", "áfrica do sul": "za",
+            "liberia": "lr", "libéria": "lr",
+            "mexico": "mx", "méxico": "mx", "mex": "mx",
+            "jamaica": "jm", "bahamas": "bs", "haiti": "ht",
+            "puerto rico": "pr", "porto rico": "pr",
+            "american samoa": "as", "samoa americana": "as",
+            "samoa": "ws", "tonga": "to", "fiji": "fj",
+            "new zealand": "nz", "nova zelândia": "nz",
+            "japan": "jp", "japão": "jp",
+            "south korea": "kr", "coreia do sul": "kr",
+            "china": "cn", "france": "fr", "frança": "fr",
+            "italy": "it", "itália": "it", "spain": "es", "espanha": "es",
+            "netherlands": "nl", "holanda": "nl", "países baixos": "nl"
+        }
+
+        ids_atletas = set()
+        if isinstance(cdn_data, dict):
+            for ldr in cdn_data.get('gmLdrs', {}).get('ldrs', []):
+                for lado in ['away', 'home']:
+                    p_obj = ldr.get('players', {}).get(lado) or {}
+                    p_id = p_obj.get('id') or p_obj.get('playerId')
+                    if p_id:
+                        ids_atletas.add(str(p_id))
+
+        for item in (data.get('leaders', []) or data.get('boxscore', {}).get('leaders', [])):
+            for cat in item.get('leaders', []):
+                if cat.get('athlete', {}).get('id'):
+                    ids_atletas.add(str(cat['athlete']['id']))
+                for l_ent in cat.get('leaders', []):
+                    if l_ent.get('athlete', {}).get('id'):
+                        ids_atletas.add(str(l_ent['athlete']['id']))
+
+        for tm_box in data.get('boxscore', {}).get('players', []):
+            for st_grp in tm_box.get('statistics', []):
+                for a in st_grp.get('athletes', []):
+                    if a.get('athlete', {}).get('id'):
+                        ids_atletas.add(str(a['athlete']['id']))
+
+        ids_faltando = [aid for aid in ids_atletas if aid not in cache_nac_nfl]
+
+        def buscar_pais_espn(aid):
+            for url_api in [
+                f"https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/{aid}",
+                f"https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes/{aid}"
+            ]:
+                try:
+                    r = requests.get(url_api, timeout=4)
+                    if r.ok:
+                        j = r.json()
+                        ath = j.get('athlete') or j
+                        bp = ath.get('birthPlace') or {}
+                        pais = bp.get('country') or bp.get('countryAbbreviation') or ath.get('citizenship') or ""
+                        if pais:
+                            return aid, str(pais).strip()
+                except Exception:
+                    pass
+            return aid, ""
+
+        if ids_faltando:
+            with ThreadPoolExecutor(max_workers=15) as executor:
+                for aid, pais_encontrado in executor.map(buscar_pais_espn, ids_faltando):
+                    cache_nac_nfl[aid] = pais_encontrado
+
+        def obter_nac_nfl(ath_id):
+            pais = str(cache_nac_nfl.get(str(ath_id), "")).strip().lower()
+            if not pais:
+                return ""
+            return mapa_paises_nfl.get(pais, pais if len(pais) == 2 else "")
+        
+        
         if not data: return None
 
         if not stand_data or not stand_data.get('children'):
@@ -531,7 +674,8 @@ def extrair_dados_espn_nfl():
                 "posicao": pos_str,
                 "detalhe": det_val,
                 "stat": st_val,
-                "foto": foto
+                "foto": foto,
+                "nacionalidade": obter_nac_nfl(ath.get('id', ''))
             }
 
         lideres_formatados = []
@@ -551,7 +695,8 @@ def extrair_dados_espn_nfl():
                         "posicao": p.get('position', ''),
                         "detalhe": p.get('stats', ''),
                         "stat": str(p.get('primaryStatValue', '-')),
-                        "foto": foto
+                        "foto": foto,
+                        "nacionalidade": obter_nac_nfl(p.get('id') or p.get('playerId') or '')
                     }
                 lideres_formatados.append({
                     "categoria": cat_label,
@@ -635,7 +780,6 @@ def extrair_dados_espn_nfl():
             offense = {"passing": [], "rushing": [], "receiving": []}
             defense = []
             special_teams = {"kicking": [], "punting": [], "kickReturns": [], "puntReturns": []}
-
             def obter_foto(ath):
                 h = ath.get('headshot')
                 if isinstance(h, dict): return h.get('href', '')
@@ -663,6 +807,7 @@ def extrair_dados_espn_nfl():
                                 offense["passing"].append({
                                     "nome": a.get('athlete', {}).get('shortName') or a.get('athlete', {}).get('displayName', ''),
                                     "foto": obter_foto(a.get('athlete', {})),
+                                    "nacionalidade": obter_nac_nfl(a.get('athlete', {}).get('id', '')),
                                     "cp_att": st[idx_cp], "yds": st[idx_yd], "td": st[idx_td], "int": st[idx_int], "fpts": fpts
                                 })
 
@@ -679,6 +824,7 @@ def extrair_dados_espn_nfl():
                                 offense["rushing"].append({
                                     "nome": a.get('athlete', {}).get('shortName') or a.get('athlete', {}).get('displayName', ''),
                                     "foto": obter_foto(a.get('athlete', {})),
+                                    "nacionalidade": obter_nac_nfl(a.get('athlete', {}).get('id', '')),
                                     "att": st[idx_att], "yds": st[idx_yd], "td": st[idx_td], "long": st[idx_long], "fpts": fpts
                                 })
 
@@ -697,6 +843,7 @@ def extrair_dados_espn_nfl():
                                 offense["receiving"].append({
                                     "nome": a.get('athlete', {}).get('shortName') or a.get('athlete', {}).get('displayName', ''),
                                     "foto": obter_foto(a.get('athlete', {})),
+                                    "nacionalidade": obter_nac_nfl(a.get('athlete', {}).get('id', '')),
                                     "tar": tar_val, "rec": st[idx_rec], "yds": st[idx_yd], "td": st[idx_td], "long": st[idx_long], "fpts": fpts
                                 })
 
@@ -715,7 +862,8 @@ def extrair_dados_espn_nfl():
                                     "nome": a.get('athlete', {}).get('shortName') or a.get('athlete', {}).get('displayName', ''),
                                     "foto": obter_foto(a.get('athlete', {})),
                                     "t_a": f"{solo}-{max(0, tot - solo)}",
-                                    "sack": st[idx_sacks],
+                                    "sack": st[idx_sacks], 
+                                    "nacionalidade": obter_nac_nfl(a.get('athlete', {}).get('id', '')),
                                     "int": st[idx_int] if len(st) > idx_int else "0",
                                     "ff": st[idx_ff] if len(st) > idx_ff else "0"
                                 })
@@ -731,6 +879,7 @@ def extrair_dados_espn_nfl():
                                 special_teams["kicking"].append({
                                     "nome": a.get('athlete', {}).get('shortName') or a.get('athlete', {}).get('displayName', ''),
                                     "foto": obter_foto(a.get('athlete', {})),
+                                    "nacionalidade": obter_nac_nfl(a.get('athlete', {}).get('id', '')),
                                     "fg": st[idx_fg], "lg": st[idx_long], "xp": st[idx_xp], "pts": st[idx_pts]
                                 })
 
@@ -747,7 +896,8 @@ def extrair_dados_espn_nfl():
                                     "foto": obter_foto(a.get('athlete', {})),
                                     "no": st[idx_no], "avg": st[idx_avg],
                                     "in20": st[idx_in20] if len(st) > idx_in20 else "0",
-                                    "lg": st[idx_long] if len(st) > idx_long else "0"
+                                    "lg": st[idx_long] if len(st) > idx_long else "0",
+                                    "nacionalidade": obter_nac_nfl(a.get('athlete', {}).get('id', ''))
                                 })
 
                     elif cat in ["kickreturns", "kick_returns"]:
@@ -763,7 +913,8 @@ def extrair_dados_espn_nfl():
                                     "foto": obter_foto(a.get('athlete', {})),
                                     "no": st[idx_no], "avg": st[idx_avg],
                                     "lg": st[idx_long] if len(st) > idx_long else "0",
-                                    "td": st[idx_td] if len(st) > idx_td else "0"
+                                    "td": st[idx_td] if len(st) > idx_td else "0",
+                                    "nacionalidade": obter_nac_nfl(a.get('athlete', {}).get('id', ''))
                                 })
 
                     elif cat in ["puntreturns", "punt_returns"]:
@@ -779,7 +930,8 @@ def extrair_dados_espn_nfl():
                                     "foto": obter_foto(a.get('athlete', {})),
                                     "no": st[idx_no], "avg": st[idx_avg],
                                     "lg": st[idx_long] if len(st) > idx_long else "0",
-                                    "td": st[idx_td] if len(st) > idx_td else "0"
+                                    "td": st[idx_td] if len(st) > idx_td else "0",
+                                    "nacionalidade": obter_nac_nfl(a.get('athlete', {}).get('id', ''))
                                 })
 
             return {"offense": offense, "defense": defense, "specialTeams": special_teams}

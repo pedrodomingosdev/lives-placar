@@ -406,7 +406,13 @@ function htmlBasq(j) {
     const fallbackFoto = "https://pbs.twimg.com/profile_images/1858822306186878976/qPsDCLmQ_400x400.jpg";
     let tf = `<img src="${j.foto || fallbackFoto}" class="jogador-foto" onerror="this.src='${fallbackFoto}'">`;
     let tr = `<span class="jogador-rating ${cC}">${j.rating}</span>`;
-    let flagHtml = j.nacionalidade ? `<img src="https://flagcdn.com/w40/${j.nacionalidade}.png" class="bandeira-jogador" onerror="this.style.display='none'">` : '';
+
+    let flagHtml = '';
+    if (j.isSelecao && j.logoClube) {
+        flagHtml = `<img src="${j.logoClube}" class="clube-jogador-selecao" title="${j.nomeClube || ''}" onerror="this.style.display='none'">`;
+    } else if (j.nacionalidade) {
+        flagHtml = `<img src="https://flagcdn.com/w40/${j.nacionalidade}.png" class="bandeira-jogador" onerror="this.style.display='none'">`;
+    }
 
     return `<div class="jogador-item">
                 <div class="jogador-info">
@@ -913,6 +919,21 @@ function aplicarNaTela(d) {
                         return `<div class="cbs-player-photo-empty"></div>`;
                     };
 
+                    const renderBandeiraNfl = (nac) => {
+                        if (nac && typeof nac === "string" && nac.trim() !== "") {
+                            return `<img src="https://flagcdn.com/w40/${nac}.png" style="width:14px; height:10px; object-fit:cover; border-radius:2px; flex-shrink:0; margin-right:3px;" onerror="this.style.display='none'">`;
+                        }
+                        return '';
+                    };
+
+                    const abreviarNomeNfl = (nome) => {
+                        if (!nome || typeof nome !== "string") return "";
+                        return nome
+                            .trim()
+                            .replace(/\s+(?:Jr\.?|Sr\.?|II|III|IV|V)$/i, '')
+                            .replace(/^([A-Za-zÀ-ÿ])[A-Za-zÀ-ÿ'-]+\s+/, '$1. ');
+                    };
+
                     // 1. MODO PRÉ-JOGO: EXIBE SEMPRE OS LÍDERES DA TEMPORADA
                     if (jg.isPreJogo || jg.tempo === "EM BREVE") {
                         if (jg.lideres_nfl && jg.lideres_nfl.length > 0) {
@@ -925,12 +946,18 @@ function aplicarNaTela(d) {
                                     <div class="cbs-lider-row">
                                         <div class="cbs-lider-player away">
                                             ${renderFotoAtleta(away.foto)}
-                                            <div class="cbs-lider-info">
-                                                <div class="cbs-lider-name-pos">
-                                                    <span class="cbs-pname">${away.nome || 'Nenhum'}</span>
-                                                    ${away.posicao ? `<span class="cbs-ppos">${away.posicao}</span>` : ''}
-                                                </div>
-                                                ${away.detalhe ? `<span class="cbs-pdetail">${away.detalhe}</span>` : ''}
+                                            // Lado Away:
+                                            <div class="cbs-lider-name-pos">
+                                                ${renderBandeiraNfl(away.nacionalidade)}
+                                                <span class="cbs-pname">${away.nome || 'Nenhum'}</span>
+                                                ${away.posicao ? `<span class="cbs-ppos">${away.posicao}</span>` : ''}
+                                            </div>
+
+                                            // Lado Home:
+                                            <div class="cbs-lider-name-pos" style="justify-content: flex-end;">
+                                                ${home.posicao ? `<span class="cbs-ppos">${home.posicao}</span>` : ''}
+                                                ${renderBandeiraNfl(home.nacionalidade)}
+                                                <span class="cbs-pname">${home.nome || 'Nenhum'}</span>
                                             </div>
                                         </div>
 
@@ -1029,19 +1056,19 @@ function aplicarNaTela(d) {
                             let passHtml = (off.passing && off.passing.length > 0) ? `
                                 <table class="cbs-table-player">
                                     <thead><tr><th style="text-align: left;">PASSING</th><th>CP/ATT</th><th>YDS</th><th>TD</th><th>INT</th><th>FPTS</th></tr></thead>
-                                    <tbody>${off.passing.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}<span>${p.nome}</span></div></td><td>${p.cp_att}</td><td>${p.yds}</td><td>${p.td}</td><td>${p.int}</td><td>${p.fpts}</td></tr>`).join('')}</tbody>
+                                    <tbody>${off.passing.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}${renderBandeiraNfl(p.nacionalidade)}<span>${abreviarNomeNfl(p.nome)}</span></div></td><td>${p.cp_att}</td><td>${p.yds}</td><td>${p.td}</td><td>${p.int}</td><td>${p.fpts}</td></tr>`).join('')}</tbody>
                                 </table>` : '';
 
                             let rushHtml = (off.rushing && off.rushing.length > 0) ? `
                                 <table class="cbs-table-player">
                                     <thead><tr><th style="text-align: left;">RUSHING</th><th>ATT</th><th>YDS</th><th>TD</th><th>LG</th><th>FPTS</th></tr></thead>
-                                    <tbody>${off.rushing.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}<span>${p.nome}</span></div></td><td>${p.att}</td><td>${p.yds}</td><td>${p.td}</td><td>${p.long}</td><td>${p.fpts}</td></tr>`).join('')}</tbody>
+                                    <tbody>${off.rushing.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}${renderBandeiraNfl(p.nacionalidade)}<span>${abreviarNomeNfl(p.nome)}</span></div></td><td>${p.att}</td><td>${p.yds}</td><td>${p.td}</td><td>${p.long}</td><td>${p.fpts}</td></tr>`).join('')}</tbody>
                                 </table>` : '';
 
                             let recHtml = (off.receiving && off.receiving.length > 0) ? `
                                 <table class="cbs-table-player">
                                     <thead><tr><th style="text-align: left;">RECEIVING</th><th>TAR</th><th>REC</th><th>YDS</th><th>TD</th><th>LG</th><th>FPTS</th></tr></thead>
-                                    <tbody>${off.receiving.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}<span>${p.nome}</span></div></td><td>${p.tar}</td><td>${p.rec}</td><td>${p.yds}</td><td>${p.td}</td><td>${p.long}</td><td>${p.fpts}</td></tr>`).join('')}</tbody>
+                                    <tbody>${off.receiving.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}${renderBandeiraNfl(p.nacionalidade)}<span>${abreviarNomeNfl(p.nome)}</span></div></td><td>${p.tar}</td><td>${p.rec}</td><td>${p.yds}</td><td>${p.td}</td><td>${p.long}</td><td>${p.fpts}</td></tr>`).join('')}</tbody>
                                 </table>` : '';
 
                             return passHtml + rushHtml + recHtml;
@@ -1052,7 +1079,7 @@ function aplicarNaTela(d) {
                             return `
                                 <table class="cbs-table-player">
                                     <thead><tr><th style="text-align: left;">DEFENSE</th><th>T-A</th><th>SACK</th><th>INT</th><th>FF</th></tr></thead>
-                                    <tbody>${def.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}<span>${p.nome}</span></div></td><td>${p.t_a}</td><td>${p.sack}</td><td>${p.int}</td><td>${p.ff}</td></tr>`).join('')}</tbody>
+                                    <tbody>${def.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}${renderBandeiraNfl(p.nacionalidade)}<span>${abreviarNomeNfl(p.nome)}</span></div></td><td>${p.t_a}</td><td>${p.sack}</td><td>${p.int}</td><td>${p.ff}</td></tr>`).join('')}</tbody>
                                 </table>
                             `;
                         };
@@ -1062,25 +1089,25 @@ function aplicarNaTela(d) {
                             let kickHtml = (st.kicking && st.kicking.length > 0) ? `
                                 <table class="cbs-table-player">
                                     <thead><tr><th style="text-align: left;">KICKING</th><th>FG</th><th>LG</th><th>XP</th><th>PTS</th></tr></thead>
-                                    <tbody>${st.kicking.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}<span>${p.nome}</span></div></td><td>${p.fg}</td><td>${p.lg}</td><td>${p.xp}</td><td>${p.pts}</td></tr>`).join('')}</tbody>
+                                    <tbody>${st.kicking.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}${renderBandeiraNfl(p.nacionalidade)}<span>${abreviarNomeNfl(p.nome)}</span></div></td><td>${p.fg}</td><td>${p.lg}</td><td>${p.xp}</td><td>${p.pts}</td></tr>`).join('')}</tbody>
                                 </table>` : '';
 
                             let puntHtml = (st.punting && st.punting.length > 0) ? `
                                 <table class="cbs-table-player">
                                     <thead><tr><th style="text-align: left;">PUNTING</th><th>NO</th><th>AVG</th><th>IN20</th><th>LG</th></tr></thead>
-                                    <tbody>${st.punting.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}<span>${p.nome}</span></div></td><td>${p.no}</td><td>${p.avg}</td><td>${p.in20}</td><td>${p.lg}</td></tr>`).join('')}</tbody>
+                                    <tbody>${st.punting.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}${renderBandeiraNfl(p.nacionalidade)}<span>${abreviarNomeNfl(p.nome)}</span></div></td><td>${p.no}</td><td>${p.avg}</td><td>${p.in20}</td><td>${p.lg}</td></tr>`).join('')}</tbody>
                                 </table>` : '';
 
                             let krHtml = (st.kickReturns && st.kickReturns.length > 0) ? `
                                 <table class="cbs-table-player">
                                     <thead><tr><th style="text-align: left;">KICKOFF RETURNS</th><th>NO</th><th>AVG</th><th>LG</th><th>TD</th></tr></thead>
-                                    <tbody>${st.kickReturns.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}<span>${p.nome}</span></div></td><td>${p.no}</td><td>${p.avg}</td><td>${p.lg}</td><td>${p.td}</td></tr>`).join('')}</tbody>
+                                    <tbody>${st.kickReturns.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}${renderBandeiraNfl(p.nacionalidade)}<span>${abreviarNomeNfl(p.nome)}</span></div></td><td>${p.no}</td><td>${p.avg}</td><td>${p.lg}</td><td>${p.td}</td></tr>`).join('')}</tbody>
                                 </table>` : '';
 
                             let prHtml = (st.puntReturns && st.puntReturns.length > 0) ? `
                                 <table class="cbs-table-player">
                                     <thead><tr><th style="text-align: left;">PUNT RETURNS</th><th>NO</th><th>AVG</th><th>LG</th><th>TD</th></tr></thead>
-                                    <tbody>${st.puntReturns.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}<span>${p.nome}</span></div></td><td>${p.no}</td><td>${p.avg}</td><td>${p.lg}</td><td>${p.td}</td></tr>`).join('')}</tbody>
+                                    <tbody>${st.puntReturns.map(p => `<tr><td class="p-name"><div class="cbs-player-cell">${renderFotoAtleta(p.foto)}${renderBandeiraNfl(p.nacionalidade)}<span>${abreviarNomeNfl(p.nome)}</span></div></td><td>${p.no}</td><td>${p.avg}</td><td>${p.lg}</td><td>${p.td}</td></tr>`).join('')}</tbody>
                                 </table>` : '';
 
                             return kickHtml + puntHtml + krHtml + prHtml;
