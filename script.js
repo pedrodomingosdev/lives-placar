@@ -943,42 +943,38 @@ function aplicarNaTela(d) {
                                 const home = ldr.home || {};
 
                                 return `
-                                    <div class="cbs-lider-row">
-                                        <div class="cbs-lider-player away">
-                                            ${renderFotoAtleta(away.foto)}
-                                            // Lado Away:
-                                            <div class="cbs-lider-name-pos">
-                                                ${renderBandeiraNfl(away.nacionalidade)}
-                                                <span class="cbs-pname">${away.nome || 'Nenhum'}</span>
-                                                ${away.posicao ? `<span class="cbs-ppos">${away.posicao}</span>` : ''}
-                                            </div>
+        <div class="cbs-lider-row">
+            <div class="cbs-lider-player away">
+                ${renderFotoAtleta(away.foto)}
+                <div class="cbs-lider-info">
+                    <div class="cbs-lider-name-pos">
+                        ${renderBandeiraNfl(away.nacionalidade)}
+                        <span class="cbs-pname">${away.nome || 'Nenhum'}</span>
+                        ${away.posicao ? `<span class="cbs-ppos">${away.posicao}</span>` : ''}
+                    </div>
+                    ${away.detalhe ? `<span class="cbs-pdetail">${away.detalhe}</span>` : ''}
+                </div>
+            </div>
 
-                                            // Lado Home:
-                                            <div class="cbs-lider-name-pos" style="justify-content: flex-end;">
-                                                ${home.posicao ? `<span class="cbs-ppos">${home.posicao}</span>` : ''}
-                                                ${renderBandeiraNfl(home.nacionalidade)}
-                                                <span class="cbs-pname">${home.nome || 'Nenhum'}</span>
-                                            </div>
-                                        </div>
+            <div class="cbs-lider-center">
+                <span class="cbs-lider-val away" style="color: ${cbs.corAway || '#0085ca'};">${away.stat || '-'}</span>
+                <span class="cbs-lider-label">${ldr.categoria}</span>
+                <span class="cbs-lider-val home" style="color: ${cbs.corHome || '#203731'};">${home.stat || '-'}</span>
+            </div>
 
-                                        <div class="cbs-lider-center">
-                                            <span class="cbs-lider-val away" style="color: ${cbs.corAway || '#0085ca'};">${away.stat || '-'}</span>
-                                            <span class="cbs-lider-label">${ldr.categoria}</span>
-                                            <span class="cbs-lider-val home" style="color: ${cbs.corHome || '#203731'};">${home.stat || '-'}</span>
-                                        </div>
-
-                                        <div class="cbs-lider-player home">
-                                            <div class="cbs-lider-info" style="text-align: right;">
-                                                <div class="cbs-lider-name-pos" style="justify-content: flex-end;">
-                                                    ${home.posicao ? `<span class="cbs-ppos">${home.posicao}</span>` : ''}
-                                                    <span class="cbs-pname">${home.nome || 'Nenhum'}</span>
-                                                </div>
-                                                ${home.detalhe ? `<span class="cbs-pdetail">${home.detalhe}</span>` : ''}
-                                            </div>
-                                            ${renderFotoAtleta(home.foto)}
-                                        </div>
-                                    </div>
-                                `;
+            <div class="cbs-lider-player home">
+                <div class="cbs-lider-info" style="text-align: right;">
+                    <div class="cbs-lider-name-pos" style="justify-content: flex-end;">
+                        ${home.posicao ? `<span class="cbs-ppos">${home.posicao}</span>` : ''}
+                        <span class="cbs-pname">${home.nome || 'Nenhum'}</span>
+                        ${renderBandeiraNfl(home.nacionalidade)}
+                    </div>
+                    ${home.detalhe ? `<span class="cbs-pdetail">${home.detalhe}</span>` : ''}
+                </div>
+                ${renderFotoAtleta(home.foto)}
+            </div>
+        </div>
+    `;
                             }).join('');
 
                             painelConteudo.innerHTML = `
@@ -1273,10 +1269,13 @@ function aplicarNaTela(d) {
 
                 let navTipoHtml = '';
                 if (temGrupos && temMataMata) {
-                    const labelEliminatorias = (jg.esporte === 'basquete' || jg.esporte === 'nfl') ? 'Playoffs' : 'Mata-Mata';
+                    const isNflOuNba = (jg.esporte === 'basquete' || jg.esporte === 'nfl');
+                    const labelClassificacao = isNflOuNba ? 'Conferência / Divisão' : 'Classificação / Grupos';
+                    const labelEliminatorias = isNflOuNba ? 'Playoffs' : 'Mata-Mata';
+
                     navTipoHtml = `
         <div class="nav-tipo-tabela">
-            <button class="btn-tipo-tab ${window.subAbaTabela === 'grupos' ? 'ativo' : ''}" onclick="event.stopPropagation(); window.trocarSubAba('grupos')">Classificação / Grupos</button>
+            <button class="btn-tipo-tab ${window.subAbaTabela === 'grupos' ? 'ativo' : ''}" onclick="event.stopPropagation(); window.trocarSubAba('grupos')">${labelClassificacao}</button>
             <button class="btn-tipo-tab ${window.subAbaTabela === 'matamata' ? 'ativo' : ''}" onclick="event.stopPropagation(); window.trocarSubAba('matamata')">${labelEliminatorias}</button>
         </div>
     `;
@@ -1381,8 +1380,9 @@ function aplicarNaTela(d) {
                             const isGeral = (grupoAtual && grupoAtual.grupo) ? grupoAtual.grupo.toLowerCase().includes('geral') : false;
 
                             if (isGeral) {
-                                if (pos === 1) return 'pos-ucl';  // Seed #1: Folga (Azul)
-                                if (pos <= 7) return 'pos-uel';  // Seeds #2 a #7: Wild Card (Vermelho)
+                                if (pos === 1) return 'pos-ucl';          // Seed #1: Folga (Azul)
+                                if (pos <= 4) return 'pos-libertadores';  // Seeds #2 a #4: Campeões de Divisão (Verde)
+                                if (pos <= 7) return 'pos-uel';          // Seeds #5 a #7: Wild Card (Vermelho)
                                 return 'pos-neutra';
                             }
                             // Nas divisões individuais, o campeão vai aos Playoffs (Azul)

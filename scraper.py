@@ -999,12 +999,19 @@ def extrair_dados_espn_nfl():
                         if tm.get('logos'): logo_t = tm['logos'][0].get('href', '')
                         elif tm.get('logo'): logo_t = tm.get('logo', '')
                         
+                        try:
+                            seed_espn = int(float(st_dict.get('playoffseed', 0)))
+                        except Exception:
+                            seed_espn = 0
+
                         linhas.append({
                             "pos": idx + 1,
                             "variacao": 0,
                             "id": t_id,
                             "nome": tm.get('displayName') or tm.get('shortDisplayName') or tm.get('name') or "Time",
                             "promocao": "Playoffs" if idx == 0 else "",
+                            "isCampeaoDivisao": (idx == 0),
+                            "seedEspn": seed_espn,
                             "logo": logo_t,
                             "jogos": v + d + emp,
                             "v": v,
@@ -1016,7 +1023,7 @@ def extrair_dados_espn_nfl():
                             "isCasa": str(t_id) == str(id_casa),
                             "isFora": str(t_id) == str(id_fora)
                         })
-                    
+                        
                     tem_jogo = any(t["isCasa"] or t["isFora"] for t in linhas)
                     tabelas_grupos_nfl.append({
                         "grupo": rotulo_div,
@@ -1054,12 +1061,21 @@ def extrair_dados_espn_nfl():
                 except: s = 0
                 return (p, s)
 
-            lista_ordenada = sorted(lista_times, key=chave_ord, reverse=True)
+            seeds_validos = [tm.get("seedEspn", 0) for tm in lista_times if 1 <= tm.get("seedEspn", 0) <= len(lista_times)]
+            if len(seeds_validos) == len(lista_times) and len(set(seeds_validos)) == len(lista_times):
+                lista_ordenada = sorted(lista_times, key=lambda tm: tm.get("seedEspn", 99))
+            else:
+                campeoes_div = sorted([tm for tm in lista_times if tm.get("isCampeaoDivisao")], key=chave_ord, reverse=True)
+                nao_campeoes = sorted([tm for tm in lista_times if not tm.get("isCampeaoDivisao")], key=chave_ord, reverse=True)
+                lista_ordenada = campeoes_div + nao_campeoes
+
             for idx, tm in enumerate(lista_ordenada):
                 pos = idx + 1
                 tm["pos"] = pos
                 if pos == 1:
                     tm["promocao"] = "Playoffs (Folga #1)"
+                elif pos <= 4:
+                    tm["promocao"] = "Playoffs (Campeão Divisão)"
                 elif pos <= 7:
                     tm["promocao"] = "Playoffs (Wild Card)"
                 else:

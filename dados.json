@@ -1,998 +1,176 @@
 [
     {
         "esporte": "nfl",
-        "timeCasa": "Indianapolis Colts",
-        "logoCasa": "cache_img/5972b2d7df74433ed0f8697126995b2e.png",
-        "abbrevCasa": "IND",
-        "placarCasa": "24",
-        "timeFora": "Miami Dolphins",
-        "logoFora": "cache_img/802b4d42fcfe97a04c84b0d75ee59ad4.png",
-        "abbrevFora": "MIA",
-        "placarFora": "22",
-        "tempo": "FINALIZADO",
+        "timeCasa": "Baltimore Ravens",
+        "logoCasa": "cache_img/515b4e7a827f7b2597c085ac6efc97f1.png",
+        "abbrevCasa": "BAL",
+        "placarCasa": "-",
+        "timeFora": "Los Angeles Chargers",
+        "logoFora": "cache_img/295c94c783799309e4ad653c14a63dcf.png",
+        "abbrevFora": "LAC",
+        "placarFora": "-",
+        "tempo": "EM BREVE",
         "torneio": "NFL",
-        "isPreJogo": false,
-        "titulo_destaques": "LÍDERES DO JOGO",
+        "isPreJogo": true,
+        "titulo_destaques": "LÍDERES DA TEMPORADA",
         "lideres_nfl": [
             {
                 "categoria": "Jds/Passe",
                 "away": {
-                    "nome": "K. McCord",
+                    "nome": "J. Herbert",
                     "posicao": "QB",
-                    "detalhe": "17/32",
-                    "stat": "209",
-                    "foto": "cache_img/624f51e5e31f3fb687979d43a0379167.png",
+                    "detalhe": "144/235, 1 6 TD, 11 INT",
+                    "stat": "591",
+                    "foto": "cache_img/fd77eccfb9f28855a649ba5775f103df.png",
                     "nacionalidade": "us"
                 },
                 "home": {
-                    "nome": "D. Jones",
+                    "nome": "L. Jackson",
                     "posicao": "QB",
-                    "detalhe": "11/22 1 TD, 2 INT",
-                    "stat": "108",
-                    "foto": "cache_img/5296f5731ab1761d017d569c0a8072f1.png",
+                    "detalhe": "68/97 6 TD, 1 INT",
+                    "stat": "967",
+                    "foto": "cache_img/adaf3273c2ec84272dd32045bf559b80.png",
                     "nacionalidade": "us"
                 }
             },
             {
                 "categoria": "Jds/corrida",
                 "away": {
-                    "nome": "O. Gordon II",
+                    "nome": "O. Hampton",
                     "posicao": "RB",
-                    "detalhe": "76 JDS",
-                    "stat": "20",
-                    "foto": "cache_img/f9291bb8f3e5d3878e4290d7432a1a5c.png",
+                    "detalhe": "369 JDS, 3 TD",
+                    "stat": "102",
+                    "foto": "cache_img/0a1fbd5610d27c1162277dd9e067e7e5.png",
                     "nacionalidade": "us"
                 },
                 "home": {
-                    "nome": "J. Taylor",
+                    "nome": "D. Henry",
                     "posicao": "RB",
-                    "detalhe": "83 JDS",
-                    "stat": "16",
-                    "foto": "cache_img/0d512d1e4036841957604437dee4e657.png",
+                    "detalhe": "689 JDS, 8 TD",
+                    "stat": "175",
+                    "foto": "cache_img/2733bed6af59af05cecc91e761444e5e.png",
                     "nacionalidade": "us"
                 }
             },
             {
                 "categoria": "Jds recebidas",
                 "away": {
-                    "nome": "C. Douglas",
+                    "nome": "L. McConkey",
                     "posicao": "WR",
-                    "detalhe": "71 JDS",
-                    "stat": "3",
-                    "foto": "cache_img/007ef084048af814ef346f45037a8696.png",
+                    "detalhe": "286 JDS, 1 TD",
+                    "stat": "17",
+                    "foto": "cache_img/1d14b350271416010963b8d4ef86cdfb.png",
                     "nacionalidade": "us"
                 },
                 "home": {
-                    "nome": "A. Dulin",
+                    "nome": "Z. Flowers",
                     "posicao": "WR",
-                    "detalhe": "30 JDS",
-                    "stat": "1",
-                    "foto": "cache_img/4725167079392588a728ecf31936a32a.png",
+                    "detalhe": "614 JDS, 3 TD",
+                    "stat": "43",
+                    "foto": "cache_img/73652af5793dd5abe32fb879af91aef2.png",
                     "nacionalidade": "us"
                 }
             },
             {
                 "categoria": "Sacks",
                 "away": {
-                    "nome": "C. Robinson",
+                    "nome": "K. Mack",
                     "posicao": "LB",
                     "detalhe": "",
-                    "stat": "1",
-                    "foto": "cache_img/df14f684f9b7e5ef2e6d9debde0e56e0.png",
+                    "stat": "3",
+                    "foto": "cache_img/cf2a82055dc598fdac5f9689a543d59c.png",
                     "nacionalidade": "us"
                 },
                 "home": {
-                    "nome": "J. Walley",
-                    "posicao": "CB",
+                    "nome": "M. Green",
+                    "posicao": "LB",
                     "detalhe": "",
-                    "stat": "1",
-                    "foto": "cache_img/fe98de6c1da935a61f53140b82d40621.png",
+                    "stat": "3.5",
+                    "foto": "cache_img/78d238636aa1c2b9ee1d431c3366860b.png",
                     "nacionalidade": "us"
                 }
             },
             {
                 "categoria": "Tackles",
                 "away": {
-                    "nome": "J. Brooks",
+                    "nome": "D. Henley",
                     "posicao": "LB",
                     "detalhe": "",
-                    "stat": "9",
-                    "foto": "cache_img/a48d9d3ddc1ae72bc67c703d8ed2659f.png",
+                    "stat": "51",
+                    "foto": "cache_img/b4abcfc0fc6871faad765bf99c3b9181.png",
                     "nacionalidade": "us"
                 },
                 "home": {
-                    "nome": "C. Allen",
+                    "nome": "R. Smith",
                     "posicao": "LB",
                     "detalhe": "",
-                    "stat": "9",
-                    "foto": "cache_img/274060ffbaa09f4d01bf616174530f40.png",
+                    "stat": "74",
+                    "foto": "cache_img/5e8cd24333ee33a190bb14b882495f37.png",
                     "nacionalidade": "us"
                 }
             }
         ],
         "cbs_nfl": {
-            "venue": "Lucas Oil Stadium Indianapolis, IN",
-            "corAway": "#008e97",
-            "corHome": "#003b75",
+            "venue": "M&T Bank Stadium Baltimore, MD",
+            "corAway": "#0080c6",
+            "corHome": "#29126f",
             "away": {
-                "nome": "Miami Dolphins",
+                "nome": "Los Angeles Chargers",
                 "record": "",
-                "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png",
-                "quartos": [
-                    "0",
-                    "7",
-                    "9",
-                    "6"
-                ],
-                "total": "22"
+                "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png",
+                "quartos": [],
+                "total": "-"
             },
             "home": {
-                "nome": "Indianapolis Colts",
+                "nome": "Baltimore Ravens",
                 "record": "",
-                "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png",
-                "quartos": [
-                    "0",
-                    "14",
-                    "10",
-                    "0"
-                ],
-                "total": "24"
+                "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
+                "quartos": [],
+                "total": "-"
             },
             "barras": [
                 {
                     "label": "PASS YDS",
-                    "away": 215,
-                    "home": 104
+                    "away": 0,
+                    "home": 0
                 },
                 {
                     "label": "RUSH YDS",
-                    "away": 78,
-                    "home": 172
+                    "away": 0,
+                    "home": 0
                 },
                 {
                     "label": "TOTAL YDS",
-                    "away": 293,
-                    "home": 276
+                    "away": 0,
+                    "home": 0
                 }
             ],
             "away_stats": {
                 "offense": {
-                    "passing": [
-                        {
-                            "nome": "Kyle McCord",
-                            "foto": "cache_img/624f51e5e31f3fb687979d43a0379167.png",
-                            "nacionalidade": "us",
-                            "cp_att": "17/32",
-                            "yds": "209",
-                            "td": "0",
-                            "int": "0",
-                            "fpts": 8
-                        },
-                        {
-                            "nome": "Malik Washington",
-                            "foto": "cache_img/0a832399a13d6fd15105f6d28361aded.png",
-                            "nacionalidade": "us",
-                            "cp_att": "1/1",
-                            "yds": "34",
-                            "td": "1",
-                            "int": "0",
-                            "fpts": 5
-                        }
-                    ],
-                    "rushing": [
-                        {
-                            "nome": "Ollie Gordon II",
-                            "foto": "cache_img/f9291bb8f3e5d3878e4290d7432a1a5c.png",
-                            "nacionalidade": "us",
-                            "att": "20",
-                            "yds": "76",
-                            "td": "0",
-                            "long": "19",
-                            "fpts": 8
-                        },
-                        {
-                            "nome": "Kyle McCord",
-                            "foto": "cache_img/624f51e5e31f3fb687979d43a0379167.png",
-                            "nacionalidade": "us",
-                            "att": "2",
-                            "yds": "4",
-                            "td": "1",
-                            "long": "3",
-                            "fpts": 6
-                        },
-                        {
-                            "nome": "Kaytron Allen",
-                            "foto": "cache_img/79b92e1f9584dec758fbbb49b8e4f65a.png",
-                            "nacionalidade": "us",
-                            "att": "1",
-                            "yds": "0",
-                            "td": "0",
-                            "long": "0",
-                            "fpts": 0
-                        },
-                        {
-                            "nome": "Jaylen Wright",
-                            "foto": "cache_img/a1fa43bc60004ca39db17f3dab8278db.png",
-                            "nacionalidade": "us",
-                            "att": "3",
-                            "yds": "-2",
-                            "td": "0",
-                            "long": "1",
-                            "fpts": 0
-                        }
-                    ],
-                    "receiving": [
-                        {
-                            "nome": "Caleb Douglas",
-                            "foto": "cache_img/007ef084048af814ef346f45037a8696.png",
-                            "nacionalidade": "us",
-                            "tar": "8",
-                            "rec": "3",
-                            "yds": "71",
-                            "td": "0",
-                            "long": "38",
-                            "fpts": 10
-                        },
-                        {
-                            "nome": "Malik Washington",
-                            "foto": "cache_img/0a832399a13d6fd15105f6d28361aded.png",
-                            "nacionalidade": "us",
-                            "tar": "3",
-                            "rec": "3",
-                            "yds": "50",
-                            "td": "0",
-                            "long": "31",
-                            "fpts": 8
-                        },
-                        {
-                            "nome": "Jalen Tolbert",
-                            "foto": "cache_img/0177f7ffdcb068b542296e5bdefdb888.png",
-                            "nacionalidade": "us",
-                            "tar": "2",
-                            "rec": "2",
-                            "yds": "49",
-                            "td": "1",
-                            "long": "34",
-                            "fpts": 13
-                        },
-                        {
-                            "nome": "Ollie Gordon II",
-                            "foto": "cache_img/f9291bb8f3e5d3878e4290d7432a1a5c.png",
-                            "nacionalidade": "us",
-                            "tar": "5",
-                            "rec": "4",
-                            "yds": "39",
-                            "td": "0",
-                            "long": "17",
-                            "fpts": 8
-                        },
-                        {
-                            "nome": "Jaylen Wright",
-                            "foto": "cache_img/a1fa43bc60004ca39db17f3dab8278db.png",
-                            "nacionalidade": "us",
-                            "tar": "2",
-                            "rec": "2",
-                            "yds": "17",
-                            "td": "0",
-                            "long": "16",
-                            "fpts": 4
-                        },
-                        {
-                            "nome": "DJ Herman",
-                            "foto": "cache_img/8e1de8579265d9c973040cbc1b73ae5e.png",
-                            "nacionalidade": "us",
-                            "tar": "1",
-                            "rec": "1",
-                            "yds": "10",
-                            "td": "0",
-                            "long": "10",
-                            "fpts": 2
-                        },
-                        {
-                            "nome": "Kevin Coleman Jr.",
-                            "foto": "cache_img/d19d12a21781a59619b8b31c8f09ffd3.png",
-                            "nacionalidade": "us",
-                            "tar": "6",
-                            "rec": "1",
-                            "yds": "6",
-                            "td": "0",
-                            "long": "6",
-                            "fpts": 2
-                        },
-                        {
-                            "nome": "Will Kacmarek",
-                            "foto": "cache_img/3ea1a66d6d1cee5d5eb71ea4f3cf3dc1.png",
-                            "nacionalidade": "us",
-                            "tar": "1",
-                            "rec": "1",
-                            "yds": "5",
-                            "td": "0",
-                            "long": "5",
-                            "fpts": 2
-                        },
-                        {
-                            "nome": "Jalen Reagor",
-                            "foto": "cache_img/eaa7cadf15049bf2b235b1fa34531b08.png",
-                            "nacionalidade": "us",
-                            "tar": "1",
-                            "rec": "0",
-                            "yds": "0",
-                            "td": "0",
-                            "long": "0",
-                            "fpts": 0
-                        },
-                        {
-                            "nome": "Greg Dulcich",
-                            "foto": "cache_img/af39f751ef70a215f24543ab64dcd87b.png",
-                            "nacionalidade": "us",
-                            "tar": "2",
-                            "rec": "0",
-                            "yds": "0",
-                            "td": "0",
-                            "long": "0",
-                            "fpts": 0
-                        },
-                        {
-                            "nome": "Kaytron Allen",
-                            "foto": "cache_img/79b92e1f9584dec758fbbb49b8e4f65a.png",
-                            "nacionalidade": "us",
-                            "tar": "1",
-                            "rec": "1",
-                            "yds": "-4",
-                            "td": "0",
-                            "long": "-4",
-                            "fpts": 1
-                        }
-                    ]
+                    "passing": [],
+                    "rushing": [],
+                    "receiving": []
                 },
-                "defense": [
-                    {
-                        "nome": "Jordyn Brooks",
-                        "foto": "cache_img/a48d9d3ddc1ae72bc67c703d8ed2659f.png",
-                        "t_a": "6-3",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "1",
-                        "ff": "1"
-                    },
-                    {
-                        "nome": "Dante Trader Jr.",
-                        "foto": "cache_img/89f6cc23e1ee199add4419ecee0674ed.png",
-                        "t_a": "4-2",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Michael Taaffe",
-                        "foto": "cache_img/cac44feadd0def1d7f55bd55c432a048.png",
-                        "t_a": "4-2",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "1",
-                        "ff": "1"
-                    },
-                    {
-                        "nome": "Chop Robinson",
-                        "foto": "cache_img/df14f684f9b7e5ef2e6d9debde0e56e0.png",
-                        "t_a": "3-2",
-                        "sack": "1",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Chris Johnson",
-                        "foto": "cache_img/ef7614a650fcfa469ad883b3fa7fe305.png",
-                        "t_a": "3-1",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "1",
-                        "ff": "1"
-                    },
-                    {
-                        "nome": "JuJu Brents",
-                        "foto": "cache_img/f78ecbc50d50358592c25f53f703655a.png",
-                        "t_a": "2-2",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Josh Uche",
-                        "foto": "cache_img/9052ab11bf733d53cebba902b3629b54.png",
-                        "t_a": "1-3",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Keith Cooper Jr.",
-                        "foto": "cache_img/02c180f6d28044328a54586898976dbb.png",
-                        "t_a": "1-3",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Jordan Phillips",
-                        "foto": "cache_img/9bbbbd7dacaf005d4714f2a308fd3823.png",
-                        "t_a": "1-3",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Rodney McGraw",
-                        "foto": "cache_img/03629ed6c7e846bf20b0dec68789209d.png",
-                        "t_a": "1-2",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Kyle Louis",
-                        "foto": "cache_img/884db8705a4afdabcd298d06d115b353.png",
-                        "t_a": "2-0",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Jason Marshall Jr.",
-                        "foto": "cache_img/b3248ed7aec28c5a8292af12e0a606b8.png",
-                        "t_a": "1-1",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Jaylin Simpson",
-                        "foto": "cache_img/5f46a6b59a6991b2bb38b68746723cfa.png",
-                        "t_a": "1-1",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Kenneth Grant",
-                        "foto": "cache_img/27cc0ec110680bb3c0150c4bad62b69e.png",
-                        "t_a": "0-2",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Jacob Rodriguez",
-                        "foto": "cache_img/7572041e52abc9e03267da3a837b19dc.png",
-                        "t_a": "1-0",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Zayne Anderson",
-                        "foto": "cache_img/f118121081f7048ed7f72261b775dee6.png",
-                        "t_a": "0-1",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Shaka Heyward",
-                        "foto": "cache_img/bcf4bc8e8d83b44a130c3f4414e5e7b2.png",
-                        "t_a": "0-1",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Zeek Biggers",
-                        "foto": "cache_img/bf3c94acd9043937573e579a41770c23.png",
-                        "t_a": "0-1",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Seydou Traore",
-                        "foto": "cache_img/0ac4e2a6bcb5105dd248d813495be2a6.png",
-                        "t_a": "0-1",
-                        "sack": "0",
-                        "nacionalidade": "gb-eng",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Julius Wood",
-                        "foto": "cache_img/ef9685f00ccde61c1231bc85b62a168c.png",
-                        "t_a": "0-1",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    }
-                ],
+                "defense": [],
                 "specialTeams": {
-                    "kicking": [
-                        {
-                            "nome": "Zane Gonzalez",
-                            "foto": "cache_img/11654c251f2bd1e902e84fe526190308.png",
-                            "nacionalidade": "us",
-                            "fg": "1/3",
-                            "lg": "53",
-                            "xp": "1/2",
-                            "pts": "4"
-                        }
-                    ],
-                    "punting": [
-                        {
-                            "nome": "Bradley Pinion",
-                            "foto": "cache_img/09dd59cadd9b6584407a593175df9723.png",
-                            "no": "3",
-                            "avg": "44.7",
-                            "in20": "1",
-                            "lg": "55",
-                            "nacionalidade": "us"
-                        }
-                    ],
-                    "kickReturns": [
-                        {
-                            "nome": "Jaylen Wright",
-                            "foto": "cache_img/a1fa43bc60004ca39db17f3dab8278db.png",
-                            "no": "4",
-                            "avg": "22.0",
-                            "lg": "27",
-                            "td": "0",
-                            "nacionalidade": "us"
-                        }
-                    ],
-                    "puntReturns": [
-                        {
-                            "nome": "Malik Washington",
-                            "foto": "cache_img/0a832399a13d6fd15105f6d28361aded.png",
-                            "no": "4",
-                            "avg": "9.0",
-                            "lg": "21",
-                            "td": "0",
-                            "nacionalidade": "us"
-                        }
-                    ]
+                    "kicking": [],
+                    "punting": [],
+                    "kickReturns": [],
+                    "puntReturns": []
                 }
             },
             "home_stats": {
                 "offense": {
-                    "passing": [
-                        {
-                            "nome": "Daniel Jones",
-                            "foto": "cache_img/5296f5731ab1761d017d569c0a8072f1.png",
-                            "nacionalidade": "us",
-                            "cp_att": "11/22",
-                            "yds": "108",
-                            "td": "1",
-                            "int": "2",
-                            "fpts": 4
-                        }
-                    ],
-                    "rushing": [
-                        {
-                            "nome": "Jonathan Taylor",
-                            "foto": "cache_img/0d512d1e4036841957604437dee4e657.png",
-                            "nacionalidade": "us",
-                            "att": "16",
-                            "yds": "83",
-                            "td": "0",
-                            "long": "17",
-                            "fpts": 8
-                        },
-                        {
-                            "nome": "Seth McGowan",
-                            "foto": "cache_img/0a3e2fa7c0e956a1344e1f592fc42585.png",
-                            "nacionalidade": "us",
-                            "att": "12",
-                            "yds": "77",
-                            "td": "1",
-                            "long": "23",
-                            "fpts": 14
-                        },
-                        {
-                            "nome": "Daniel Jones",
-                            "foto": "cache_img/5296f5731ab1761d017d569c0a8072f1.png",
-                            "nacionalidade": "us",
-                            "att": "5",
-                            "yds": "9",
-                            "td": "0",
-                            "long": "10",
-                            "fpts": 1
-                        },
-                        {
-                            "nome": "Tyler Warren",
-                            "foto": "cache_img/9c8dd57728a98639dc27b5c629938002.png",
-                            "nacionalidade": "us",
-                            "att": "1",
-                            "yds": "3",
-                            "td": "0",
-                            "long": "3",
-                            "fpts": 0
-                        }
-                    ],
-                    "receiving": [
-                        {
-                            "nome": "Ashton Dulin",
-                            "foto": "cache_img/4725167079392588a728ecf31936a32a.png",
-                            "nacionalidade": "us",
-                            "tar": "2",
-                            "rec": "1",
-                            "yds": "30",
-                            "td": "0",
-                            "long": "30",
-                            "fpts": 4
-                        },
-                        {
-                            "nome": "Anthony Gould",
-                            "foto": "cache_img/a049c77547a02ce7730d7664e2c600c2.png",
-                            "nacionalidade": "us",
-                            "tar": "4",
-                            "rec": "2",
-                            "yds": "28",
-                            "td": "0",
-                            "long": "22",
-                            "fpts": 5
-                        },
-                        {
-                            "nome": "Laquon Treadwell",
-                            "foto": "cache_img/badc191cbe402eb01e04b45bf502dfe7.png",
-                            "nacionalidade": "us",
-                            "tar": "3",
-                            "rec": "3",
-                            "yds": "24",
-                            "td": "1",
-                            "long": "9",
-                            "fpts": 11
-                        },
-                        {
-                            "nome": "Jonathan Taylor",
-                            "foto": "cache_img/0d512d1e4036841957604437dee4e657.png",
-                            "nacionalidade": "us",
-                            "tar": "4",
-                            "rec": "2",
-                            "yds": "20",
-                            "td": "0",
-                            "long": "12",
-                            "fpts": 4
-                        },
-                        {
-                            "nome": "Drew Ogletree",
-                            "foto": "cache_img/abd63d0de470eeb0b4a3ebb93b9407df.png",
-                            "nacionalidade": "us",
-                            "tar": "2",
-                            "rec": "1",
-                            "yds": "5",
-                            "td": "0",
-                            "long": "5",
-                            "fpts": 2
-                        },
-                        {
-                            "nome": "Tyler Warren",
-                            "foto": "cache_img/9c8dd57728a98639dc27b5c629938002.png",
-                            "nacionalidade": "us",
-                            "tar": "3",
-                            "rec": "2",
-                            "yds": "1",
-                            "td": "0",
-                            "long": "2",
-                            "fpts": 2
-                        },
-                        {
-                            "nome": "Nick Westbrook-Ikhine",
-                            "foto": "cache_img/60cd79e4af777a0fb67922f3bd75e739.png",
-                            "nacionalidade": "us",
-                            "tar": "1",
-                            "rec": "0",
-                            "yds": "0",
-                            "td": "0",
-                            "long": "0",
-                            "fpts": 0
-                        },
-                        {
-                            "nome": "Deion Burks",
-                            "foto": "cache_img/0d1465ef57ad66442464b030ca7ebe47.png",
-                            "nacionalidade": "us",
-                            "tar": "2",
-                            "rec": "0",
-                            "yds": "0",
-                            "td": "0",
-                            "long": "0",
-                            "fpts": 0
-                        }
-                    ]
+                    "passing": [],
+                    "rushing": [],
+                    "receiving": []
                 },
-                "defense": [
-                    {
-                        "nome": "CJ Allen",
-                        "foto": "cache_img/274060ffbaa09f4d01bf616174530f40.png",
-                        "t_a": "3-6",
-                        "sack": "1",
-                        "nacionalidade": "us",
-                        "int": "1",
-                        "ff": "1"
-                    },
-                    {
-                        "nome": "Bryce Boettcher",
-                        "foto": "cache_img/19834d388bde81a1bd55fa62396d783d.png",
-                        "t_a": "1-6",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "A.J. Haulcy",
-                        "foto": "cache_img/6eb61d9e7ef4f71869f1fbd7e8c9f9ca.png",
-                        "t_a": "4-1",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Justin Walley",
-                        "foto": "cache_img/fe98de6c1da935a61f53140b82d40621.png",
-                        "t_a": "3-2",
-                        "sack": "1",
-                        "nacionalidade": "us",
-                        "int": "2",
-                        "ff": "2"
-                    },
-                    {
-                        "nome": "Sauce Gardner",
-                        "foto": "cache_img/a169378b5d5f68bbd0d0c3948cc1c875.png",
-                        "t_a": "3-2",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Grover Stewart",
-                        "foto": "cache_img/8f9f8ab29f122c799241a4bd5d229022.png",
-                        "t_a": "2-3",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "3",
-                        "ff": "3"
-                    },
-                    {
-                        "nome": "Arden Key",
-                        "foto": "cache_img/acaff26053dd1965ec25a4be5a606484.png",
-                        "t_a": "3-1",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Laiatu Latu",
-                        "foto": "cache_img/2c25c5fa692b7c59e96228b75a0115f7.png",
-                        "t_a": "2-1",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Cam Bynum",
-                        "foto": "cache_img/5a0b5b96c80c0bbd856a401f410f4223.png",
-                        "t_a": "1-2",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Austin Ajiake",
-                        "foto": "cache_img/4742b1b06105c54b97de2b252ae66cfb.png",
-                        "t_a": "1-2",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Adetomiwa Adebawore",
-                        "foto": "cache_img/dc1b10ce830fe8a885b97611a0f261c3.png",
-                        "t_a": "1-2",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Kapena Gushiken",
-                        "foto": "cache_img/4f39d1dbd5521b6140c208a7d1433ffb.png",
-                        "t_a": "2-0",
-                        "sack": "1",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Ashton Dulin",
-                        "foto": "cache_img/4725167079392588a728ecf31936a32a.png",
-                        "t_a": "2-0",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Deion Burks",
-                        "foto": "cache_img/0d1465ef57ad66442464b030ca7ebe47.png",
-                        "t_a": "2-0",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Kevin Givens",
-                        "foto": "cache_img/192b929d4d6a680ef80e6202b6b2a8ea.png",
-                        "t_a": "1-1",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Charvarius Ward",
-                        "foto": "cache_img/cf2775fd8268c7ac720d0cf66306f684.png",
-                        "t_a": "1-1",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "2",
-                        "ff": "2"
-                    },
-                    {
-                        "nome": "Seth McGowan",
-                        "foto": "cache_img/0a3e2fa7c0e956a1344e1f592fc42585.png",
-                        "t_a": "1-1",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Drew Ogletree",
-                        "foto": "cache_img/abd63d0de470eeb0b4a3ebb93b9407df.png",
-                        "t_a": "1-1",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Hunter Wohler",
-                        "foto": "cache_img/8d678e1ddba3dc86e03cc1c5c032a8fd.png",
-                        "t_a": "1-0",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Jaylahn Tuimoloau",
-                        "foto": "cache_img/529d545ed44b584c5b0b2631573d8fad.png",
-                        "t_a": "1-0",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "1",
-                        "ff": "1"
-                    },
-                    {
-                        "nome": "Kenneth Harris",
-                        "foto": "cache_img/a8089f017e580cf9d688ec69c4aadbe4.png",
-                        "t_a": "1-0",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Caden Curry",
-                        "foto": "cache_img/854d7c8ea2687417e6ca8abced6d716f.png",
-                        "t_a": "0-1",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "Tim Smith",
-                        "foto": "cache_img/631c40ecc8166bd869b643fdf957466e.png",
-                        "t_a": "0-1",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    },
-                    {
-                        "nome": "George Gumbs Jr.",
-                        "foto": "cache_img/536c0b65284a68d080ca9943beb0a7c7.png",
-                        "t_a": "0-1",
-                        "sack": "0",
-                        "nacionalidade": "us",
-                        "int": "0",
-                        "ff": "0"
-                    }
-                ],
+                "defense": [],
                 "specialTeams": {
-                    "kicking": [
-                        {
-                            "nome": "Spencer Shrader",
-                            "foto": "cache_img/b22b9bab82a45acac44c223fd230eb51.png",
-                            "nacionalidade": "us",
-                            "fg": "1/1",
-                            "lg": "51",
-                            "xp": "3/3",
-                            "pts": "6"
-                        }
-                    ],
-                    "punting": [
-                        {
-                            "nome": "Rigoberto Sanchez",
-                            "foto": "cache_img/78064263dcbc4981a0453c63ea5a9e3a.png",
-                            "no": "6",
-                            "avg": "48.3",
-                            "in20": "2",
-                            "lg": "53",
-                            "nacionalidade": "us"
-                        }
-                    ],
-                    "kickReturns": [
-                        {
-                            "nome": "Ashton Dulin",
-                            "foto": "cache_img/4725167079392588a728ecf31936a32a.png",
-                            "no": "3",
-                            "avg": "25.7",
-                            "lg": "31",
-                            "td": "0",
-                            "nacionalidade": "us"
-                        },
-                        {
-                            "nome": "Seth McGowan",
-                            "foto": "cache_img/0a3e2fa7c0e956a1344e1f592fc42585.png",
-                            "no": "2",
-                            "avg": "30.5",
-                            "lg": "31",
-                            "td": "0",
-                            "nacionalidade": "us"
-                        }
-                    ],
-                    "puntReturns": [
-                        {
-                            "nome": "Anthony Gould",
-                            "foto": "cache_img/a049c77547a02ce7730d7664e2c600c2.png",
-                            "no": "1",
-                            "avg": "0.0",
-                            "lg": "0",
-                            "td": "0",
-                            "nacionalidade": "us"
-                        }
-                    ]
+                    "kicking": [],
+                    "punting": [],
+                    "kickReturns": [],
+                    "puntReturns": []
                 }
             }
         },
@@ -1007,6 +185,8 @@
                         "id": "2",
                         "nome": "Buffalo Bills",
                         "promocao": "Playoffs (Folga #1)",
+                        "isCampeaoDivisao": true,
+                        "seedEspn": 1,
                         "logo": "cache_img/0279c0abac38d33d9dd21a92730efda3.png",
                         "jogos": 9,
                         "v": 8,
@@ -1021,43 +201,11 @@
                     {
                         "pos": 2,
                         "variacao": 0,
-                        "id": "30",
-                        "nome": "Jacksonville Jaguars",
-                        "promocao": "Playoffs (Wild Card)",
-                        "logo": "cache_img/62bd1159b71105b04a8eea44af6b1c2c.png",
-                        "jogos": 9,
-                        "v": 7,
-                        "e": 0,
-                        "d": 2,
-                        "sg": "+125",
-                        "pts": "-",
-                        "pct": ".778",
-                        "isCasa": false,
-                        "isFora": false
-                    },
-                    {
-                        "pos": 3,
-                        "variacao": 0,
-                        "id": "4",
-                        "nome": "Cincinnati Bengals",
-                        "promocao": "Playoffs (Wild Card)",
-                        "logo": "cache_img/9f921adcbe97e097bf5b98e710fe94b6.png",
-                        "jogos": 9,
-                        "v": 7,
-                        "e": 0,
-                        "d": 2,
-                        "sg": "+85",
-                        "pts": "-",
-                        "pct": ".778",
-                        "isCasa": false,
-                        "isFora": false
-                    },
-                    {
-                        "pos": 4,
-                        "variacao": 0,
                         "id": "12",
                         "nome": "Kansas City Chiefs",
-                        "promocao": "Playoffs (Wild Card)",
+                        "promocao": "Playoffs (Campeão Divisão)",
+                        "isCampeaoDivisao": true,
+                        "seedEspn": 2,
                         "logo": "cache_img/64cb1dde5cb3dad957c23e13df218880.png",
                         "jogos": 9,
                         "v": 7,
@@ -1070,11 +218,51 @@
                         "isFora": false
                     },
                     {
+                        "pos": 3,
+                        "variacao": 0,
+                        "id": "30",
+                        "nome": "Jacksonville Jaguars",
+                        "promocao": "Playoffs (Campeão Divisão)",
+                        "isCampeaoDivisao": true,
+                        "seedEspn": 3,
+                        "logo": "cache_img/62bd1159b71105b04a8eea44af6b1c2c.png",
+                        "jogos": 9,
+                        "v": 7,
+                        "e": 0,
+                        "d": 2,
+                        "sg": "+125",
+                        "pts": "-",
+                        "pct": ".778",
+                        "isCasa": false,
+                        "isFora": false
+                    },
+                    {
+                        "pos": 4,
+                        "variacao": 0,
+                        "id": "4",
+                        "nome": "Cincinnati Bengals",
+                        "promocao": "Playoffs (Campeão Divisão)",
+                        "isCampeaoDivisao": true,
+                        "seedEspn": 4,
+                        "logo": "cache_img/9f921adcbe97e097bf5b98e710fe94b6.png",
+                        "jogos": 9,
+                        "v": 7,
+                        "e": 0,
+                        "d": 2,
+                        "sg": "+85",
+                        "pts": "-",
+                        "pct": ".778",
+                        "isCasa": false,
+                        "isFora": false
+                    },
+                    {
                         "pos": 5,
                         "variacao": 0,
                         "id": "7",
                         "nome": "Denver Broncos",
                         "promocao": "Playoffs (Wild Card)",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 5,
                         "logo": "cache_img/5728a2ef45f9dd280aa57c1854d40a28.png",
                         "jogos": 9,
                         "v": 7,
@@ -1092,6 +280,8 @@
                         "id": "23",
                         "nome": "Pittsburgh Steelers",
                         "promocao": "Playoffs (Wild Card)",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 6,
                         "logo": "cache_img/1b1e4f7a5733022bc5a4afd97548c1e3.png",
                         "jogos": 9,
                         "v": 6,
@@ -1109,6 +299,8 @@
                         "id": "5",
                         "nome": "Cleveland Browns",
                         "promocao": "Playoffs (Wild Card)",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 7,
                         "logo": "cache_img/15eb7d05922e98b4d44d3e851b6a813e.png",
                         "jogos": 10,
                         "v": 6,
@@ -1126,6 +318,8 @@
                         "id": "17",
                         "nome": "New England Patriots",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 8,
                         "logo": "cache_img/98c3370a9553867d3b976c30b5d96566.png",
                         "jogos": 10,
                         "v": 5,
@@ -1143,6 +337,8 @@
                         "id": "33",
                         "nome": "Baltimore Ravens",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 9,
                         "logo": "cache_img/515b4e7a827f7b2597c085ac6efc97f1.png",
                         "jogos": 9,
                         "v": 4,
@@ -1151,7 +347,7 @@
                         "sg": "-47",
                         "pts": "-",
                         "pct": ".444",
-                        "isCasa": false,
+                        "isCasa": true,
                         "isFora": false
                     },
                     {
@@ -1160,6 +356,8 @@
                         "id": "13",
                         "nome": "Las Vegas Raiders",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 10,
                         "logo": "cache_img/7d6347da757aefb1339adb3b188ba896.png",
                         "jogos": 10,
                         "v": 4,
@@ -1177,6 +375,8 @@
                         "id": "34",
                         "nome": "Houston Texans",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 11,
                         "logo": "cache_img/14f69cfa7152ba8f0661b372886576a7.png",
                         "jogos": 9,
                         "v": 3,
@@ -1194,6 +394,8 @@
                         "id": "11",
                         "nome": "Indianapolis Colts",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 12,
                         "logo": "cache_img/5972b2d7df74433ed0f8697126995b2e.png",
                         "jogos": 10,
                         "v": 3,
@@ -1202,7 +404,7 @@
                         "sg": "-63",
                         "pts": "-",
                         "pct": ".300",
-                        "isCasa": true,
+                        "isCasa": false,
                         "isFora": false
                     },
                     {
@@ -1211,6 +413,8 @@
                         "id": "20",
                         "nome": "New York Jets",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 13,
                         "logo": "cache_img/e876a0fa44135b5f75e75aaa6a02c8e4.png",
                         "jogos": 10,
                         "v": 2,
@@ -1225,9 +429,30 @@
                     {
                         "pos": 14,
                         "variacao": 0,
+                        "id": "15",
+                        "nome": "Miami Dolphins",
+                        "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 14,
+                        "logo": "cache_img/802b4d42fcfe97a04c84b0d75ee59ad4.png",
+                        "jogos": 9,
+                        "v": 1,
+                        "e": 0,
+                        "d": 8,
+                        "sg": "-76",
+                        "pts": "-",
+                        "pct": ".111",
+                        "isCasa": false,
+                        "isFora": false
+                    },
+                    {
+                        "pos": 15,
+                        "variacao": 0,
                         "id": "10",
                         "nome": "Tennessee Titans",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 15,
                         "logo": "cache_img/604b2b8a438db986d8807649569c5fd1.png",
                         "jogos": 9,
                         "v": 1,
@@ -1240,28 +465,13 @@
                         "isFora": false
                     },
                     {
-                        "pos": 15,
-                        "variacao": 0,
-                        "id": "15",
-                        "nome": "Miami Dolphins",
-                        "promocao": "",
-                        "logo": "cache_img/802b4d42fcfe97a04c84b0d75ee59ad4.png",
-                        "jogos": 9,
-                        "v": 1,
-                        "e": 0,
-                        "d": 8,
-                        "sg": "-76",
-                        "pts": "-",
-                        "pct": ".111",
-                        "isCasa": false,
-                        "isFora": true
-                    },
-                    {
                         "pos": 16,
                         "variacao": 0,
                         "id": "24",
                         "nome": "Los Angeles Chargers",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 16,
                         "logo": "cache_img/295c94c783799309e4ad653c14a63dcf.png",
                         "jogos": 8,
                         "v": 0,
@@ -1271,7 +481,7 @@
                         "pts": "-",
                         "pct": ".000",
                         "isCasa": false,
-                        "isFora": false
+                        "isFora": true
                     }
                 ]
             },
@@ -1285,6 +495,8 @@
                         "id": "25",
                         "nome": "San Francisco 49ers",
                         "promocao": "Playoffs (Folga #1)",
+                        "isCampeaoDivisao": true,
+                        "seedEspn": 1,
                         "logo": "cache_img/3ebce15f909552cf1bac382cf7c0d1ac.png",
                         "jogos": 9,
                         "v": 8,
@@ -1301,7 +513,9 @@
                         "variacao": 0,
                         "id": "8",
                         "nome": "Detroit Lions",
-                        "promocao": "Playoffs (Wild Card)",
+                        "promocao": "Playoffs (Campeão Divisão)",
+                        "isCampeaoDivisao": true,
+                        "seedEspn": 2,
                         "logo": "cache_img/28b1523d520e6210052688f4ef44123d.png",
                         "jogos": 9,
                         "v": 7,
@@ -1316,43 +530,11 @@
                     {
                         "pos": 3,
                         "variacao": 0,
-                        "id": "3",
-                        "nome": "Chicago Bears",
-                        "promocao": "Playoffs (Wild Card)",
-                        "logo": "cache_img/4dafae818ef1a6a7ec2b91a622e262ba.png",
-                        "jogos": 9,
-                        "v": 7,
-                        "e": 0,
-                        "d": 2,
-                        "sg": "+57",
-                        "pts": "-",
-                        "pct": ".778",
-                        "isCasa": false,
-                        "isFora": false
-                    },
-                    {
-                        "pos": 4,
-                        "variacao": 0,
-                        "id": "16",
-                        "nome": "Minnesota Vikings",
-                        "promocao": "Playoffs (Wild Card)",
-                        "logo": "cache_img/8286797b57a84d1eb71e47f409033393.png",
-                        "jogos": 9,
-                        "v": 7,
-                        "e": 0,
-                        "d": 2,
-                        "sg": "+50",
-                        "pts": "-",
-                        "pct": ".778",
-                        "isCasa": false,
-                        "isFora": false
-                    },
-                    {
-                        "pos": 5,
-                        "variacao": 0,
                         "id": "19",
                         "nome": "New York Giants",
-                        "promocao": "Playoffs (Wild Card)",
+                        "promocao": "Playoffs (Campeão Divisão)",
+                        "isCampeaoDivisao": true,
+                        "seedEspn": 3,
                         "logo": "cache_img/92591af0c35231766eab592ebed4a014.png",
                         "jogos": 9,
                         "v": 5,
@@ -1365,62 +547,13 @@
                         "isFora": false
                     },
                     {
-                        "pos": 6,
-                        "variacao": 0,
-                        "id": "14",
-                        "nome": "Los Angeles Rams",
-                        "promocao": "Playoffs (Wild Card)",
-                        "logo": "cache_img/78717f9b6e3a9fc040323ff67ad09cd1.png",
-                        "jogos": 10,
-                        "v": 6,
-                        "e": 0,
-                        "d": 4,
-                        "sg": "+61",
-                        "pts": "-",
-                        "pct": ".600",
-                        "isCasa": false,
-                        "isFora": false
-                    },
-                    {
-                        "pos": 7,
-                        "variacao": 0,
-                        "id": "26",
-                        "nome": "Seattle Seahawks",
-                        "promocao": "Playoffs (Wild Card)",
-                        "logo": "cache_img/678f856b2061331d5959b316680f6a8f.png",
-                        "jogos": 10,
-                        "v": 6,
-                        "e": 0,
-                        "d": 4,
-                        "sg": "+48",
-                        "pts": "-",
-                        "pct": ".600",
-                        "isCasa": false,
-                        "isFora": false
-                    },
-                    {
-                        "pos": 8,
-                        "variacao": 0,
-                        "id": "9",
-                        "nome": "Green Bay Packers",
-                        "promocao": "",
-                        "logo": "cache_img/326327a929be2994d256091892aabdf8.png",
-                        "jogos": 10,
-                        "v": 6,
-                        "e": 0,
-                        "d": 4,
-                        "sg": "+5",
-                        "pts": "-",
-                        "pct": ".600",
-                        "isCasa": false,
-                        "isFora": false
-                    },
-                    {
-                        "pos": 9,
+                        "pos": 4,
                         "variacao": 0,
                         "id": "29",
                         "nome": "Carolina Panthers",
-                        "promocao": "",
+                        "promocao": "Playoffs (Campeão Divisão)",
+                        "isCampeaoDivisao": true,
+                        "seedEspn": 4,
                         "logo": "cache_img/1c56fdf960b5dca2b1f3f8f1203fc772.png",
                         "jogos": 9,
                         "v": 4,
@@ -1433,11 +566,108 @@
                         "isFora": false
                     },
                     {
+                        "pos": 5,
+                        "variacao": 0,
+                        "id": "16",
+                        "nome": "Minnesota Vikings",
+                        "promocao": "Playoffs (Wild Card)",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 5,
+                        "logo": "cache_img/8286797b57a84d1eb71e47f409033393.png",
+                        "jogos": 9,
+                        "v": 7,
+                        "e": 0,
+                        "d": 2,
+                        "sg": "+50",
+                        "pts": "-",
+                        "pct": ".778",
+                        "isCasa": false,
+                        "isFora": false
+                    },
+                    {
+                        "pos": 6,
+                        "variacao": 0,
+                        "id": "3",
+                        "nome": "Chicago Bears",
+                        "promocao": "Playoffs (Wild Card)",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 6,
+                        "logo": "cache_img/4dafae818ef1a6a7ec2b91a622e262ba.png",
+                        "jogos": 9,
+                        "v": 7,
+                        "e": 0,
+                        "d": 2,
+                        "sg": "+57",
+                        "pts": "-",
+                        "pct": ".778",
+                        "isCasa": false,
+                        "isFora": false
+                    },
+                    {
+                        "pos": 7,
+                        "variacao": 0,
+                        "id": "9",
+                        "nome": "Green Bay Packers",
+                        "promocao": "Playoffs (Wild Card)",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 7,
+                        "logo": "cache_img/326327a929be2994d256091892aabdf8.png",
+                        "jogos": 10,
+                        "v": 6,
+                        "e": 0,
+                        "d": 4,
+                        "sg": "+5",
+                        "pts": "-",
+                        "pct": ".600",
+                        "isCasa": false,
+                        "isFora": false
+                    },
+                    {
+                        "pos": 8,
+                        "variacao": 0,
+                        "id": "26",
+                        "nome": "Seattle Seahawks",
+                        "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 8,
+                        "logo": "cache_img/678f856b2061331d5959b316680f6a8f.png",
+                        "jogos": 10,
+                        "v": 6,
+                        "e": 0,
+                        "d": 4,
+                        "sg": "+48",
+                        "pts": "-",
+                        "pct": ".600",
+                        "isCasa": false,
+                        "isFora": false
+                    },
+                    {
+                        "pos": 9,
+                        "variacao": 0,
+                        "id": "14",
+                        "nome": "Los Angeles Rams",
+                        "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 9,
+                        "logo": "cache_img/78717f9b6e3a9fc040323ff67ad09cd1.png",
+                        "jogos": 10,
+                        "v": 6,
+                        "e": 0,
+                        "d": 4,
+                        "sg": "+61",
+                        "pts": "-",
+                        "pct": ".600",
+                        "isCasa": false,
+                        "isFora": false
+                    },
+                    {
                         "pos": 10,
                         "variacao": 0,
                         "id": "6",
                         "nome": "Dallas Cowboys",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 10,
                         "logo": "cache_img/137c62982105d4aed239c42bbca862f0.png",
                         "jogos": 10,
                         "v": 4,
@@ -1455,6 +685,8 @@
                         "id": "28",
                         "nome": "Washington Commanders",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 11,
                         "logo": "cache_img/ab78c20557afa60f8b9e09e676632ff9.png",
                         "jogos": 9,
                         "v": 3,
@@ -1472,6 +704,8 @@
                         "id": "27",
                         "nome": "Tampa Bay Buccaneers",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 12,
                         "logo": "cache_img/01079453a332acae67a27ee720072eca.png",
                         "jogos": 9,
                         "v": 3,
@@ -1489,6 +723,8 @@
                         "id": "18",
                         "nome": "New Orleans Saints",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 13,
                         "logo": "cache_img/f5a0ce2c17bc9f4176446df9bda5a738.png",
                         "jogos": 9,
                         "v": 3,
@@ -1506,6 +742,8 @@
                         "id": "1",
                         "nome": "Atlanta Falcons",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 14,
                         "logo": "cache_img/98d1127b4578da2d30c0a5f7d43e3ce2.png",
                         "jogos": 10,
                         "v": 3,
@@ -1523,6 +761,8 @@
                         "id": "22",
                         "nome": "Arizona Cardinals",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 15,
                         "logo": "cache_img/017b3f2ad84bda2293e99bffaf3aa544.png",
                         "jogos": 10,
                         "v": 3,
@@ -1540,6 +780,8 @@
                         "id": "21",
                         "nome": "Philadelphia Eagles",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 16,
                         "logo": "cache_img/d157e4ba3b71c021f10c1f2c9848561e.png",
                         "jogos": 9,
                         "v": 2,
@@ -1555,7 +797,7 @@
             },
             {
                 "grupo": "AFC Leste",
-                "ativoPadrao": true,
+                "ativoPadrao": false,
                 "times": [
                     {
                         "pos": 1,
@@ -1563,6 +805,8 @@
                         "id": "2",
                         "nome": "Buffalo Bills",
                         "promocao": "Playoffs",
+                        "isCampeaoDivisao": true,
+                        "seedEspn": 1,
                         "logo": "cache_img/0279c0abac38d33d9dd21a92730efda3.png",
                         "jogos": 9,
                         "v": 8,
@@ -1580,6 +824,8 @@
                         "id": "17",
                         "nome": "New England Patriots",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 8,
                         "logo": "cache_img/98c3370a9553867d3b976c30b5d96566.png",
                         "jogos": 10,
                         "v": 5,
@@ -1597,6 +843,8 @@
                         "id": "20",
                         "nome": "New York Jets",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 13,
                         "logo": "cache_img/e876a0fa44135b5f75e75aaa6a02c8e4.png",
                         "jogos": 10,
                         "v": 2,
@@ -1614,6 +862,8 @@
                         "id": "15",
                         "nome": "Miami Dolphins",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 14,
                         "logo": "cache_img/802b4d42fcfe97a04c84b0d75ee59ad4.png",
                         "jogos": 9,
                         "v": 1,
@@ -1623,13 +873,13 @@
                         "pts": "-",
                         "pct": ".111",
                         "isCasa": false,
-                        "isFora": true
+                        "isFora": false
                     }
                 ]
             },
             {
                 "grupo": "AFC Norte",
-                "ativoPadrao": false,
+                "ativoPadrao": true,
                 "times": [
                     {
                         "pos": 1,
@@ -1637,6 +887,8 @@
                         "id": "4",
                         "nome": "Cincinnati Bengals",
                         "promocao": "Playoffs",
+                        "isCampeaoDivisao": true,
+                        "seedEspn": 4,
                         "logo": "cache_img/9f921adcbe97e097bf5b98e710fe94b6.png",
                         "jogos": 9,
                         "v": 7,
@@ -1654,6 +906,8 @@
                         "id": "23",
                         "nome": "Pittsburgh Steelers",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 6,
                         "logo": "cache_img/1b1e4f7a5733022bc5a4afd97548c1e3.png",
                         "jogos": 9,
                         "v": 6,
@@ -1671,6 +925,8 @@
                         "id": "5",
                         "nome": "Cleveland Browns",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 7,
                         "logo": "cache_img/15eb7d05922e98b4d44d3e851b6a813e.png",
                         "jogos": 10,
                         "v": 6,
@@ -1688,6 +944,8 @@
                         "id": "33",
                         "nome": "Baltimore Ravens",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 9,
                         "logo": "cache_img/515b4e7a827f7b2597c085ac6efc97f1.png",
                         "jogos": 9,
                         "v": 4,
@@ -1696,14 +954,14 @@
                         "sg": "-47",
                         "pts": "-",
                         "pct": ".444",
-                        "isCasa": false,
+                        "isCasa": true,
                         "isFora": false
                     }
                 ]
             },
             {
                 "grupo": "AFC Sul",
-                "ativoPadrao": true,
+                "ativoPadrao": false,
                 "times": [
                     {
                         "pos": 1,
@@ -1711,6 +969,8 @@
                         "id": "30",
                         "nome": "Jacksonville Jaguars",
                         "promocao": "Playoffs",
+                        "isCampeaoDivisao": true,
+                        "seedEspn": 3,
                         "logo": "cache_img/62bd1159b71105b04a8eea44af6b1c2c.png",
                         "jogos": 9,
                         "v": 7,
@@ -1728,6 +988,8 @@
                         "id": "34",
                         "nome": "Houston Texans",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 11,
                         "logo": "cache_img/14f69cfa7152ba8f0661b372886576a7.png",
                         "jogos": 9,
                         "v": 3,
@@ -1745,6 +1007,8 @@
                         "id": "11",
                         "nome": "Indianapolis Colts",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 12,
                         "logo": "cache_img/5972b2d7df74433ed0f8697126995b2e.png",
                         "jogos": 10,
                         "v": 3,
@@ -1753,7 +1017,7 @@
                         "sg": "-63",
                         "pts": "-",
                         "pct": ".300",
-                        "isCasa": true,
+                        "isCasa": false,
                         "isFora": false
                     },
                     {
@@ -1762,6 +1026,8 @@
                         "id": "10",
                         "nome": "Tennessee Titans",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 15,
                         "logo": "cache_img/604b2b8a438db986d8807649569c5fd1.png",
                         "jogos": 9,
                         "v": 1,
@@ -1777,7 +1043,7 @@
             },
             {
                 "grupo": "AFC Oeste",
-                "ativoPadrao": false,
+                "ativoPadrao": true,
                 "times": [
                     {
                         "pos": 1,
@@ -1785,6 +1051,8 @@
                         "id": "12",
                         "nome": "Kansas City Chiefs",
                         "promocao": "Playoffs",
+                        "isCampeaoDivisao": true,
+                        "seedEspn": 2,
                         "logo": "cache_img/64cb1dde5cb3dad957c23e13df218880.png",
                         "jogos": 9,
                         "v": 7,
@@ -1802,6 +1070,8 @@
                         "id": "7",
                         "nome": "Denver Broncos",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 5,
                         "logo": "cache_img/5728a2ef45f9dd280aa57c1854d40a28.png",
                         "jogos": 9,
                         "v": 7,
@@ -1819,6 +1089,8 @@
                         "id": "13",
                         "nome": "Las Vegas Raiders",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 10,
                         "logo": "cache_img/7d6347da757aefb1339adb3b188ba896.png",
                         "jogos": 10,
                         "v": 4,
@@ -1836,6 +1108,8 @@
                         "id": "24",
                         "nome": "Los Angeles Chargers",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 16,
                         "logo": "cache_img/295c94c783799309e4ad653c14a63dcf.png",
                         "jogos": 8,
                         "v": 0,
@@ -1845,7 +1119,7 @@
                         "pts": "-",
                         "pct": ".000",
                         "isCasa": false,
-                        "isFora": false
+                        "isFora": true
                     }
                 ]
             },
@@ -1859,6 +1133,8 @@
                         "id": "19",
                         "nome": "New York Giants",
                         "promocao": "Playoffs",
+                        "isCampeaoDivisao": true,
+                        "seedEspn": 3,
                         "logo": "cache_img/92591af0c35231766eab592ebed4a014.png",
                         "jogos": 9,
                         "v": 5,
@@ -1876,6 +1152,8 @@
                         "id": "6",
                         "nome": "Dallas Cowboys",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 10,
                         "logo": "cache_img/137c62982105d4aed239c42bbca862f0.png",
                         "jogos": 10,
                         "v": 4,
@@ -1893,6 +1171,8 @@
                         "id": "28",
                         "nome": "Washington Commanders",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 11,
                         "logo": "cache_img/ab78c20557afa60f8b9e09e676632ff9.png",
                         "jogos": 9,
                         "v": 3,
@@ -1910,6 +1190,8 @@
                         "id": "21",
                         "nome": "Philadelphia Eagles",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 16,
                         "logo": "cache_img/d157e4ba3b71c021f10c1f2c9848561e.png",
                         "jogos": 9,
                         "v": 2,
@@ -1933,6 +1215,8 @@
                         "id": "8",
                         "nome": "Detroit Lions",
                         "promocao": "Playoffs",
+                        "isCampeaoDivisao": true,
+                        "seedEspn": 2,
                         "logo": "cache_img/28b1523d520e6210052688f4ef44123d.png",
                         "jogos": 9,
                         "v": 7,
@@ -1950,6 +1234,8 @@
                         "id": "16",
                         "nome": "Minnesota Vikings",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 5,
                         "logo": "cache_img/8286797b57a84d1eb71e47f409033393.png",
                         "jogos": 9,
                         "v": 7,
@@ -1967,6 +1253,8 @@
                         "id": "3",
                         "nome": "Chicago Bears",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 6,
                         "logo": "cache_img/4dafae818ef1a6a7ec2b91a622e262ba.png",
                         "jogos": 9,
                         "v": 7,
@@ -1984,6 +1272,8 @@
                         "id": "9",
                         "nome": "Green Bay Packers",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 7,
                         "logo": "cache_img/326327a929be2994d256091892aabdf8.png",
                         "jogos": 10,
                         "v": 6,
@@ -2007,6 +1297,8 @@
                         "id": "29",
                         "nome": "Carolina Panthers",
                         "promocao": "Playoffs",
+                        "isCampeaoDivisao": true,
+                        "seedEspn": 4,
                         "logo": "cache_img/1c56fdf960b5dca2b1f3f8f1203fc772.png",
                         "jogos": 9,
                         "v": 4,
@@ -2024,6 +1316,8 @@
                         "id": "27",
                         "nome": "Tampa Bay Buccaneers",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 12,
                         "logo": "cache_img/01079453a332acae67a27ee720072eca.png",
                         "jogos": 9,
                         "v": 3,
@@ -2041,6 +1335,8 @@
                         "id": "18",
                         "nome": "New Orleans Saints",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 13,
                         "logo": "cache_img/f5a0ce2c17bc9f4176446df9bda5a738.png",
                         "jogos": 9,
                         "v": 3,
@@ -2058,6 +1354,8 @@
                         "id": "1",
                         "nome": "Atlanta Falcons",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 14,
                         "logo": "cache_img/98d1127b4578da2d30c0a5f7d43e3ce2.png",
                         "jogos": 10,
                         "v": 3,
@@ -2081,6 +1379,8 @@
                         "id": "25",
                         "nome": "San Francisco 49ers",
                         "promocao": "Playoffs",
+                        "isCampeaoDivisao": true,
+                        "seedEspn": 1,
                         "logo": "cache_img/3ebce15f909552cf1bac382cf7c0d1ac.png",
                         "jogos": 9,
                         "v": 8,
@@ -2098,6 +1398,8 @@
                         "id": "26",
                         "nome": "Seattle Seahawks",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 8,
                         "logo": "cache_img/678f856b2061331d5959b316680f6a8f.png",
                         "jogos": 10,
                         "v": 6,
@@ -2115,6 +1417,8 @@
                         "id": "14",
                         "nome": "Los Angeles Rams",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 9,
                         "logo": "cache_img/78717f9b6e3a9fc040323ff67ad09cd1.png",
                         "jogos": 10,
                         "v": 6,
@@ -2132,6 +1436,8 @@
                         "id": "22",
                         "nome": "Arizona Cardinals",
                         "promocao": "",
+                        "isCampeaoDivisao": false,
+                        "seedEspn": 15,
                         "logo": "cache_img/017b3f2ad84bda2293e99bffaf3aa544.png",
                         "jogos": 10,
                         "v": 3,
@@ -2153,6 +1459,8 @@
                 "id": "2",
                 "nome": "Buffalo Bills",
                 "promocao": "Playoffs (Folga #1)",
+                "isCampeaoDivisao": true,
+                "seedEspn": 1,
                 "logo": "cache_img/0279c0abac38d33d9dd21a92730efda3.png",
                 "jogos": 9,
                 "v": 8,
@@ -2167,43 +1475,11 @@
             {
                 "pos": 2,
                 "variacao": 0,
-                "id": "30",
-                "nome": "Jacksonville Jaguars",
-                "promocao": "Playoffs (Wild Card)",
-                "logo": "cache_img/62bd1159b71105b04a8eea44af6b1c2c.png",
-                "jogos": 9,
-                "v": 7,
-                "e": 0,
-                "d": 2,
-                "sg": "+125",
-                "pts": "-",
-                "pct": ".778",
-                "isCasa": false,
-                "isFora": false
-            },
-            {
-                "pos": 3,
-                "variacao": 0,
-                "id": "4",
-                "nome": "Cincinnati Bengals",
-                "promocao": "Playoffs (Wild Card)",
-                "logo": "cache_img/9f921adcbe97e097bf5b98e710fe94b6.png",
-                "jogos": 9,
-                "v": 7,
-                "e": 0,
-                "d": 2,
-                "sg": "+85",
-                "pts": "-",
-                "pct": ".778",
-                "isCasa": false,
-                "isFora": false
-            },
-            {
-                "pos": 4,
-                "variacao": 0,
                 "id": "12",
                 "nome": "Kansas City Chiefs",
-                "promocao": "Playoffs (Wild Card)",
+                "promocao": "Playoffs (Campeão Divisão)",
+                "isCampeaoDivisao": true,
+                "seedEspn": 2,
                 "logo": "cache_img/64cb1dde5cb3dad957c23e13df218880.png",
                 "jogos": 9,
                 "v": 7,
@@ -2216,11 +1492,51 @@
                 "isFora": false
             },
             {
+                "pos": 3,
+                "variacao": 0,
+                "id": "30",
+                "nome": "Jacksonville Jaguars",
+                "promocao": "Playoffs (Campeão Divisão)",
+                "isCampeaoDivisao": true,
+                "seedEspn": 3,
+                "logo": "cache_img/62bd1159b71105b04a8eea44af6b1c2c.png",
+                "jogos": 9,
+                "v": 7,
+                "e": 0,
+                "d": 2,
+                "sg": "+125",
+                "pts": "-",
+                "pct": ".778",
+                "isCasa": false,
+                "isFora": false
+            },
+            {
+                "pos": 4,
+                "variacao": 0,
+                "id": "4",
+                "nome": "Cincinnati Bengals",
+                "promocao": "Playoffs (Campeão Divisão)",
+                "isCampeaoDivisao": true,
+                "seedEspn": 4,
+                "logo": "cache_img/9f921adcbe97e097bf5b98e710fe94b6.png",
+                "jogos": 9,
+                "v": 7,
+                "e": 0,
+                "d": 2,
+                "sg": "+85",
+                "pts": "-",
+                "pct": ".778",
+                "isCasa": false,
+                "isFora": false
+            },
+            {
                 "pos": 5,
                 "variacao": 0,
                 "id": "7",
                 "nome": "Denver Broncos",
                 "promocao": "Playoffs (Wild Card)",
+                "isCampeaoDivisao": false,
+                "seedEspn": 5,
                 "logo": "cache_img/5728a2ef45f9dd280aa57c1854d40a28.png",
                 "jogos": 9,
                 "v": 7,
@@ -2238,6 +1554,8 @@
                 "id": "23",
                 "nome": "Pittsburgh Steelers",
                 "promocao": "Playoffs (Wild Card)",
+                "isCampeaoDivisao": false,
+                "seedEspn": 6,
                 "logo": "cache_img/1b1e4f7a5733022bc5a4afd97548c1e3.png",
                 "jogos": 9,
                 "v": 6,
@@ -2255,6 +1573,8 @@
                 "id": "5",
                 "nome": "Cleveland Browns",
                 "promocao": "Playoffs (Wild Card)",
+                "isCampeaoDivisao": false,
+                "seedEspn": 7,
                 "logo": "cache_img/15eb7d05922e98b4d44d3e851b6a813e.png",
                 "jogos": 10,
                 "v": 6,
@@ -2272,6 +1592,8 @@
                 "id": "17",
                 "nome": "New England Patriots",
                 "promocao": "",
+                "isCampeaoDivisao": false,
+                "seedEspn": 8,
                 "logo": "cache_img/98c3370a9553867d3b976c30b5d96566.png",
                 "jogos": 10,
                 "v": 5,
@@ -2289,6 +1611,8 @@
                 "id": "33",
                 "nome": "Baltimore Ravens",
                 "promocao": "",
+                "isCampeaoDivisao": false,
+                "seedEspn": 9,
                 "logo": "cache_img/515b4e7a827f7b2597c085ac6efc97f1.png",
                 "jogos": 9,
                 "v": 4,
@@ -2297,7 +1621,7 @@
                 "sg": "-47",
                 "pts": "-",
                 "pct": ".444",
-                "isCasa": false,
+                "isCasa": true,
                 "isFora": false
             },
             {
@@ -2306,6 +1630,8 @@
                 "id": "13",
                 "nome": "Las Vegas Raiders",
                 "promocao": "",
+                "isCampeaoDivisao": false,
+                "seedEspn": 10,
                 "logo": "cache_img/7d6347da757aefb1339adb3b188ba896.png",
                 "jogos": 10,
                 "v": 4,
@@ -2323,6 +1649,8 @@
                 "id": "34",
                 "nome": "Houston Texans",
                 "promocao": "",
+                "isCampeaoDivisao": false,
+                "seedEspn": 11,
                 "logo": "cache_img/14f69cfa7152ba8f0661b372886576a7.png",
                 "jogos": 9,
                 "v": 3,
@@ -2340,6 +1668,8 @@
                 "id": "11",
                 "nome": "Indianapolis Colts",
                 "promocao": "",
+                "isCampeaoDivisao": false,
+                "seedEspn": 12,
                 "logo": "cache_img/5972b2d7df74433ed0f8697126995b2e.png",
                 "jogos": 10,
                 "v": 3,
@@ -2348,7 +1678,7 @@
                 "sg": "-63",
                 "pts": "-",
                 "pct": ".300",
-                "isCasa": true,
+                "isCasa": false,
                 "isFora": false
             },
             {
@@ -2357,6 +1687,8 @@
                 "id": "20",
                 "nome": "New York Jets",
                 "promocao": "",
+                "isCampeaoDivisao": false,
+                "seedEspn": 13,
                 "logo": "cache_img/e876a0fa44135b5f75e75aaa6a02c8e4.png",
                 "jogos": 10,
                 "v": 2,
@@ -2371,9 +1703,30 @@
             {
                 "pos": 14,
                 "variacao": 0,
+                "id": "15",
+                "nome": "Miami Dolphins",
+                "promocao": "",
+                "isCampeaoDivisao": false,
+                "seedEspn": 14,
+                "logo": "cache_img/802b4d42fcfe97a04c84b0d75ee59ad4.png",
+                "jogos": 9,
+                "v": 1,
+                "e": 0,
+                "d": 8,
+                "sg": "-76",
+                "pts": "-",
+                "pct": ".111",
+                "isCasa": false,
+                "isFora": false
+            },
+            {
+                "pos": 15,
+                "variacao": 0,
                 "id": "10",
                 "nome": "Tennessee Titans",
                 "promocao": "",
+                "isCampeaoDivisao": false,
+                "seedEspn": 15,
                 "logo": "cache_img/604b2b8a438db986d8807649569c5fd1.png",
                 "jogos": 9,
                 "v": 1,
@@ -2386,28 +1739,13 @@
                 "isFora": false
             },
             {
-                "pos": 15,
-                "variacao": 0,
-                "id": "15",
-                "nome": "Miami Dolphins",
-                "promocao": "",
-                "logo": "cache_img/802b4d42fcfe97a04c84b0d75ee59ad4.png",
-                "jogos": 9,
-                "v": 1,
-                "e": 0,
-                "d": 8,
-                "sg": "-76",
-                "pts": "-",
-                "pct": ".111",
-                "isCasa": false,
-                "isFora": true
-            },
-            {
                 "pos": 16,
                 "variacao": 0,
                 "id": "24",
                 "nome": "Los Angeles Chargers",
                 "promocao": "",
+                "isCampeaoDivisao": false,
+                "seedEspn": 16,
                 "logo": "cache_img/295c94c783799309e4ad653c14a63dcf.png",
                 "jogos": 8,
                 "v": 0,
@@ -2417,7 +1755,7 @@
                 "pts": "-",
                 "pct": ".000",
                 "isCasa": false,
-                "isFora": false
+                "isFora": true
             }
         ],
         "matamata": [
