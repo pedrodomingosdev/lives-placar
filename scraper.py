@@ -295,18 +295,19 @@ threading.Thread(target=iniciar_servidor, daemon=True).start()
 # 2. CONEXÃO COM O CHROME
 # ==============================================================================
 print("=" * 60)
-print("  SOFASCORE & ESPN OVERLAY PRO - INICIALIZAÇÃO DIRETA  ")
+print("  PLACAR ALDO LUIZ - VERSÃO 1.0.0")
 print("=" * 60)
-print("-> Servidor OBS ativo em: http://localhost:8000/placar.html\n")
-
+print("-> Link no PC e OBS: http://localhost:8000/placar.html")
 try:
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
     ip_local = s.getsockname()[0]
     s.close()
-    print(f"-> Acesso no Celular (mesmo Wi-Fi): http://{ip_local}:8000/placar.html")
+    print(f"-> Link no Celular: http://{ip_local}:8000/placar.html")
 except Exception:
     pass
+
+print("=" * 60 + "\n" )
 
 chrome_options = Options()
 chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9333")
@@ -314,16 +315,16 @@ chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9333")
 driver = None
 for tentativa in range(1, 6):
     try:
-        print(f"A tentar ligar ao Chrome (tentativa {tentativa}/5)...")
+        print(f"Verificando conexão com o Chrome (tentativa {tentativa}/5)...")
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-        print("Ligado com sucesso à janela do Chrome!")
+        print("Chrome conectado!")
         break
     except Exception as e:
         print(f"   -> Falha na tentativa {tentativa}: {e}")
         time.sleep(2)
 
 if not driver:
-    print("\n[ERRO CRÍTICO] Não foi possível ligar ao Chrome na porta 9333.")
+    print("\n[ERRO CRÍTICO] Não foi possível conectar ao Chrome na porta 9333.")
     print("Certifique-se de que o INICIAR_PLACAR.bat foi executado para abrir o navegador.")
     time.sleep(10)
     exit()
