@@ -6,6 +6,7 @@ import re
 import threading
 import http.server
 import socketserver
+import socket
 import hashlib
 import base64
 import requests
@@ -31,6 +32,8 @@ URL_DO_JOGO = ""
 # ==============================================================================
 CACHE_IMG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cache_img")
 os.makedirs(CACHE_IMG_DIR, exist_ok=True)
+
+
 
 def salvar_base64_disco(caminho, b64_str):
     try:
@@ -295,6 +298,15 @@ print("=" * 60)
 print("  SOFASCORE & ESPN OVERLAY PRO - INICIALIZAÇÃO DIRETA  ")
 print("=" * 60)
 print("-> Servidor OBS ativo em: http://localhost:8000/placar.html\n")
+
+try:
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    ip_local = s.getsockname()[0]
+    s.close()
+    print(f"-> Acesso no Celular (mesmo Wi-Fi): http://{ip_local}:8000/placar.html")
+except Exception:
+    pass
 
 chrome_options = Options()
 chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9333")
