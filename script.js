@@ -1705,6 +1705,10 @@ mediaShowcase.addEventListener('click', fecharMedia);
 window.addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharMedia(); });
 
 function fecharMedia() {
+    mediaShowcase.querySelectorAll('video').forEach(v => {
+        v.pause();
+        v.src = '';
+    });
     mediaShowcase.classList.remove('show');
     mediaShowcase.innerHTML = '';
     cardPrincipal.style.display = 'flex';
@@ -1720,15 +1724,50 @@ function mostrarImagem(url) {
     mediaShowcase.classList.add('show');
 }
 
-function mostrarTweet(tweetUrl) {
+async function mostrarTweet(tweetUrl) {
     cardPrincipal.style.display = 'none';
     mediaShowcase.innerHTML = '';
+    mediaShowcase.classList.add('show');
+
+    try {
+        const resp = await fetch('/video_twitter?url=' + encodeURIComponent(tweetUrl));
+        const dados = await resp.json();
+
+        if (dados && dados.video_url) {
+            const video = document.createElement('video');
+            video.src = dados.video_url;
+            video.autoplay = true;
+            video.controls = true;
+            video.playsInline = true;
+            video.volume = 1.0;
+            video.style.cssText = `
+                display: block;
+                width: auto;
+                height: auto;
+                max-width: 75vw;
+                max-height: 72vh;
+                border-radius: 14px;
+                box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65);
+                background: transparent;
+            `;
+            video.addEventListener('click', (e) => e.stopPropagation());
+            mediaShowcase.appendChild(video);
+
+            video.play().catch(() => {
+                video.muted = true;
+                video.play();
+            });
+            return;
+        }
+    } catch (e) { }
+
+    // Fallback: usa o card branco apenas se o tweet não tiver vídeo
     const wrapper = document.createElement('div');
     wrapper.className = 'tweet-card-wrapper';
     wrapper.addEventListener('click', (e) => e.stopPropagation());
     wrapper.innerHTML = `<blockquote class="twitter-tweet" data-dnt="true" data-theme="dark" data-conversation="none" data-align="center"><a href="${tweetUrl}"></a></blockquote>`;
     mediaShowcase.appendChild(wrapper);
-    mediaShowcase.classList.add('show');
+
     const permitirFullscreen = () => {
         wrapper.querySelectorAll('iframe').forEach(f => { f.setAttribute('allowfullscreen', 'true'); f.setAttribute('allow', 'autoplay; fullscreen'); });
     };
@@ -1743,7 +1782,6 @@ function mostrarTweet(tweetUrl) {
         setTimeout(permitirFullscreen, 400); setTimeout(permitirFullscreen, 1200);
     }
 }
-
 window.addEventListener('paste', (e) => {
     const items = (e.clipboardData || e.originalEvent.clipboardData).items;
     let colouImagem = false;

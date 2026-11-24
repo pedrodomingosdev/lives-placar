@@ -10,6 +10,7 @@ import socket
 import hashlib
 import base64
 import requests
+import urllib.parse
 from datetime import datetime, timezone, timedelta
 
 from selenium import webdriver
@@ -266,18 +267,49 @@ def cachear_todas_imagens(driver_instance, dados_lista):
 # ==============================================================================
 class QuietHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, format, *args): pass
-    def do_POST(self):
-        global comando_f1_pendente
-        if self.path.startswith("/trocar_sessao_f1"):
-            tamanho = int(self.headers.get('Content-Length', 0))
-            corpo = self.rfile.read(tamanho).decode('utf-8')
-            comando_f1_pendente = corpo.strip()
+
+    def do_GET(self):
+        if self.path.startswith("/video_twitter"):
+            query = urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query)
+            tweet_url = query.get("url", [""])[0]
+            video_url = ""
+
+            m = re.search(r'(?:twitter\.com|x\.com)/([a-zA-Z0-9_]+)/status/(\d+)', tweet_url, re.IGNORECASE)
+            if m:
+                user, tweet_id = m.group(1), m.group(2)
+                headers = {"User-Agent": "PlacarOBS/1.0"}
+
+                # 1. Tenta via API pública FxTwitter
+                try:
+                    r = requests.get(f"https://api.fxtwitter.com/{user}/status/{tweet_id}", headers=headers, timeout=6)
+                    if r.ok:
+                        dados = r.json()
+                        videos = dados.get("tweet", {}).get("media", {}).get("videos", [])
+                        if videos:
+                            video_url = videos[0].get("url", "")
+                except Exception:
+                    pass
+
+                # 2. Fallback via vxTwitter
+                if not video_url:
+                    try:
+                        r = requests.get(f"https://api.vxtwitter.com/{user}/status/{tweet_id}", headers=headers, timeout=6)
+                        if r.ok:
+                            dados = r.json()
+                            for midia in dados.get("media_extended", []):
+                                if midia.get("type") in ("video", "gif") and midia.get("url"):
+                                    video_url = midia["url"]
+                                    break
+                    except Exception:
+                        pass
+
             self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
             self.end_headers()
-            self.wfile.write(b"OK")
-        else:
-            self.send_response(404)
-            self.end_headers()
+            self.wfile.write(json.dumps({"video_url": video_url}).encode("utf-8"))
+            return
+
+        super().do_GET()
             
 class QuietServer(socketserver.TCPServer):
     def handle_error(self, request, client_address): pass
