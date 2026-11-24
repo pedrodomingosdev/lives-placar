@@ -1761,27 +1761,42 @@ async function mostrarTweet(tweetUrl) {
         }
     } catch (e) { }
 
-    // Fallback: usa o card branco apenas se o tweet não tiver vídeo
+    // Fallback: tweet sem vídeo (sem fundo ou borda branca)
     const wrapper = document.createElement('div');
     wrapper.className = 'tweet-card-wrapper';
+    wrapper.style.cssText = `
+        background: transparent;
+        padding: 0;
+        box-shadow: none;
+        width: 550px;
+        max-width: 90vw;
+        display: flex;
+        justify-content: center;
+    `;
     wrapper.addEventListener('click', (e) => e.stopPropagation());
     wrapper.innerHTML = `<blockquote class="twitter-tweet" data-dnt="true" data-theme="dark" data-conversation="none" data-align="center"><a href="${tweetUrl}"></a></blockquote>`;
     mediaShowcase.appendChild(wrapper);
 
-    const permitirFullscreen = () => {
-        wrapper.querySelectorAll('iframe').forEach(f => { f.setAttribute('allowfullscreen', 'true'); f.setAttribute('allow', 'autoplay; fullscreen'); });
+    const ajustarIframe = () => {
+        wrapper.querySelectorAll('iframe').forEach(f => {
+            f.setAttribute('allowfullscreen', 'true');
+            f.setAttribute('allow', 'autoplay; fullscreen');
+            f.style.borderRadius = '13px';
+            f.style.boxShadow = '0 12px 32px rgba(0, 0, 0, 0.65)';
+        });
     };
     if (!window.twttr) {
         const scriptTw = document.createElement('script');
         scriptTw.src = "https://platform.twitter.com/widgets.js";
         scriptTw.async = true;
-        scriptTw.onload = () => { setTimeout(permitirFullscreen, 400); setTimeout(permitirFullscreen, 1200); };
+        scriptTw.onload = () => { setTimeout(ajustarIframe, 400); setTimeout(ajustarIframe, 1200); };
         document.body.appendChild(scriptTw);
     } else {
         window.twttr.widgets.load(wrapper);
-        setTimeout(permitirFullscreen, 400); setTimeout(permitirFullscreen, 1200);
+        setTimeout(ajustarIframe, 400); setTimeout(ajustarIframe, 1200);
     }
 }
+
 window.addEventListener('paste', (e) => {
     const items = (e.clipboardData || e.originalEvent.clipboardData).items;
     let colouImagem = false;
