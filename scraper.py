@@ -294,6 +294,9 @@ threading.Thread(target=iniciar_servidor, daemon=True).start()
 # ==============================================================================
 # 2. CONEXÃO COM O CHROME
 # ==============================================================================
+if os.name == "nt":
+    os.system("title Placar Aldo Luiz - Versão 1.0.0")
+    
 print("=" * 60)
 print("  PLACAR ALDO LUIZ - VERSÃO 1.0.0")
 print("=" * 60)
@@ -1919,6 +1922,16 @@ def atualizar_placar():
                 vermelho = any(inc.get("incidentType") == "card" and inc.get("incidentClass") in ["red", "yellowRed"] and inc.get("player", {}).get("id") == p_id for inc in incidents_data)
                 sub_out = next((inc for inc in incidents_data if inc.get("incidentType") == "substitution" and inc.get("playerOut", {}).get("id") == p_id), None)
                 sub_in = next((inc for inc in incidents_data if inc.get("incidentType") == "substitution" and inc.get("playerIn", {}).get("id") == p_id), None)
+                
+                sub_in_id = sub_out.get("playerIn", {}).get("id") if sub_out else None
+                sub_vermelho = any(
+                    inc.get("incidentType") == "card"
+                    and inc.get("incidentClass") in ["red", "yellowRed"]
+                    and inc.get("player", {}).get("id") == sub_in_id
+                    for inc in incidents_data
+                ) if sub_in_id else False
+                
+                
                 nacionalidade = player_info.get("country", {}).get("alpha2", "").lower()
                 correcoes_bandeiras = {"en": "gb-eng", "sx": "gb-sct", "sc": "gb-sct", "wa": "gb-wls", "wl": "gb-wls", "ni": "gb-nir"}
                 nacionalidade = correcoes_bandeiras.get(nacionalidade, nacionalidade)
@@ -1938,7 +1951,8 @@ def atualizar_placar():
                     "rating": rating, "gol": gols_marcados > 0, "gols_count": gols_marcados,
                     "gol_contra": gols_contra > 0, "gols_contra_count": gols_contra,
                     "assist": assistencias > 0, "assists_count": assistencias,
-                    "amarelo": amarelo, "vermelho": vermelho, "saiu": bool(sub_out), "entrou": bool(sub_in),
+                    "amarelo": amarelo, "vermelho": vermelho, "sub_vermelho": sub_vermelho,
+                    "saiu": bool(sub_out), "entrou": bool(sub_in),
                     "lesao": bool(sub_out and sub_out.get("incidentClass") == "injury"),
                     "sub_nome": sub_out.get("playerIn", {}).get("shortName", "") if sub_out else (sub_in.get("playerOut", {}).get("shortName", "") if sub_in else ""),
                     "pts": estatisticas.get("points", "-"), "reb": estatisticas.get("rebounds", "-"),

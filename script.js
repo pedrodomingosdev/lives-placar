@@ -321,7 +321,7 @@ function objClsRtg(val) {
     return 'rating-baixa';
 }
 
-function htmlFut(j, isReserva = false) {
+function htmlFut(j, isReserva = false, elencoTime = []) {
     let cC = objClsRtg(j.rating);
     const fallbackFoto = "https://pbs.twimg.com/profile_images/1858822306186878976/qPsDCLmQ_400x400.jpg";
     let tf = `<img src="${j.foto || fallbackFoto}" class="jogador-foto" onerror="this.src='${fallbackFoto}'">`;
@@ -338,6 +338,12 @@ function htmlFut(j, isReserva = false) {
     let subInfo = '';
     const fezGol = (j.gols_count > 0 || j.gol);
 
+    // Verifica no próprio elenco se o reserva que entrou no lugar deste titular foi expulso
+    const subFoiExpulso = Boolean(j.sub_vermelho) || (
+        !isReserva && j.saiu && j.sub_nome &&
+        elencoTime.some(r => r.reserva && r.vermelho && r.nome === j.sub_nome)
+    );
+
     let bg = '';
     if (j.capitao) bg += `<span class="badge-capitao">C</span>`;
     if (j.amarelo) bg += `<span class="badge-cartao amarelo"></span>`;
@@ -345,21 +351,26 @@ function htmlFut(j, isReserva = false) {
 
     if (j.vermelho) {
         clSubs = 'expulso';
-        let tagGol = '';
-        let tagAssist = '';
-        subInfo = `<span class="info-sub">${tagGol}${tagAssist}<span style="color: #f87171; font-weight: 800;">🟥 Expulso</span></span>`;
+        let tagSaiu = (isReserva && j.entrou && j.sub_nome)
+            ? `<span style="color: #94a3b8;">▼ Saiu: ${j.sub_nome}</span> • `
+            : '';
+        subInfo = `<span class="info-sub">${tagSaiu}<span style="color: #f87171; font-weight: 800;">Expulso</span></span>`;
         if (j.gols_count > 1) bg += `<span class="badge-evento">⚽x${j.gols_count}</span>`;
         else if (j.gol) bg += `<span class="badge-evento">⚽</span>`;
     } else if (!isReserva) {
         if (j.saiu) {
-            clSubs = j.lesao ? 'saiu-lesao' : 'saiu-normal';
+            clSubs = subFoiExpulso ? 'sub-expulso' : (j.lesao ? 'saiu-lesao' : 'saiu-normal');
             let tagGol = '';
             if (fezGol) {
                 const txtGols = (j.gols_count > 1) ? `⚽ ${j.gols_count} Gols` : `⚽ 1 Gol`;
                 tagGol = `<span style="color: #60a5fa; font-weight: 800;">${txtGols}</span> • `;
             }
 
-            if (j.lesao) {
+            if (subFoiExpulso) {
+                let tagLesao = j.lesao ? `<span style="color:#f87171;">🚑 Lesão</span> • ` : '';
+                let miniCartao = `<span style="display:inline-block; width:6px; height:9px; background:#ef4444; border-radius:1px; vertical-align:middle; margin:0 3px 1px 4px;"></span>`;
+                subInfo = `<span class="info-sub in">${tagLesao}${tagGol}▲ Entrou: <span style="color:#f87171; text-decoration:line-through; font-weight:700;">${j.sub_nome}</span>${miniCartao}<span style="color:#f87171; font-weight:800;">Expulso</span></span>`;
+            } else if (j.lesao) {
                 subInfo = `<span class="info-sub in"><span style="color:#f87171;">🚑 Lesão</span> • ${tagGol}▲ Entrou: ${j.sub_nome}</span>`;
             } else {
                 subInfo = `<span class="info-sub in">${tagGol}▲ Entrou: ${j.sub_nome || 'Substituído'}</span>`;
@@ -766,9 +777,9 @@ function aplicarNaTela(d) {
 
             if ((novoVermelhoCasa || novoVermelhoFora) && (agoraExp - ultimoAlertaTime > 6000)) {
                 if (novoVermelhoCasa) {
-                    dispararEvento(`CARTÃO VERMELHO ${jg.timeCasa}!`, "tema-vermelho", true, jg.logoCasa);
+                    dispararEvento(`CARTÃO VERMELHO!`, "tema-vermelho", true, jg.logoCasa);
                 } else {
-                    dispararEvento(`CARTÃO VERMELHO ${jg.timeFora}!`, "tema-vermelho", true, jg.logoFora);
+                    dispararEvento(`CARTÃO VERMELHO!`, "tema-vermelho", true, jg.logoFora);
                 }
                 ultimoAlertaTime = agoraExp;
             }
@@ -1201,11 +1212,11 @@ function aplicarNaTela(d) {
                                 <div class="coluna-escalacao fora"><div class="titulo-escalacao">${headerDir}</div><div>${listDir}</div></div>
                             </div>`;
                 } else {
-                    let titCasa = (jg.escalacaoCasa || []).filter(j => !j.reserva).map(j => htmlFut(j, false)).join('');
-                    let resCasa = (jg.escalacaoCasa || []).filter(j => j.reserva).map(j => htmlFut(j, true)).join('');
+                    let titCasa = (jg.escalacaoCasa || []).filter(j => !j.reserva).map(j => htmlFut(j, false, jg.escalacaoCasa)).join('');
+                    let resCasa = (jg.escalacaoCasa || []).filter(j => j.reserva).map(j => htmlFut(j, true, jg.escalacaoCasa)).join('');
 
-                    let titFora = (jg.escalacaoFora || []).filter(j => !j.reserva).map(j => htmlFut(j, false)).join('');
-                    let resFora = (jg.escalacaoFora || []).filter(j => j.reserva).map(j => htmlFut(j, true)).join('');
+                    let titFora = (jg.escalacaoFora || []).filter(j => !j.reserva).map(j => htmlFut(j, false, jg.escalacaoFora)).join('');
+                    let resFora = (jg.escalacaoFora || []).filter(j => j.reserva).map(j => htmlFut(j, true, jg.escalacaoFora)).join('');
 
                     painelConteudo.innerHTML = `
                             <div class="container-views">
@@ -1846,5 +1857,3 @@ setInterval(() => {
         }
     });
 })();
-
-
