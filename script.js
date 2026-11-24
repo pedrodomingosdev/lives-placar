@@ -1725,6 +1725,10 @@ function mostrarImagem(url) {
 }
 
 async function mostrarTweet(tweetUrl) {
+    const larguraAtual = Math.round(cardPrincipal.getBoundingClientRect().width);
+    if (larguraAtual > 0) window._larguraPlacar = larguraAtual;
+    const larguraPlacar = window._larguraPlacar || 640;
+
     cardPrincipal.style.display = 'none';
     mediaShowcase.innerHTML = '';
     mediaShowcase.classList.add('show');
@@ -1744,8 +1748,8 @@ async function mostrarTweet(tweetUrl) {
                 display: block;
                 width: auto;
                 height: auto;
-                max-width: 75vw;
-                max-height: 72vh;
+                max-width: ${larguraPlacar}px;
+                max-height: 70vh;
                 border-radius: 14px;
                 box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65);
                 background: transparent;
@@ -1761,14 +1765,14 @@ async function mostrarTweet(tweetUrl) {
         }
     } catch (e) { }
 
-    // Fallback: tweet sem vídeo (sem fundo ou borda branca)
+    // Fallback: tweet sem vídeo alinhado à largura do placar
     const wrapper = document.createElement('div');
     wrapper.className = 'tweet-card-wrapper';
     wrapper.style.cssText = `
         background: transparent;
         padding: 0;
         box-shadow: none;
-        width: 550px;
+        width: ${larguraPlacar}px;
         max-width: 90vw;
         display: flex;
         justify-content: center;
